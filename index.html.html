@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=1" />
+<meta name="description" content="" />
+<meta name="author" content="" />
+    <title>...</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+<script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.1/Chart.js'></script>
+<script type="text/javascript" src='ets_tasoitus.js'></script>
+<script type="text/javascript" src='helpful_functions.js'></script>
+<script type="text/javascript" src='site_functionality.js'></script>
+</script>
+	 
+</head>
+<body onload="createTS();initialize();">
+   
+
+<div class="container">
+	<div class='inputs'>
+		<div class='param_input'>
+		Level:<span class='sliderOutput' id="alpha_output">BOOM</span>
+		<br><input type="range" id='alpha' value="40" min="0" max="100" onchange="sliderChange(this)"/>	<br>
+		</div>
+		<div class='param_input'>
+		Seasonal:<span class='sliderOutput'  id="beta_output"> </span><br>
+		<input type="range" id='beta' value="1" min="0" max="100" onchange="sliderChange(this)"/>
+		</div>
+		<div class='param_input'>
+		Trend:<span class='sliderOutput' id="gamma_output"> </span>
+		<br><input type="range" id='gamma' value="1" min="0" max="100" onchange="sliderChange(this)"/>
+		</div>
+	</div>
+
+	<div id='plots'>
+	<canvas id="canvas_1" width="400" height="200" ></canvas>
+	</div>
+</div>
+
+</body>
+</html>
