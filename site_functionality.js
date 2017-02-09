@@ -33,7 +33,7 @@ function sliderChange(slider) {
 	tasoitettu=SES(TS,12,ennustettavia,alpha,beta,gamma)
 	if (ennustettavia>0) {
 		for (i=0;i<ennustettavia;i++) {
-			datasetsOnCanvas[0].data.push(keskiarvo(datasetsOnCanvas[0].data));
+			//datasetsOnCanvas[0].data.push(keskiarvo(datasetsOnCanvas[0].data));
 		}
 		
 	}
@@ -42,7 +42,7 @@ function sliderChange(slider) {
 	kuvaan.push((tasoitettu[i]["fit"]));
 	}
 	
-	draw(kuvaan,'Ennuste',cleanCanvas=false)
+	draw(kuvaan,'Ennuste',cleanCanvas=true)
 
 }
 
@@ -56,7 +56,10 @@ draw =function(arrayToDraw,arrayTitle,cleanCanvas) {
 	  var labels=[];
 	  for (var i = 0, len = arrayToDraw.length; i < len; i++) { labels.push('T:'+i) }
 	  
-	  //if (cleanCanvas) {  datasetsOnCanvas=[]; }
+	  if (cleanCanvas & datasetsOnCanvas.length>1) { 
+	  
+	  datasetsOnCanvas.splice(-1,1);
+	  }
 	  datasetsOnCanvas.push( { 
                       label: arrayTitle,
                       fill: false,
@@ -86,7 +89,7 @@ draw =function(arrayToDraw,arrayTitle,cleanCanvas) {
 		data: data	  });
 	  
 	 colorIdx++;
-	 if (colorIdx>colors.length) { colorIdx=0; }
+	 if (colorIdx>colors.length) { colorIdx=1; }
 }
 
 
