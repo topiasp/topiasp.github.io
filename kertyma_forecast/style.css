@@ -1,4 +1,5 @@
 
+.header{ color:black;padding-left:27%;font-size:150%;font-weight:lighter; }
 
 .sliderOutput {
     font-weight: bold;
@@ -19,7 +20,7 @@
     float: left; /*<-- ADD THIS*/
 }
 .inputs  {
-	padding-left:25%;
+	padding-left:27%;
 }
 .param_input  {
 	width:10%;
@@ -37,3 +38,19 @@
     height: 100%;
 	background-color: white;
 	}
+	
+#stats {
+padding-left:25%;
+}
+#initial_values {
+padding-left:25%;
+}
+.axis path {
+    fill: none;
+    stroke: #777;
+    shape-rendering: crispEdges;
+}
+.axis text {
+    font-family: Lato;
+    font-size: 13px;
+}
