@@ -27,8 +27,8 @@
 <p class='header'>Ennakonpidätyksen alaiset tulot yhteensä (arvo, mrd. euroa)</p>
 	<div class='inputs'>
 		<div class='param_method'>
-		<input type="radio" id="radioButton_method_M" value="M" > Multiplicative
-		<input type="radio" id="radioButton_method_A" value="A" checked> Additive<br></div>
+		<input type="radio" name="radioButton_method" value="M" > Multiplicative
+		<input type="radio" name="radioButton_method" value="A" checked> Additive<br></div>
 		<div class='param_input'>
 		Level(α):<span class='sliderOutput' id="alpha_output"></span>
 		<br><input type="range" id='alpha' value="35" min="0" max="100" onchange="sliderChange(this)"/>	<br>
@@ -48,7 +48,7 @@
 	<canvas id="canvas_1" width="400" height="200" ></canvas>
 	</div>
 	<div id='params'><p id='initial_values'></p></div>
-	<div id='performance'>	<p id='stats'></p></div>
+	<div id='performance'><p id='stats'></p></div>
 	<div id='tableContainer'>
 	<div onclick="toggleVisibility('series')" class='textButton'>Taulukko</div>
 	<table id='series'></table>

@@ -36,11 +36,11 @@ ES=function(tasoitukseen,L,ennustettavia,alpha,beta,gamma,method) {
 		//γyt(ℓt−1+bt−1)+(1−γ)st−m
 		
 		seas=(gamma*(tasoitukseen[idx]/(out[edellinen]["level"]+out[edellinen]["trend"])))+((1-gamma)*prev_period_seas)
-		
 		// Fit
 		fit=NaN;
 		if (rivi>0) { fit=(out[(edellinen)]["level"]+out[(edellinen)]["trend"])*seas }
 		}
+		
 		if (method=='A') { // Additive
 		// Level
 		level=(alpha*(tasoitukseen[idx]-prev_period_seas))+((1-alpha)*(out[edellinen]["level"]+out[edellinen]["trend"]));
@@ -95,13 +95,10 @@ ES=function(tasoitukseen,L,ennustettavia,alpha,beta,gamma,method) {
 init_ES=function(tasoitukseen,L,method) {
 
 	
-	// Initial value for deseasonalized level
+	// Initial value for level
 	var init_level=keskiarvo(tasoitukseen.slice(0,L));
-	
-	
+
 	// Initial value for the trend factor
-	// http://www.itl.nist.gov/div898/handbook/pmc/section4/pmc435.htm
-	//https://grisha.org/blog/2016/02/17/triple-exponential-smoothing-forecasting-part-iii/
 
 	var summa=0;
 	for (var i=0;i<L;i++) {		summa=summa+((tasoitukseen[i+L]-tasoitukseen[i])/L);	}
@@ -165,7 +162,7 @@ init_ES=function(tasoitukseen,L,method) {
 	init_trend=0.0346;
 	seas_indexes=[ 0.9551 ,0.9593, 0.9719, 0.9793, 1.0689,   1.1325, 0.9982 ,1.0036 ,0.999 ,0.9661 ,0.9555, 1.0106]
 	*/
-	// Palautetaan init-arvot
+	// Return initValues
 	var initValues = { init_level:init_level, init_trend:init_trend,init_seas: seas_indexes};
     return(initValues)
 	

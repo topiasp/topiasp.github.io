@@ -32,6 +32,10 @@ function toggleVisibility(id) {
 	else { document.getElementById(id).style.display='none'; }
 }
 
+function toggleMethod(RB) {
+	
+	
+}
 
 function sliderChange(slider) {
 	
@@ -41,8 +45,9 @@ function sliderChange(slider) {
 	beta=document.getElementById('beta').value/100;
 	gamma=document.getElementById('gamma').value/100;
 	var method;
-	if (document.getElementById('radioButton_method_A').checked) { method='A'; }
-	if (document.getElementById('radioButton_method_M').checked) { method='M'; }
+	RBs=document.getElementsByName('radioButton_method')
+	for (var i=0;i<RBs.length;i++) { if (RBs[i].checked) { method=RBs[i].value} }
+	
 	
 	ennustettavia=12;
 	L=12;
