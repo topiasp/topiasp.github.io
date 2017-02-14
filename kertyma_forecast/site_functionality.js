@@ -2,9 +2,11 @@ var tyottomyys=[26911,26342,25363,24898,24729,27092,28383,25635,23636,23300,2283
 
 
 var urli=["http://pxnet2.stat.fi/PXWeb/api/v1/fi/StatFin/tym/tyonv/statfin_pxt_tym_tyonv_001.px",
-"http://vero2.stat.fi/PXWeb/api/v1/fi/Vero/Verotulojen_kehitys/010_ansiokava_tau_101.px"]
+"http://vero2.stat.fi/PXWeb/api/v1/fi/Vero/Verotulojen_kehitys/010_ansiokava_tau_101.px",
+"http://vero2.stat.fi/PXWeb/api/v1/fi/Vero/Verotulojen_kehitys/010_verotall_tau_101.px"]
 
 var pxwebTS = [];
+var pxwebMeta = [];
 var TS=[];
 var kuvaan=[];
 var tasoitettu=[];
@@ -24,7 +26,7 @@ function initialize() {
 	document.getElementById('beta_output').innerHTML=document.getElementById('beta').value/100;
 	document.getElementById('gamma_output').innerHTML=document.getElementById('gamma').value/100;
 	
-	//drawD3(TS);
+	
 }
 
 function toggleVisibility(id) {
@@ -113,6 +115,9 @@ function sliderChange(slider) {
 draw =function(arrayToDraw,arrayTitle,cleanCanvas,init) {
 	
 	  var canvasToDraw = document.getElementById("canvas_1");
+	  var context=canvasToDraw.getContext('2d');
+	  context.clearRect(0, 0, canvasToDraw.width, canvasToDraw.height);
+	  
 	  var labels=[];
 	  for (var i = 0, len = arrayToDraw.length; i < len; i++) { labels.push('T:'+i) }
 	  
@@ -185,10 +190,20 @@ draw =function(arrayToDraw,arrayTitle,cleanCanvas,init) {
 
 // haeSarja
 
-function createTS(init) {
+function createTS(init,variableCodeForPX) {
 	
-	pxwebGet('ta_palkat_ennakonpid_601');
+	pxwebGet(variableCodeForPX);
 	
+	
+	
+	// Populate datalist
+     if (init) {
+		 pxwebMeta=pxwebGetMeta(urli[2])
+	var tmp=new Array;
+	for (i = 0; i < pxwebMeta['variables'][0]['values'].length; i++) {  tmp[i]='<option  label="'+pxwebMeta['variables'][0]['valueTexts'][i]+'" value='+pxwebMeta['variables'][0]['values'][i]+'>'+pxwebMeta['variables'][0]['values'][i]+'</option>'; }
+	document.getElementById('taxList').innerHTML=tmp;
+	
+	 }
 	var kuvaan=[];
 	for (var i=0;i<pxwebTS.length;i++) { kuvaan.push(Number(pxwebTS[i].values[0]))}
 	TS=kuvaan;
@@ -204,7 +219,8 @@ function createTS(init) {
 function pxwebGet(muuttuja) {	
 
 		var indicator='Muuttuja';
-		var jakso='Y'
+		var jakso='YYYY'
+		
 
 		xhr = new XMLHttpRequest();
 
@@ -220,16 +236,33 @@ function pxwebGet(muuttuja) {
 		}
 		
 		var data = JSON.stringify({"query": [
-		{ "code": 'Ilmoitusjakso',"selection": {"filter": "item","values": [  jakso ]  }  },
-		{ "code": indicator,"selection": {"filter": "item","values": [  muuttuja ]  }  }],"response": {"format": "json",   "params": null}});
+		{ "code": 'Verovuosi',"selection": {"filter": "item","values": [  jakso ]  }  },
+		{ "code": 'Verolaji',"selection": {"filter": "item","values": [  muuttuja ]  }  },
+		{ "code": indicator,"selection": {"filter": "item","values": [  'brutto' ]  }  }],"response": {"format": "json",   "params": null}});
 		
 		
 	
 		
-		xhr.open("POST", urli[1], false);	
+		xhr.open("POST", urli[2], false);	
 		xhr.send(data);
 }
-
+function pxwebGetMeta(urli) {
+		
+		var metaReturn;
+		var xmlhttp = new XMLHttpRequest();
+		xmlhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				metaReturn= JSON.parse(this.responseText)
+				
+				}
+		};
+		xmlhttp.open("GET", urli, false);
+		xmlhttp.send();
+		
+		return(metaReturn)
+	
+	
+}
 
 					
 	
