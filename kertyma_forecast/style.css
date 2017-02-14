@@ -17,11 +17,12 @@
 	background-color: white;
 	
     line-height: 1.2em;
-    float: left; /*<-- ADD THIS*/
+    float: left; 
 }
 .inputs  {
 	padding-left:27%;
 }
+.param_method  { padding-left:15%; }
 .param_input  {
 	width:10%;
 		padding-top:5%;
@@ -53,4 +54,49 @@ padding-left:25%;
 .axis text {
     font-family: Lato;
     font-size: 13px;
+}
+
+#tableContainer {
+	width:30%;
+	padding-left:25%;
+	}
+
+#series {
+	visibility:false;
+	
+}	
+
+.textButton {
+	
+	font-family: Lato;
+    font-size: 20px;
+	width:25%;
+	
+}
+.textButton:hover {
+	font-weight:bold;
+	
+	
+}
+	
+table {
+    width:100%;
+}
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 3px;
+    text-align: center;
+}
+table tr:nth-child(even) {
+    background-color: #eee;
+}
+table tr:nth-child(odd) {
+   background-color:#fff;
+}
+table th {
+    background-color: black;
+    color: white;
 }

@@ -16,6 +16,9 @@ var chartData=[];
 var colors=['rgb(0, 51, 153)','rgb(179, 0, 0)'];//,'rgb(179, 0, 0)'];
 var colorIdx=0;
 
+
+
+
 function initialize() {
 	document.getElementById('alpha_output').innerHTML=document.getElementById('alpha').value/100;
 	document.getElementById('beta_output').innerHTML=document.getElementById('beta').value/100;
@@ -24,6 +27,12 @@ function initialize() {
 	//drawD3(TS);
 }
 
+function toggleVisibility(id) {
+	if (document.getElementById(id).style.display=='none') { document.getElementById(id).style.display='block';  }
+	else { document.getElementById(id).style.display='none'; }
+}
+
+
 function sliderChange(slider) {
 	
 	document.getElementById(slider.id+'_output').innerHTML=slider.value/100; 
@@ -31,9 +40,13 @@ function sliderChange(slider) {
 	alpha=document.getElementById('alpha').value/100;
 	beta=document.getElementById('beta').value/100;
 	gamma=document.getElementById('gamma').value/100;
+	var method;
+	if (document.getElementById('radioButton_method_A').checked) { method='A'; }
+	if (document.getElementById('radioButton_method_M').checked) { method='M'; }
 	
 	ennustettavia=12;
-	tasoitettu=SES(TS,12,ennustettavia,alpha,beta,gamma)
+	L=12;
+	tasoitettu=ES(TS,L,ennustettavia,alpha,beta,gamma,method)
 	if (ennustettavia>0) {
 		for (i=0;i<ennustettavia;i++) {
 			//datasetsOnCanvas[0].data.push(keskiarvo(datasetsOnCanvas[0].data));
@@ -48,7 +61,7 @@ function sliderChange(slider) {
 	
 	// Params -----------------------
 	var param_output=document.getElementById('initial_values').innerHTML;
-	var params=init_SES(TS,12);
+	var params=init_ES(TS,L,method);
 	document.getElementById('initial_values').innerHTML='Level: '+params['init_level'].toFixed(2)+'<br>';
 	document.getElementById('initial_values').innerHTML+='Trend: '+params['init_trend'].toFixed(2)+'<br>';
 	seas=params['init_seas'];
@@ -57,6 +70,22 @@ function sliderChange(slider) {
 	document.getElementById('initial_values').innerHTML+=seas[i].toFixed(2)+', '
 	}
 	document.getElementById('initial_values').innerHTML+='<br>'
+	// Tabulations
+	var tab_output=[]//document.getElementById('initial_values').innerHTML;
+	for (var i=1;i<tasoitettu.length;i++) { 
+	
+	}
+	
+	tab_output.push('<tr>')
+	tab_output.push('<th>Kausi</th><th>Originaali</th><th>Sovitettu</th><th>Level</th><th>Trend</th><th>Seas</th>')
+	tab_output.push('</tr>')
+	
+	tasoitettu.forEach(function(item){   k=Number(item["season_index"])+1;
+	tab_output.push('<tr><td>'+k+'</td><td>'+item["S"].toFixed(2)+'</td><td>'+item["fit"].toFixed(2)+'</td><td>'+item["level"].toFixed(2)+'</td><td>'+item["trend"].toFixed(2)+'</td><td>'+item["seas"].toFixed(3)+'</td></tr>') })
+	document.getElementById("series").innerHTML=tab_output.join('');
+	
+	
+	
 	// Fit statistics-------------------------------------
 	
 	RSS=[];
@@ -75,9 +104,7 @@ function sliderChange(slider) {
 	document.getElementById('stats').innerHTML=stat_output;
 }
 
-function showValue(newValue,sliderId) {
-	document.getElementById(sliderId).innerHTML=newValue;
-}
+
 draw =function(arrayToDraw,arrayTitle,cleanCanvas,init) {
 	
 	  var canvasToDraw = document.getElementById("canvas_1");
@@ -141,7 +168,7 @@ draw =function(arrayToDraw,arrayTitle,cleanCanvas,init) {
 					  var chartData = {   labels:labels,  datasets:   [datasetOriginal ]    };
 	   }
 	  
-	  
+	  console.log(chartData.length)
 	  var newChart = new Chart(canvasToDraw, {
 		type: "line",
 		data: chartData	  });
@@ -150,148 +177,6 @@ draw =function(arrayToDraw,arrayTitle,cleanCanvas,init) {
 	 if (colorIdx>colors.length) { colorIdx=1; }
 }
 
-draw_orig =function(arrayToDraw,arrayTitle,cleanCanvas) {
-	
-	  var canvasToDraw = document.getElementById("canvas_1");
-	  var labels=[];
-	  for (var i = 0, len = arrayToDraw.length; i < len; i++) { labels.push('T:'+i) }
-	  
-	  if (cleanCanvas & datasetsOnCanvas.length>1) { 
-	  
-	  datasetsOnCanvas.pop();
-	  }
-	  
-	  if (datasetsOnCanvas.length==1) {	  
-	   datasetsOnCanvas[1]={
-                      label: arrayTitle,
-                      fill: false,
-                      lineTension: 0.1,
-                      backgroundColor: "rgba(75,192,192,0.4)",
-                      borderColor: colors[colorIdx],
-                      borderCapStyle: "butt",
-                      borderDash: [],
-                      borderDashOffset: 0.0,
-                      borderJoinStyle: "miter",
-                      pointBorderColor: "rgba(75,192,192,1)",
-                      pointBackgroundColor: "#fff",
-                      pointBorderWidth: 1,
-                      pointHoverRadius: 5,
-                      pointHoverBackgroundColor: "rgba(75,192,192,1)",
-                      pointHoverBorderColor: "rgba(220,220,220,1)",
-                      pointHoverBorderWidth: 2,
-                      pointRadius: 1,
-                      pointHitRadius: 10,
-                      data: arrayToDraw
-					  , spanGaps: false,
-                    };
-					
-	   }
-	    if (datasetsOnCanvas.length==0) {	  
-	   datasetsOnCanvas[0]={
-                      label: arrayTitle,
-                      fill: false,
-                      lineTension: 0.1,
-                      backgroundColor: "rgba(75,192,192,0.4)",
-                      borderColor: colors[colorIdx],
-                      borderCapStyle: "butt",
-                      borderDash: [],
-                      borderDashOffset: 0.0,
-                      borderJoinStyle: "miter",
-                      pointBorderColor: "rgba(75,192,192,1)",
-                      pointBackgroundColor: "#fff",
-                      pointBorderWidth: 1,
-                      pointHoverRadius: 5,
-                      pointHoverBackgroundColor: "rgba(75,192,192,1)",
-                      pointHoverBorderColor: "rgba(220,220,220,1)",
-                      pointHoverBorderWidth: 2,
-                      pointRadius: 1,
-                      pointHitRadius: 10,
-                      data: arrayToDraw
-					  , spanGaps: false,
-                    };
-					
-	   }
-	  var chartData = {   labels:labels,  datasets:   datasetsOnCanvas    };
-	  
-	  var newChart = new Chart(canvasToDraw, {
-		type: "line",
-		data: chartData	  });
-	  
-	 colorIdx++;
-	 if (colorIdx>colors.length) { colorIdx=1; }
-}
-
-drawD3 = function(arrayToDraw) {
-	
-		cleanCanvas=true;
-	
-	  var canvasToDraw = document.getElementById("canvas_1");
-	  var labels=[];
-	  var data=[]
-	  for (var i = 0, len = TS.length; i < len; i++) { labels.push('T:'+i);
-			data.push({'T':""+i+"",'value':""+TS[i].toFixed(0)+""});
-
-	  }
-	  
-	  if (cleanCanvas & datasetsOnCanvas.length>1) { 
-	  
-	  datasetsOnCanvas.pop();
-	  }
-	  
-	 lineData=arrayToDraw;
-	 /*
-		 var data = [{
-		"sale": "202",
-		"year": "2000"
-	}, {
-		"sale": "215",
-		"year": "2001"
-	}, {
-		"sale": "179",
-		"year": "2002"
-	}, {
-		"sale": "199",
-		"year": "2003"
-	}, {
-		"sale": "134",
-		"year": "2003"
-	}, {
-		"sale": "176",
-		"year": "2010"
-	}];
-	*/
-	 
-	
-	var vis = d3.select("#svg_1"),
-    WIDTH = 1000,
-    HEIGHT = 500,
-    MARGINS = {
-        top: 20,
-        right: 20,
-        bottom: 20,
-        left: 50
-    },
-	xScale = d3.scale.linear().range([MARGINS.left, WIDTH - MARGINS.right]).domain([1,arrayToDraw.length]),
-	yScale = d3.scale.linear().range([HEIGHT - MARGINS.top, MARGINS.bottom]).domain([8,12]),
-	xAxis = d3.svg.axis().scale(xScale),
-	yAxis = d3.svg.axis().scale(yScale);
-	//vis.append("svg:g").call(xAxis);
-	vis.append("svg:g").attr("class","axis").attr("transform", "translate(0," + (HEIGHT - MARGINS.bottom) + ")").call(xAxis);
-	//vis.append("svg:g").call(yAxis);
-	yAxis = d3.svg.axis().scale(yScale).orient("left");
-	vis.append("svg:g").attr("class","axis").attr("transform", "translate(" + (MARGINS.left) + ",0)").call(yAxis);
-	
-	var lineGen = d3.svg.line()
-    .x(function(d) {
-        return xScale(d.T);
-    })
-    .y(function(d) {
-        return yScale(d.value);
-    }).interpolate("basis");
-	vis.append('svg:path').attr('d', lineGen(data)).attr('stroke', 'green').attr('stroke-width', 2).attr('fill', 'none');
-	 
-	 
-}
 
 // haeSarja
 
@@ -302,13 +187,17 @@ function createTS(init) {
 	var kuvaan=[];
 	for (var i=0;i<pxwebTS.length;i++) { kuvaan.push(Number(pxwebTS[i].values[0]))}
 	TS=kuvaan;
+	/*TS=[30,21,29,31,40,48,53,47,37,39,31,29,17,9,20,24,27,35,41,38,
+          27,31,27,26,21,13,21,18,33,35,40,36,22,24,21,20,17,14,17,19,
+          26,29,40,31,20,24,18,26,17,9,17,21,28,32,46,33,23,28,22,27,
+          18,8,17,21,31,34,44,38,31,30,26,32]
+	*/kuvaan=TS;
 	draw(kuvaan,'Originaali',true,init);
 }
 
 
 function pxwebGet(muuttuja) {	
-		
-		//var aluemuuttuja='Alue2016';
+
 		var indicator='Muuttuja';
 		var jakso='Y'
 
