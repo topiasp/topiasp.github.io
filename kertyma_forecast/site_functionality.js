@@ -114,6 +114,9 @@ function sliderChange(slider) {
 
 draw =function(arrayToDraw,arrayTitle,cleanCanvas,init) {
 	
+	  document.getElementById('plots').innerHTML='<canvas id="canvas_1" width="400" height="200" ></canvas>';
+		
+	
 	  var canvasToDraw = document.getElementById("canvas_1");
 	  var context=canvasToDraw.getContext('2d');
 	  context.clearRect(0, 0, canvasToDraw.width, canvasToDraw.height);
