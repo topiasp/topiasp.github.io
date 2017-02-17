@@ -10,6 +10,7 @@ var pxwebMeta = [];
 var TS=[];
 var kuvaan=[];
 var tasoitettu=[];
+var serieLabels=[];
 
 var datasetsOnCanvas=[];
 var chartData=[];
@@ -54,17 +55,19 @@ function sliderChange(slider) {
 	ennustettavia=12;
 	L=12;
 	tasoitettu=ES(TS,L,ennustettavia,alpha,beta,gamma,method)
-	if (ennustettavia>0) {
-		for (i=0;i<ennustettavia;i++) {
-			//datasetsOnCanvas[0].data.push(keskiarvo(datasetsOnCanvas[0].data));
-		}
-		
-	}
+	
+	
+
 	kuvaan=[]
 	for (var i=1;i<tasoitettu.length;i++) {
 	kuvaan.push((tasoitettu[i]["fit"]).toFixed(2));
 	}
-	draw(kuvaan,'Ennuste',cleanCanvas=true,init=false)
+	labelsWithForecast=[];
+	for (i=0;i<(serieLabels.length+ennustettavia);i++) {
+			if (i<=serieLabels.length) { labelsWithForecast.push(serieLabels[i]);}
+			if (i>serieLabels.length) { 	labelsWithForecast.push('T+'+i) }
+	}
+	draw(kuvaan,'Ennuste',cleanCanvas=true,init=false,labelsWithForecast)
 	
 	// Params -----------------------
 	var param_output=document.getElementById('initial_values').innerHTML;
@@ -97,9 +100,7 @@ function sliderChange(slider) {
 	
 	RSS=[];
 	MSE=[];
-	
-	
-	
+
 	var stat_output=document.getElementById('stats').innerHTML;
 	// RSS
 	for (var i=1;i<TS.length;i++) { RSS.push((TS[i]-kuvaan[i])*(TS[i]-kuvaan[i]))}
@@ -112,7 +113,7 @@ function sliderChange(slider) {
 }
 
 
-draw =function(arrayToDraw,arrayTitle,cleanCanvas,init) {
+draw =function(arrayToDraw,arrayTitle,cleanCanvas,init,labels) {
 	
 	  document.getElementById('plots').innerHTML='<canvas id="canvas_1" width="400" height="200" ></canvas>';
 		
@@ -121,8 +122,10 @@ draw =function(arrayToDraw,arrayTitle,cleanCanvas,init) {
 	  var context=canvasToDraw.getContext('2d');
 	  context.clearRect(0, 0, canvasToDraw.width, canvasToDraw.height);
 	  
-	  var labels=[];
-	  for (var i = 0, len = arrayToDraw.length; i < len; i++) { labels.push('T:'+i) }
+	  //var labels=[];
+	  //for (var i = 0, len = arrayToDraw.length; i < len; i++) { labels.push('T:'+i) }
+	  
+	  
 	  
 	  if (cleanCanvas & datasetsOnCanvas.length>1) { 
 	  
@@ -205,8 +208,10 @@ function createTS(init,variableCodeForPX) {
 	var tmp=new Array;
 	for (i = 0; i < pxwebMeta['variables'][0]['values'].length; i++) {  tmp[i]='<option  label="'+pxwebMeta['variables'][0]['valueTexts'][i]+'" value='+pxwebMeta['variables'][0]['values'][i]+'>'+pxwebMeta['variables'][0]['values'][i]+'</option>'; }
 	document.getElementById('taxList').innerHTML=tmp;
-	
 	 }
+	 
+	serieLabels=pxwebMeta['variables'][2]['valueTexts'];
+	 
 	var kuvaan=[];
 	for (var i=0;i<pxwebTS.length;i++) { kuvaan.push(Number(pxwebTS[i].values[0]))}
 	TS=kuvaan;
@@ -214,8 +219,9 @@ function createTS(init,variableCodeForPX) {
           27,31,27,26,21,13,21,18,33,35,40,36,22,24,21,20,17,14,17,19,
           26,29,40,31,20,24,18,26,17,9,17,21,28,32,46,33,23,28,22,27,
           18,8,17,21,31,34,44,38,31,30,26,32]
-	*/kuvaan=TS;
-	draw(kuvaan,'Originaali',true,init);
+	*/
+	kuvaan=TS;
+	draw(kuvaan,'Originaali',true,init,serieLabels);
 }
 
 
