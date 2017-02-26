@@ -1,0 +1,162 @@
+
+
+
+.buttons {
+background-color:white;
+padding-left:35%;
+padding-bottom:4%;
+padding-top:1%;
+}
+
+
+.button {
+
+
+
+border: 1px solid #E6E6E6;
+width:15%;
+height:25px;
+
+color:#fff;
+padding-right:2px;
+background-color:#286090;
+border-color:#122b40;
+float:left;
+text-align:center;
+}
+
+.button.check {
+background-color:white;
+color:black;}
+
+.button:hover {
+
+border: 4px solid #286090;
+
+}
+#kokoPaska {
+	background-color: white;
+}
+
+
+.userInput {
+	width: 100%;
+    height: 50px;
+	background-color:  #4CAF50;
+	padding-top:50px;
+	padding-left:20%;
+	
+}
+.userInputText {
+	text-align:center;
+	font-size:25px;
+	font-family: "Times New Roman", Times, serif;
+	background-color:  white;
+	
+	
+}
+
+.article {
+    text-align: left;
+	width: 100%;
+    height: 100%;
+}
+.info { text-align: left;}
+
+header {background: black;color:white;}
+footer {background: #aaa;color:white;}
+.nav {background:#eee; }
+
+.nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+.nav ul a {
+    text-decoration: none;
+}
+
+
+
+.content {
+	width: 1300px;
+    height: 500px;
+	
+
+ }
+ 
+.container {
+	width: 100%;
+    height: 100%;
+
+ }
+
+ #boxContainer {
+	width: 40%;
+    height: 80%;
+	float:right;
+	background-color: white;
+ }
+ 
+ .box {
+	width:21%;
+	height:15%;
+	background-color: white;
+	text-align:center;
+	position: relative;
+    top: 5%;
+    left: 5%;
+
+	margin-left:10px;
+	margin-top:10px;
+
+	
+	display: inline-block;
+	border-radius: 3px 3px 3px 3px;
+	border-color:black;
+	 border: 1px solid #E6E6E6;
+	
+ }
+
+ .box-figure {
+ font-size:200%;
+	display: inline-block;
+	border-radius: 3px 3px 3px 3px;
+ 
+ }
+  .box-header {
+	font-size:100%;
+	color:white;
+	background-color: #337ab7;
+ }
+ 
+
+.placeholder {
+    width: 60%;
+    height: 80%;
+    font-size: 14px;
+	background-color: white;
+	
+    line-height: 1.2em;
+    float: left; /*<-- ADD THIS*/
+}
+
+#legend-container {
+    background-color: #fff;
+    padding: 2px;
+    margin-bottom: 8px;
+    border-radius: 3px 3px 3px 3px;
+    border: 1px solid #E6E6E6;
+    display: inline-block;
+    margin: 0 auto;
+	width:100%px;
+	
+}
+.flot-x-axis .flot-tick-label {
+    white-space: nowrap;
+    transform: translate(-9px, 0) rotate(-90deg);
+    text-indent: -100%;
+	
+    transform-origin: top right;
+    text-align: right !important;
+
+}

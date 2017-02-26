@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8"/>
+
+<script language="javascript" type="text/javascript" src="http://www.flotcharts.org/flot/jquery.js"></script>
+<script language="javascript" type="text/javascript" src="http://www.flotcharts.org/flot/jquery.flot.js"></script>
+
+<script type="text/javascript" src='omatFunktiot.js'></script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body onload='alustus(); haeSarja("TYOTTOMAT","SSS","Koko maa","Työttömät");'>
+
+<div id="kokoPaska">
+
+
+<div class='userInput'>
+
+
+
+	<input type="text"  class="userInputText" id="userInputText_area" list="kuntaList"   onclick="this.value='';" value="KOKO MAA" size="35">
+	<input type="text"  class="userInputText" id="userInputText_variable" list="muuttujaList"   onclick="this.value='';" value="Työttömät" size="35">
+
+</div>
+<div class='buttons'>
+	<div class='button' id="tyhjennysnappula" >Tyhjäys</div>
+	<div class='button check' id="scaleButton" >Skaalaa</div>
+	<div class='button check' id="smoothButton" >Tasoita</div>
+	
+</div>
+<div class="content">
+
+	
+	
+	<div class='article'>
+		<div id="legend-container"></div>
+		<div class="container">
+			<div id="placeholder" class="placeholder" ></div>
+			<div id="boxContainer">
+				
+			</div>
+			
+		</div>
+	</div>
+</div>
+
+
+</div>
+<datalist id="kuntaList">
+  <option>091</option>
+  <option>092</option>
+  <option>Detroit Red Wings</option>
+  <option>Detroit Tigers</option>
+  <!-- etc... -->
+</datalist>
+<datalist id="muuttujaList">
+  <option>091</option>
+  <option>092</option>
+  <option>Detroit Red Wings</option>
+  <option>Detroit Tigers</option>
+  <!-- etc... -->
+</datalist>
+</body>
+</html>
