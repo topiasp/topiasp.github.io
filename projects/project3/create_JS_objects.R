@@ -2,12 +2,17 @@
 
 createJSobjects <- function(svgData='example') {
   
+  
+  
   if (!is.data.frame(svgData)) {
     svgData <- read.csv2("https://topiasp.github.io/projects/project3/example_data.csv",encoding='UTF-8',stringsAsFactors = F)
     # Oletetaan, että ensimmäinen sarake on kuntakoodi
   }
-    names(svgData)[1] <- "kuntakoodi"
-  
+  names(svgData)[1] <- "kuntakoodi"
+  if (is.factor(svgData[,2])) {
+      print('data[,2] -> character')
+        svgData[,2] <- as.character(svgData[,2])
+  }
   
   
   # .. toinen kunnan nimi (jollei ole !=character)
