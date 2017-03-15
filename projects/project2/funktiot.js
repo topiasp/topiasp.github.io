@@ -10,6 +10,7 @@ window.onload = function() {
 		var fileDisplayArea = document.getElementById('fileDisplayArea');
 
 		fileInput.addEventListener('change', function(e) {
+			
 			var file = fileInput.files[0];
 
 				var reader = new FileReader();
@@ -23,6 +24,29 @@ window.onload = function() {
 
 		});
 }
+
+
+
+
+
+alustus=function() {
+	
+	for (r=1;r<(313);r++) {
+		kuntaObj=new Object();
+		
+		if (r<10) { kuntaObj.kuntakoodi='00'+r; }
+		if (r<100) { kuntaObj.kuntakoodi='0'+r; }
+		if (r>=100) { kuntaObj.kuntakoodi=r; }
+		
+		kuntaObj.kuntaNimi=r;
+		kuntaObj.luvut=[r];
+		luvutObj.push(kuntaObj)
+		luvutObj.push(kuntaObj)
+	}
+	
+	
+}
+
 
 
 parsiFaili=function(tekstiRaw) {
@@ -95,15 +119,14 @@ parsiFaili=function(tekstiRaw) {
 
 
 function muuttujanVaihto(selekti) {
-	valittuSarake=selekti.value;
-	varita(kuntatiedot[0],luvut[selekti.value],10);
-	
+	valittuSarake=selekti.value; // Global
+	varita(luvut[selekti.value],10);
 }
 
 
 /* Väritys */
 
-function varita(koodit,numbs,luokkia) {
+function varita(numbs,luokkia) {
 	
 	rajat=quantiles(numbs,luokkia);
 	
@@ -113,7 +136,8 @@ function varita(koodit,numbs,luokkia) {
 			for (r=0;r<rajat.length;r++) {
 			if (luvutObj[i].luvut[valittuSarake]>rajat[r]) { document.getElementById('tilastointialueet:kunta_'+luvutObj[i].kuntakoodi).style='fill:'+cols[r]; }	
 			}
-		} catch(err) {    alert('Kuntaa '+luvutObj[i].kuntakoodi+'-'+luvutObj[i].kuntaNimi+' ei löydy kartalta. Poista kunta aineistosta.')  }
+		} catch(err) {    alert('Kuntaa '+luvutObj[i].kuntakoodi+'-'+luvutObj[i].kuntaNimi+' ei löydy kartalta. Poista kunta aineistosta.')  
+						}
 	}
 	output=[];
 	
@@ -121,9 +145,6 @@ function varita(koodit,numbs,luokkia) {
 
 	rajat.forEach(function(item,index){  output.push('<tr><td>'+(index+1)+'</td><td>'+item+'</td></tr>') })
 	
-	
-	
-	//for (r=0;r<rajat.length;r++) { 	output.push('<ul>Luokka'+(r+1)+': '+rajat[r]+'</ul>') }
 	document.getElementById('limitsTBL').innerHTML=output.join('');
 }
 
@@ -134,17 +155,13 @@ function keskiarvo(arr){
     for(var i = 0;i < arr.length; i++) { 
         total+=Number(arr[i]);
     }
-	//eturn total
+	
     return total/arr.length;
 }
 function keskihajonta(arr) {
 	var varianssi =0;
 	ka = keskiarvo(arr);
-	for(var i = 0;i < arr.length; i++) { 
-		
-		varianssi+=(Number(arr[i])-ka)*(Number(arr[i])-ka);
-	
-	}
+	for(var i = 0;i < arr.length; i++) { 	varianssi+=(Number(arr[i])-ka)*(Number(arr[i])-ka);	}
 	varianssi = varianssi/arr.length;
 	return(Math.sqrt(varianssi))
 }

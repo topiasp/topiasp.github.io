@@ -1,14 +1,8 @@
 
 ES=function(tasoitukseen,L,ennustettavia,alpha,beta,gamma,method) {
 	
-	/*
-	tasoitukseen=TS
-	L=12
-	ennustettavia=12 
-	alpha=0.3521;
-	beta=0.0253;
-	gamma=0.0015;
-	*/
+	
+	
 	initValues=init_ES(tasoitukseen,L,method);
 	console.log(initValues)
 	
@@ -92,7 +86,7 @@ ES=function(tasoitukseen,L,ennustettavia,alpha,beta,gamma,method) {
 }
 
 
-init_ES=function(tasoitukseen,L,method) {
+init_ES=function(tasoitukseen,L,method,type='simple') {
 
 	
 	// Initial value for level
@@ -101,7 +95,7 @@ init_ES=function(tasoitukseen,L,method) {
 	// Initial value for the trend factor
 
 	var summa=0;
-	for (var i=0;i<L;i++) {		summa=summa+((tasoitukseen[i+L]-tasoitukseen[i])/L);	}
+	for (var i=0;i<L;i++) {		summa+=((tasoitukseen[i+L]-tasoitukseen[i])/L);	}
 	var init_trend=summa/L;
 	
 	// Seasonal indexes
