@@ -1,11 +1,7 @@
 
 
 
-setwd('C:\\Users\\user1\\r_crap\\')
-
-
-
-
+# Create map: create JSobjects+read html, JS and CSS 
 
 createMap <- function(data='example') {
   source("https://topiasp.github.io/projects/project3/create_JS_objects.R")
@@ -15,4 +11,4 @@ createMap <- function(data='example') {
   writeLines(readLines("https://topiasp.github.io/projects/project3/styles.css",warn=F),con='styles.css')
 }
 
-createMap()
+
