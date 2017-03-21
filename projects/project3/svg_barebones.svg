@@ -1004,22 +1004,15 @@
 </g>
 </g>
 <g id="tilastointialueet:kunta4500_labels" groupmode="layer" label="tilastointialueet:kunta4500_labels">
-
 <text id='output' x='15' y='15'>BOOM</text>
-</g>
-<!-- QGIS extent for clipping, eg in Inkscape -->
-<g id="qgisviewbox" groupmode="layer" label="qgisviewbox" stroke="rgb(255,0,0)" stroke-width="1" fill="none" >
-<path d="M 0,570 L 736,570 L 736,0 L 0,0 L 0,570 " />
 </g>
 
 <script type="text/javascript">
-
 printInfo=function(e) { 
 	
 	var svgDoc = a.contentDocument;
 	document.getElementById('output').innerHTML=svgDoc.label;
 }
-		
 </script>  
 <style type="text/css">
 .polygon:hover  { opacity: 0.5; }
