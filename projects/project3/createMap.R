@@ -39,9 +39,7 @@ createMap <- function(dataToMap='example',type='html',muuttuja='default') {
     svg$labelRow <- ifelse(!grepl('kunta4500_',svg$svg) | grepl('text',svg$svg),F,svg$labelRow)
     
     
-    # Hankkiudutaan eroon kuntakooditeksteistä
-    svg$text <- grepl('text',svg$svg)
-    svg <- svg[!svg$text,]
+    
     
     svg$kuntakoodi <- 'XXX'
     
