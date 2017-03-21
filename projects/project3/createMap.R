@@ -33,7 +33,7 @@ createMap <- function(dataToMap='example',type='html',muuttuja='default') {
     # Luetaan SVG-tiedosto ja poimitaan kuntakoodi yhdistelyä varten
     svg <- readLines(paste0(url,'svg_barebones.svg'),warn=F)
     svg <- data.frame(svg=svg,stringsAsFactors = F)
-    svg$labelRow <- grepl('inkscape:label',svg[,1])
+    svg$labelRow <- grepl('label',svg[,1])
     # Korjataan hieman
     
     svg$labelRow <- ifelse(!grepl('kunta4500_',svg$svg) | grepl('text',svg$svg),F,svg$labelRow)
@@ -44,7 +44,9 @@ createMap <- function(dataToMap='example',type='html',muuttuja='default') {
     svg <- svg[!svg$text,]
     
     svg$kuntakoodi <- 'XXX'
-    svg[svg$labelRow,]$kuntakoodi <- unlist(sapply(svg[svg$labelRow,1],FUN=function(x) { substring(strsplit(x,'inkscape:label="')[[1]][2],1,3) }))
+    
+    head(svg[svg$labelRow,])
+    svg[svg$labelRow,]$kuntakoodi <- unlist(sapply(svg[svg$labelRow,1],FUN=function(x) { substring(strsplit(x,'label="')[[1]][2],1,3) }))
     svg$jarj <- 1:nrow(svg)
     # Väripaletti
     
@@ -70,7 +72,7 @@ createMap <- function(dataToMap='example',type='html',muuttuja='default') {
     for (i in 1:nrow(svg)) {
       
       if (svg$labelRow[i]) {
-       svg[i,]$svg <- gsub('>',paste0(" style='fill:",svg[i,]$fillColour,"' onmouseover='printInfo(this);'>"),svg[i,]$svg )
+       svg[i,]$svg <- gsub('>',paste0(" style='fill:",svg[i,]$fillColour,"' onmouseover='printInfo(this);' class='polygon'>"),svg[i,]$svg )
       }
       
     }
