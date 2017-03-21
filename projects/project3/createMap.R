@@ -3,24 +3,79 @@
 
 # Create map: create JSobjects+read html, JS and CSS 
 
-createMap <- function(dataToMap='example',type='html') {
+createMap <- function(dataToMap='example',type='html',muuttuja='default') {
   
   
-  if (dataToMap=='example') {
-    svgData <- read.csv2("https://topiasp.github.io/projects/project3/example_data.csv",encoding='UTF-8',stringsAsFactors = F)
-    # Oletetaan, että ensimmäinen sarake on kuntakoodi
+  
+  if (!is.data.frame(dataToMap) ) {
+    dataToMap <- read.table("https://topiasp.github.io/projects/project3/example_data.csv",
+                         encoding='UTF-8',sep=";",
+                         stringsAsFactors = F,dec=".",header=T,
+                         colClasses = c('character','character',rep('numeric',6)))
+
+  }
+  
+  if (names(dataToMap)[1]!='kuntakoodi')  { 
+    print('oletetaan, että ensimmäinen sarake on kuntakoodi!');
+    names(dataToMap)[1] <- "kuntakoodi"
   }
   
   url <- "https://topiasp.github.io/projects/project3/"
   if (type=='html') {
-  source("https://topiasp.github.io/projects/project3/create_JS_objects.R")
-  writeLines(createJSobjects(dataToMap),'data.js')
-  writeLines(readLines(paste0(url,"map.html"),warn=F),con='map.html')
-  writeLines(readLines("https://topiasp.github.io/projects/project3/funktiot.js",warn=F),con='funktiot.js')
-  writeLines(readLines("https://topiasp.github.io/projects/project3/styles.css",warn=F),con='styles.css')
+    source("https://topiasp.github.io/projects/project3/create_JS_objects.R")
+    writeLines(createJSobjects(dataToMap),'data.js')
+    writeLines(readLines(paste0(url,"map.html"),warn=F),con='map.html')
+    writeLines(readLines("https://topiasp.github.io/projects/project3/funktiot.js",warn=F),con='funktiot.js')
+    writeLines(readLines("https://topiasp.github.io/projects/project3/styles.css",warn=F),con='styles.css')
   }
   if (type=='svg') {
-    svg <- readLines(paste0(url,'svg_barebones.svg'))
+    
+    # Luetaan SVG-tiedosto ja poimitaan kuntakoodi yhdistelyä varten
+    svg <- readLines(paste0(url,'svg_barebones.svg'),warn=F)
+    svg <- data.frame(svg=svg,stringsAsFactors = F)
+    svg$labelRow <- grepl('inkscape:label',svg[,1])
+    # Korjataan hieman
+    
+    svg$labelRow <- ifelse(!grepl('kunta4500_',svg$svg) | grepl('text',svg$svg),F,svg$labelRow)
+    
+    
+    # Hankkiudutaan eroon kuntakooditeksteistä
+    svg$text <- grepl('text',svg$svg)
+    svg <- svg[!svg$text,]
+    
+    svg$kuntakoodi <- 'XXX'
+    svg[svg$labelRow,]$kuntakoodi <- unlist(sapply(svg[svg$labelRow,1],FUN=function(x) { substring(strsplit(x,'inkscape:label="')[[1]][2],1,3) }))
+    svg$jarj <- 1:nrow(svg)
+    # Väripaletti
+    
+    paletti <- data.frame(fillColour=c('#a50026',      '#d73027',      '#f46d43',      '#fdae61',   '#fee08b',
+               '#d9ef8b',      '#a6d96a',      '#66bd63',      '#1a9850',   '#006837'),class=1:10)
+    
+    # Luokat
+    if (muuttuja=='default') {   print('Määrittele muuttuja!'); stop;    }
+    
+    if (nrow(dataToMap[is.na(dataToMap[,muuttuja]),])>0) { print('Korvataan NULLt nollilla');
+      dataToMap[is.na(dataToMap[,muuttuja]),muuttuja] <- 0
+      }
+    
+    q <-  quantile(dataToMap[,muuttuja],probs=seq(0,1,by=0.1))
+    
+    dataToMap$class <- cut(dataToMap[,muuttuja],breaks=q,labels=F,include.lowest = T,right=F)
+    dataToMap <- merge(dataToMap,paletti,by='class')
+    # Yhdistetään SVG-tiedostoon
+    
+    svg <- merge(svg,dataToMap,by='kuntakoodi',all.x=T)
+    svg <- svg[order(svg$jarj),]  
+    
+    for (i in 1:nrow(svg)) {
+      
+      if (svg$labelRow[i]) {
+       svg[i,]$svg <- gsub('>',paste0(" style='fill:",svg[i,]$fillColour,"' onmouseover='printInfo(this);'>"),svg[i,]$svg )
+      }
+      
+    }
+      
+    writeLines(svg$svg,con='svg_map.svg')
     
   }
   
