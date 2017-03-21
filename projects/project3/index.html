@@ -9,7 +9,7 @@ library(pxweb)
 library(jsonlite)
 library(reshape)
 
-# Esimerkkidata osinkojan pörssiyhtiöistä saaneiden osuus kunnittain: 5.1.3 - Pääomatulona verotetut osingot (listatut yhtiöt) (TVL 33 §) / 1 - Asiakkaita
+# Esimerkkidata osinkoja pörssiyhtiöistä saaneiden osuus kunnittain: 5.1.3 - Pääomatulona verotetut osingot (listatut yhtiöt) (TVL 33 §) / 1 - Asiakkaita
 
 dat <-  get_pxweb_data(url = "http://vero2.stat.fi/PXWeb/api/v1/fi/Vero/Henkiloasiakkaiden_tuloverot/lopulliset/Alue/191_alue.px",
                        dims = list(Verovuosi = c('2015'),

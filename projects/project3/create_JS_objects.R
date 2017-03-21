@@ -3,11 +3,6 @@
 createJSobjects <- function(svgData='example') {
   
   
-  
-  if (!is.data.frame(svgData)) {
-    svgData <- read.csv2("https://topiasp.github.io/projects/project3/example_data.csv",encoding='UTF-8',stringsAsFactors = F)
-    # Oletetaan, että ensimmäinen sarake on kuntakoodi
-  }
   names(svgData)[1] <- "kuntakoodi"
   if (is.factor(svgData[,2])) {
       print('data[,2] -> character')
@@ -33,17 +28,6 @@ createJSobjects <- function(svgData='example') {
     svgData[nchar(svgData$kuntakoodi)==2,]$kuntakoodi <- paste0('0',svgData[nchar(svgData$kuntakoodi)==2,]$kuntakoodi )  
   }
   
-  
-  head(svgData)
-  
-  
-  
-  #Avain kuntakoodin ja IDn välillä
-  load(file="C:\\Users\\user1\\r_crap\\mapmaker\\mapmaker_local\\data\\id_kuntakoodi_key.rData")
-  id_kuntakoodi_key <- subset(id_kuntakoodi_key,select=c('id','kuntakoodi'))
-  svgData <- merge(svgData,id_kuntakoodi_key,by='kuntakoodi')
-  
-  svgData$id <- paste0('tilastointialueet:kunta4500_',svgData$kuntakoodi)
   
   # Kirjoitetaan JS-objektit 
   
