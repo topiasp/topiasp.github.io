@@ -235,7 +235,7 @@ function skaalaa(arr) {
 function quantiles(qLuvut,n) {
 	
 	
-	luokassa=Math.floor(qLuvut.length/n);
+	luokassa=Math.floor(qLuvut.length/(n-1)); // -1 since max is added as last
 	
 	qLuvut=qLuvut.sort(function(a, b){return a-b});
 	var rajat=[];
@@ -244,6 +244,7 @@ function quantiles(qLuvut,n) {
 	rajat.push(Math.min(...qLuvut)); // Add min value as first
 	for (var i=0;i<=qLuvut.length;i++) {
 	if (l==luokassa) { rajat.push(qLuvut[i]); l=0;} 	l++;	}
+	rajat.push(Math.max(...qLuvut)); // Add max value as last
 	return(rajat)
 	
 }
