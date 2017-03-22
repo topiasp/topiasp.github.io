@@ -60,14 +60,25 @@ createJSobjects <- function(svgData='example') {
    
     svgData <- svgData[,c('kuntakoodi','kuntanimi',varNamesToJs$id)]
     svgData$id <- paste0('tilastointialueet:kunta4500_',svgData$kuntakoodi)
-    for (i in 1:nrow(svgData)) { 
-      svgData$JS[i] <- paste(paste0(names(svgData)[1:(ncol(svgData)-1)],':',svgData[i,1:(ncol(svgData)-1)]),collapse=", ")
+    print(names(svgData))
+    
+    i=1
+    svgData$JS[i] <- paste(paste0(names(svgData)[1:(ncol(svgData))],':',svgData[i,1:(ncol(svgData))]),collapse=", ")
+    svgData$JS[i] <- gsub('kuntakoodi:',"kuntakoodi:'",svgData$JS[i])
+    svgData$JS[i] <- gsub(", kuntanimi:","',kuntanimi:'",svgData$JS[i])
+    svgData$JS[i] <- gsub(', VAR1:',"', VAR1:",svgData$JS[i])
+    svgData$JS[i] <- gsub('id:',"id:'",svgData$JS[i])
+    svgData$JS[i] <- paste0('{ ', svgData$JS[i] ,"' }")
+    
+    for (i in 2:nrow(svgData)) { 
+      svgData$JS[i] <- paste(paste0(names(svgData)[1:(ncol(svgData))-1],':',svgData[i,1:(ncol(svgData))-1]),collapse=", ")
       svgData$JS[i] <- gsub('kuntakoodi:',"kuntakoodi:'",svgData$JS[i])
       svgData$JS[i] <- gsub(", kuntanimi:","',kuntanimi:'",svgData$JS[i])
       svgData$JS[i] <- gsub(', VAR1:',"', VAR1:",svgData$JS[i])
       svgData$JS[i] <- gsub('id:',"id:'",svgData$JS[i])
       svgData$JS[i] <- paste0('{ ', svgData$JS[i] ,"' }")
     }
+    print(svgData$JS[2])
   ## Muuttujien nimet 
     varNamesToJs$id <- paste0("'",varNamesToJs$id,"'")
     varNamesToJs$name <- paste0("'",varNamesToJs$name,"'")

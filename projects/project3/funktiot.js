@@ -166,7 +166,10 @@ function choropleth(numbs,classes) {
 		kunnat[i]['classId']=c;
 		kunnat[i]['classTblID']='classLimitTblRow_'+c+'';
 		// Color
-		document.getElementById(kunnat[i]['id']).style='fill:'+cols[c];
+		if (document.getElementById('xx') !== null) {
+			
+			document.getElementById(kunnat[i]['id']).style='fill:'+cols[c];
+		}
 	}
 	
 	
