@@ -166,7 +166,7 @@ function choropleth(numbs,classes) {
 		kunnat[i]['classId']=c;
 		kunnat[i]['classTblID']='classLimitTblRow_'+c+'';
 		// Color
-		if (document.getElementById('xx') !== null) {
+		if (document.getElementById(kunnat[i]['id']) !== null) {
 			
 			document.getElementById(kunnat[i]['id']).style='fill:'+cols[c];
 		}

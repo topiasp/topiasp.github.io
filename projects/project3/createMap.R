@@ -26,7 +26,7 @@ createMap <- function(dataToMap='example',type='html',muuttuja='default',title='
   }
  
   if (type=='html') {
-    #source("https://topiasp.github.io/projects/project3/create_JS_objects.R")
+    source("https://topiasp.github.io/projects/project3/create_JS_objects.R")
     writeLines(createJSobjects(dataToMap),'data.js')
     
     if (title=='default') { 
