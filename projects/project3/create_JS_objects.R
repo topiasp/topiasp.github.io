@@ -12,9 +12,18 @@ createJSobjects <- function(svgData='example') {
   
   # .. toinen kunnan nimi (jollei ole !=character)
   # if (is.character(svgData[,2])) {
-     names=names(svgData)[!names(svgData)%in%c('kuntanimi','kuntakoodi')]
+      
+     #Numeeriset muuttujat
+     names <- c()
+     tmp=names(svgData)[!names(svgData)%in%c('kuntanimi','kuntakoodi')]
+     for (i in 1:length(tmp)) {
+       if (is.numeric(svgData[,tmp[i]]) | is.integer(svgData[,tmp[i]])) {
+         print(tmp[i])
+         names[length(names)+1] <- tmp[i]
+       }
+     }
      varNamesToJs <- data.frame(id=paste0('VAR',1:length(names)),name=names,stringsAsFactors = F)
-     names(svgData)[!names(svgData)%in%c('kuntanimi','kuntakoodi')]=varNamesToJs$id
+     names(svgData)[names(svgData)%in%names]=varNamesToJs$id
      
      #names(svgData)[2:ncol(svgData)] <- c('kuntanimi',paste0('VAR',1:(ncol(svgData)-2)))
   # } else {
