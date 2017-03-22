@@ -6,6 +6,7 @@
 createMap <- function(dataToMap='example',type='html',muuttuja='default',title='default') {
   url <- "https://topiasp.github.io/projects/project3/"
   
+  
   if (!is.data.frame(dataToMap) ) {
     dataToMap <- read.table("https://topiasp.github.io/projects/project3/example_data.csv",
                          encoding='UTF-8',sep=";",
@@ -18,12 +19,22 @@ createMap <- function(dataToMap='example',type='html',muuttuja='default',title='
     print('oletetaan, ett‰ ensimm‰inen sarake on kuntakoodi!');
     names(dataToMap)[1] <- "kuntakoodi"
   }
-  
+  if (!'kuntanimi' %in% names(dataToMap))  { 
+    print('Ei kuntanimi-saraketta, luodaan tyhj‰ sarake');
+    dataToMap[,ncol(dataToMap)+1] <- ""
+    names(dataToMap)[ncol(dataToMap)] <- "kuntanimi"
+  }
  
   if (type=='html') {
-    
+    source("https://topiasp.github.io/projects/project3/create_JS_objects.R")
     writeLines(createJSobjects(dataToMap),'data.js')
-    writeLines(readLines(paste0(url,"map.html"),warn=F),con='map.html')
+    
+    if (title=='default') { 
+      writeLines(readLines(paste0(url,"map.html"),warn=F),con='map.html')
+    } else { 
+      writeLines(readLines(paste0(url,"map.html"),warn=F),con=paste0(title,'.html'))
+    }
+
     writeLines(readLines("https://topiasp.github.io/projects/project3/funktiot.js",warn=F),con='funktiot.js')
     writeLines(readLines("https://topiasp.github.io/projects/project3/styles.css",warn=F),con='styles.css')
   }
@@ -34,8 +45,9 @@ createMap <- function(dataToMap='example',type='html',muuttuja='default',title='
     svg <- readLines(paste0(url,'svg_barebones.svg'),warn=F)
     svg <- data.frame(svg=svg,stringsAsFactors = F)
     svg$labelRow <- grepl('label',svg[,1])
+
     # Korjataan hieman
-    
+
     svg$labelRow <- ifelse(!grepl('kunta4500_',svg$svg) | grepl('text',svg$svg),F,svg$labelRow)
     
     
@@ -94,7 +106,7 @@ createMap <- function(dataToMap='example',type='html',muuttuja='default',title='
     svg[grepl('output_title',svg$svg),]$svg <- paste0("<text id='output_title' x='100' y='150'>",title,"</text>")
     
     # .. ja muuttuja osaksi JS:‰‰.
-    svg[grepl("muuttuja='';",svg$svg),]$svg <- paste0("muuttuja='",muuttuja,"';")
+    svg[grepl("muuttuja=",svg$svg),]$svg <- paste0("muuttuja='",muuttuja,"';")
         
     if (title=='default') { 
       writeLines(svg$svg,con='svg_map.svg')

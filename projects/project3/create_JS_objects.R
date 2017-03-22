@@ -3,22 +3,22 @@
 createJSobjects <- function(svgData='example') {
   
   
-  names(svgData)[1] <- "kuntakoodi"
-  if (is.factor(svgData[,2])) {
-      print('data[,2] -> character')
-        svgData[,2] <- as.character(svgData[,2])
-  }
+  #names(svgData)[1] <- "kuntakoodi"
+  #if (is.factor(svgData[,2])) {
+  #    print('data[,2] -> character')
+  #      svgData[,2] <- as.character(svgData[,2])
+  #}
   
   
   # .. toinen kunnan nimi (jollei ole !=character)
-  if (is.character(svgData[,2])) {
-    varNamesToJs <- data.frame(id=paste0('VAR',1:(ncol(svgData)-2)),name=names(svgData)[3:ncol(svgData)],stringsAsFactors = F)
-    names(svgData)[2:ncol(svgData)] <- c('kuntanimi',paste0('VAR',1:(ncol(svgData)-2)))
-  } else {
-    varNamesToJs <- data.frame(id=paste0('VAR',1:(ncol(svgData)-1)),name=names(svgData)[3:ncol(svgData)],stringsAsFactors = F)
-    names(svgData)[2:ncol(svgData)] <- c(paste0('VAR',1:(ncol(svgData)-1)))
-    
-  }
+  # if (is.character(svgData[,2])) {
+  #   varNamesToJs <- data.frame(id=paste0('VAR',1:(ncol(svgData)-2)),name=names(svgData)[3:ncol(svgData)],stringsAsFactors = F)
+  #   names(svgData)[2:ncol(svgData)] <- c('kuntanimi',paste0('VAR',1:(ncol(svgData)-2)))
+  # } else {
+  #   varNamesToJs <- data.frame(id=paste0('VAR',1:(ncol(svgData)-1)),name=names(svgData)[3:ncol(svgData)],stringsAsFactors = F)
+  #   names(svgData)[2:ncol(svgData)] <- c(paste0('VAR',1:(ncol(svgData)-1)))
+  #   
+  # }
   
   
   # Jos kuntakoodit alle kolme merkkiä, täydennetään nollilla
@@ -27,6 +27,8 @@ createJSobjects <- function(svgData='example') {
     svgData[nchar(svgData$kuntakoodi)==1,]$kuntakoodi <- paste0('00',svgData[nchar(svgData$kuntakoodi)==1,]$kuntakoodi )
     svgData[nchar(svgData$kuntakoodi)==2,]$kuntakoodi <- paste0('0',svgData[nchar(svgData$kuntakoodi)==2,]$kuntakoodi )  
   }
+  
+  # Jos kuntanimiä ei ole 
   
   
   # Kirjoitetaan JS-objektit 
