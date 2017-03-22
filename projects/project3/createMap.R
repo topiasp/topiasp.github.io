@@ -4,7 +4,7 @@
 # Create map: create JSobjects+read html, JS and CSS 
 
 createMap <- function(dataToMap='example',type='html',muuttuja='default',title='default') {
- 
+  url <- "https://topiasp.github.io/projects/project3/"
   
   if (!is.data.frame(dataToMap) ) {
     dataToMap <- read.table("https://topiasp.github.io/projects/project3/example_data.csv",
@@ -19,7 +19,7 @@ createMap <- function(dataToMap='example',type='html',muuttuja='default',title='
     names(dataToMap)[1] <- "kuntakoodi"
   }
   
-  url <- "https://topiasp.github.io/projects/project3/"
+ 
   if (type=='html') {
     
     writeLines(createJSobjects(dataToMap),'data.js')
@@ -77,9 +77,17 @@ createMap <- function(dataToMap='example',type='html',muuttuja='default',title='
     }
     
     # Muodostetaan JSON ja tyrkätään osaksi javascriptiä
+    ids <- as.vector(sapply(svg[svg$labelRow,]$svg,FUN=function(x) { substring(x,1,(36)) }))
+    ids <- gsub('<g id=\"','',ids)
+    values <- svg[svg$labelRow,muuttuja]
+    
+    JSON <- data.frame(id=ids,value=values,stringsAsFactors = F)
+    JSON$JSON <- paste0('{ id:"',JSON$id,'", value:"',round(JSON$value,3),'" }')
+   
+    svg[grepl('kuntadata=',svg$svg),]
     
     
-    
+        
     if (title=='default') { 
       writeLines(svg$svg,con='svg_map.svg')
     } else { 

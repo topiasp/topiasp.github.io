@@ -1009,7 +1009,7 @@
 
 <script type="text/javascript"><![CDATA[
 
-kuntadata =[ { id:"tilastointialueet:kunta4500_311", value:'5.66803811173668' }, { id:"tilastointialueet:kunta4500_310" ,value:'7.3219325917317' }];
+kuntadata=[ { id:"tilastointialueet:kunta4500_311", value:'5.66803811173668' }, { id:"tilastointialueet:kunta4500_310" ,value:'7.3219325917317' }];
 
 function haeObjektiId(arr, value) {
 
