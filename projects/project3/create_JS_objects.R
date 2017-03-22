@@ -15,13 +15,23 @@ createJSobjects <- function(svgData='example') {
       
      #Numeeriset muuttujat
      names <- c()
+     poistettavat <- c()
      tmp=names(svgData)[!names(svgData)%in%c('kuntanimi','kuntakoodi')]
      for (i in 1:length(tmp)) {
        if (is.numeric(svgData[,tmp[i]]) | is.integer(svgData[,tmp[i]])) {
          print(tmp[i])
          names[length(names)+1] <- tmp[i]
+         
+         
+       }
+       if (is.factor(svgData[,tmp[i]]) | is.character(svgData[,tmp[i]])) {
+         poistettavat[length(poistettavat)+1] <- tmp[i]
+         
        }
      }
+     
+     svgData <- svgData[,!names(svgData)%in%poistettavat]
+     
      varNamesToJs <- data.frame(id=paste0('VAR',1:length(names)),name=names,stringsAsFactors = F)
      names(svgData)[names(svgData)%in%names]=varNamesToJs$id
      
@@ -40,18 +50,20 @@ createJSobjects <- function(svgData='example') {
     svgData[nchar(svgData$kuntakoodi)==2,]$kuntakoodi <- paste0('0',svgData[nchar(svgData$kuntakoodi)==2,]$kuntakoodi )  
   }
   
-  # Jos kuntanimiä ei ole 
+  
   
   
   # Kirjoitetaan JS-objektit 
   
   ## Varsinainen data
     svgData$JS <- ""
-    
+   
+    svgData <- svgData[,c('kuntakoodi','kuntanimi',varNamesToJs$id)]
+    svgData$id <- paste0('tilastointialueet:kunta4500_',svgData$kuntakoodi)
     for (i in 1:nrow(svgData)) { 
       svgData$JS[i] <- paste(paste0(names(svgData)[1:(ncol(svgData)-1)],':',svgData[i,1:(ncol(svgData)-1)]),collapse=", ")
       svgData$JS[i] <- gsub('kuntakoodi:',"kuntakoodi:'",svgData$JS[i])
-      svgData$JS[i] <- gsub(', kuntanimi:',"', kuntanimi:'",svgData$JS[i])
+      svgData$JS[i] <- gsub(", kuntanimi:","',kuntanimi:'",svgData$JS[i])
       svgData$JS[i] <- gsub(', VAR1:',"', VAR1:",svgData$JS[i])
       svgData$JS[i] <- gsub('id:',"id:'",svgData$JS[i])
       svgData$JS[i] <- paste0('{ ', svgData$JS[i] ,"' }")
