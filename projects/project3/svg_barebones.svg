@@ -1004,16 +1004,27 @@
 </g>
 </g>
 <g id="tilastointialueet:kunta4500_labels" groupmode="layer" label="tilastointialueet:kunta4500_labels">
-<text id='output' x='15' y='15'>BOOM</text>
+<text id='output_info' x='15' y='25'>...</text>
 </g>
 
-<script type="text/javascript">
+<script type="text/javascript"><![CDATA[
+
+kuntadata =[ { id:"tilastointialueet:kunta4500_311", value:'5.66803811173668' }, { id:"tilastointialueet:kunta4500_310" ,value:'7.3219325917317' }];
+
+function haeObjektiId(arr, value) {
+
+  for (var i=0, iLen=arr.length; i<iLen; i++) {
+    if (arr[i]['id'] == value) return arr[i];
+  }
+}
+
 printInfo=function(e) { 
 	
-	var svgDoc = a.contentDocument;
-	document.getElementById('output').innerHTML=svgDoc.label;
+	dat = haeObjektiId(kuntadata,e.id);
+	document.getElementById('output_info').innerHTML=dat.value;
 }
-</script>  
+
+]]></script>  
 <style type="text/css">
 .polygon:hover  { opacity: 0.5; }
 

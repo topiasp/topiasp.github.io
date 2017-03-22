@@ -3,9 +3,8 @@
 
 # Create map: create JSobjects+read html, JS and CSS 
 
-createMap <- function(dataToMap='example',type='html',muuttuja='default') {
-  
-  
+createMap <- function(dataToMap='example',type='html',muuttuja='default',title='default') {
+ 
   
   if (!is.data.frame(dataToMap) ) {
     dataToMap <- read.table("https://topiasp.github.io/projects/project3/example_data.csv",
@@ -15,14 +14,14 @@ createMap <- function(dataToMap='example',type='html',muuttuja='default') {
 
   }
   
-  if (names(dataToMap)[1]!='kuntakoodi')  { 
+  if (!'kuntakoodi' %in% names(dataToMap))  { 
     print('oletetaan, ett‰ ensimm‰inen sarake on kuntakoodi!');
     names(dataToMap)[1] <- "kuntakoodi"
   }
   
   url <- "https://topiasp.github.io/projects/project3/"
   if (type=='html') {
-    source("https://topiasp.github.io/projects/project3/create_JS_objects.R")
+    
     writeLines(createJSobjects(dataToMap),'data.js')
     writeLines(readLines(paste0(url,"map.html"),warn=F),con='map.html')
     writeLines(readLines("https://topiasp.github.io/projects/project3/funktiot.js",warn=F),con='funktiot.js')
@@ -70,12 +69,23 @@ createMap <- function(dataToMap='example',type='html',muuttuja='default') {
     for (i in 1:nrow(svg)) {
       
       if (svg$labelRow[i]) {
-       svg[i,]$svg <- gsub('>',paste0(" style='fill:",svg[i,]$fillColour,"' onmouseover='printInfo(this);' class='polygon'>"),svg[i,]$svg )
+       svg[i,]$svg <- gsub('>',
+                           paste0(" value='",svg[i,muuttuja],"' style='fill:",svg[i,]$fillColour,"' onmouseover='printInfo(this);' class='polygon'>"),
+                           svg[i,]$svg )
       }
       
     }
-      
-    writeLines(svg$svg,con='svg_map.svg')
+    
+    # Muodostetaan JSON ja tyrk‰t‰‰n osaksi javascripti‰
+    
+    
+    
+    if (title=='default') { 
+      writeLines(svg$svg,con='svg_map.svg')
+    } else { 
+      writeLines(svg$svg,con=paste0(title,'.svg'))
+      }
+    
     
   }
   
