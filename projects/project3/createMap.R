@@ -29,6 +29,7 @@ createMap <- function(dataToMap='example',type='html',muuttuja='default',title='
   }
   if (type=='svg') {
     
+    
     # Luetaan SVG-tiedosto ja poimitaan kuntakoodi yhdistely‰ varten
     svg <- readLines(paste0(url,'svg_barebones.svg'),warn=F)
     svg <- data.frame(svg=svg,stringsAsFactors = F)
@@ -77,16 +78,23 @@ createMap <- function(dataToMap='example',type='html',muuttuja='default',title='
     }
     
     # Muodostetaan JSON ja tyrk‰t‰‰n osaksi javascripti‰
-    ids <- as.vector(sapply(svg[svg$labelRow,]$svg,FUN=function(x) { substring(x,1,(36)) }))
+    ids <- as.vector(sapply(svg[svg$labelRow,]$svg,FUN=function(x) { substring(x,1,(38)) }))
     ids <- gsub('<g id=\"','',ids)
+    ids <- gsub('\"','',ids)
+    ids <- gsub(' ','',ids)
+    
     values <- svg[svg$labelRow,muuttuja]
     
     JSON <- data.frame(id=ids,value=values,stringsAsFactors = F)
     JSON$JSON <- paste0('{ id:"',JSON$id,'", value:"',round(JSON$value,3),'" }')
    
-    svg[grepl('kuntadata=',svg$svg),]
+    svg[grepl('kuntadata=',svg$svg),]$svg <- paste('kuntadata=[ ',paste(JSON$JSON,collapse=","),' ]')
     
+    # Tyrk‰t‰‰n title osaksi SVGt‰
+    svg[grepl('output_title',svg$svg),]$svg <- paste0("<text id='output_title' x='100' y='150'>",title,"</text>")
     
+    # .. ja muuttuja osaksi JS:‰‰.
+    svg[grepl("muuttuja='';",svg$svg),]$svg <- paste0("muuttuja='",muuttuja,"';")
         
     if (title=='default') { 
       writeLines(svg$svg,con='svg_map.svg')

@@ -1004,7 +1004,8 @@
 </g>
 </g>
 <g id="tilastointialueet:kunta4500_labels" groupmode="layer" label="tilastointialueet:kunta4500_labels">
-<text id='output_info' x='15' y='25'>...</text>
+<text id='output_title' x='100' y='150'>...</text>
+<text id='output_info' x='100' y='200'>...</text>
 </g>
 
 <script type="text/javascript"><![CDATA[
