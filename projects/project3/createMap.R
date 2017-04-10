@@ -3,8 +3,29 @@
 
 # Create map: create JSobjects+read html, JS and CSS 
 
-createMap <- function(dataToMap='example',type='html',muuttuja='default',title='default') {
+createMap <- function(dataToMap='example',
+                      type='html',muuttuja='default',title='default',
+                      palette='default',numberOfClasses=10) {
   url <- "https://topiasp.github.io/projects/project3/"
+
+ 
+  if (length(palette)!=numberOfClasses & palette[1]!='default')  {
+    stop('Värien määrä != luokkien määrä');
+    
+  }
+  
+  if (palette=='default') {
+    print('Luodaan värit');
+    if (numberOfClasses<12) {   
+        palette <- brewer.pal(n = numberOfClasses, name = "RdYlGn") 
+    } else {
+      
+      colfunc <-   colorRampPalette(c('#a50026','#006837'))  
+      palette <- colfunc(numberOfClasses)
+    }
+    
+  }
+  
   
   
   if (!is.data.frame(dataToMap) ) {
@@ -13,6 +34,9 @@ createMap <- function(dataToMap='example',type='html',muuttuja='default',title='
                          stringsAsFactors = F,dec=".",header=T,
                          colClasses = c('character','character',rep('numeric',6)))
 
+  }
+  if (nrow(dataToMap[is.na(dataToMap[,muuttuja]),])>0) { print('Korvataan NULLt nollilla');
+    dataToMap[is.na(dataToMap[,muuttuja]),muuttuja] <- 0
   }
   
   if (!'kuntakoodi' %in% names(dataToMap))  { 
@@ -29,14 +53,24 @@ createMap <- function(dataToMap='example',type='html',muuttuja='default',title='
     source("https://topiasp.github.io/projects/project3/create_JS_objects.R")
     writeLines(createJSobjects(dataToMap),'data.js')
     
-    if (title=='default') { 
+    
+   if (title=='default') { 
       writeLines(readLines(paste0(url,"map.html"),warn=F),con='map.html')
     } else { 
       writeLines(readLines(paste0(url,"map.html"),warn=F),con=paste0(title,'.html'))
     }
-
-    writeLines(readLines("https://topiasp.github.io/projects/project3/funktiot.js",warn=F),con='funktiot.js')
-    writeLines(readLines("https://topiasp.github.io/projects/project3/styles.css",warn=F),con='styles.css')
+    
+    # Luetaan JS Githubista
+    JSfile <- readLines(paste0(url,"funktiot.js"),warn=F)
+    
+    # Syötetään väripaletti
+    JSfile[grepl('cols=',JSfile)] <- paste0("cols=['",paste(palette,collapse="','"),"']")
+    
+    # Syötetään luokkien lukumäärä
+    JSfile[grepl('numberOfClasses=',JSfile)] <- paste0('numberOfClasses=',numberOfClasses,';')
+    
+    writeLines(JSfile,con='funktiot.js')
+    writeLines(readLines(paste0(url,"styles.css"),warn=F),con='styles.css')
   }
   if (type=='svg') {
     
@@ -50,13 +84,9 @@ createMap <- function(dataToMap='example',type='html',muuttuja='default',title='
 
     svg$labelRow <- ifelse(!grepl('kunta4500_',svg$svg) | grepl('text',svg$svg),F,svg$labelRow)
     
-    
-    
-    
     svg$kuntakoodi <- 'XXX'
     
-    head(svg[svg$labelRow,])
-    svg[svg$labelRow,]$kuntakoodi <- unlist(sapply(svg[svg$labelRow,1],FUN=function(x) { substring(strsplit(x,'label="')[[1]][2],1,3) }))
+    svg[svg$labelRow,]$kuntakoodi <- sapply(svg[svg$labelRow,1],FUN=function(x) { substring(strsplit(x,'label="')[[1]][2],1,3) })
     svg$jarj <- 1:nrow(svg)
     # Väripaletti
     
@@ -66,9 +96,7 @@ createMap <- function(dataToMap='example',type='html',muuttuja='default',title='
     # Luokat
     if (muuttuja=='default') {   print('Määrittele muuttuja!'); stop;    }
     
-    if (nrow(dataToMap[is.na(dataToMap[,muuttuja]),])>0) { print('Korvataan NULLt nollilla');
-      dataToMap[is.na(dataToMap[,muuttuja]),muuttuja] <- 0
-      }
+    
     
     q <-  quantile(dataToMap[,muuttuja],probs=seq(0,1,by=0.1))
     
