@@ -4,8 +4,10 @@
 # Create map: create JSobjects+read html, JS and CSS 
 
 createMap <- function(dataToMap='example',
-                      type='html',muuttuja='default',title='default',
+                      type='html',variableToMap='default',title='default',
                       palette='default',numberOfClasses=10) {
+  
+ 
   url <- "https://topiasp.github.io/projects/project3/"
 
  
@@ -35,8 +37,8 @@ createMap <- function(dataToMap='example',
                          colClasses = c('character','character',rep('numeric',6)))
 
   }
-  if (nrow(dataToMap[is.na(dataToMap[,muuttuja]),])>0) { print('Korvataan NULLt nollilla');
-    dataToMap[is.na(dataToMap[,muuttuja]),muuttuja] <- 0
+  if (nrow(dataToMap[is.na(dataToMap[,variableToMap]),])>0) { print('Korvataan NULLt nollilla');
+    dataToMap[is.na(dataToMap[,variableToMap]),variableToMap] <- 0
   }
   
   if (!'kuntakoodi' %in% names(dataToMap))  { 
@@ -50,7 +52,7 @@ createMap <- function(dataToMap='example',
   }
  
   if (type=='html') {
-    source("https://topiasp.github.io/projects/project3/create_JS_objects.R")
+    source(paste0(url,"create_JS_objects.R"))
     writeLines(createJSobjects(dataToMap),'data.js')
     
     
@@ -88,19 +90,18 @@ createMap <- function(dataToMap='example',
     
     svg[svg$labelRow,]$kuntakoodi <- sapply(svg[svg$labelRow,1],FUN=function(x) { substring(strsplit(x,'label="')[[1]][2],1,3) })
     svg$jarj <- 1:nrow(svg)
-    # V‰ripaletti
-    
-    paletti <- data.frame(fillColour=c('#a50026',      '#d73027',      '#f46d43',      '#fdae61',   '#fee08b',
-               '#d9ef8b',      '#a6d96a',      '#66bd63',      '#1a9850',   '#006837'),class=1:10)
     
     # Luokat
-    if (muuttuja=='default') {   print('M‰‰rittele muuttuja!'); stop;    }
+    if (variableToMap=='default') {   print('Define variableToMap!'); stop;    }
+    
+    # Palette with classes
+    paletti <- data.frame(fillColour=palette,class=1:numberOfClasses)
     
     
     
-    q <-  quantile(dataToMap[,muuttuja],probs=seq(0,1,by=0.1))
+    q <-  quantile(dataToMap[,variableToMap],probs=seq(0,1,by=0.1))
     
-    dataToMap$class <- cut(dataToMap[,muuttuja],breaks=q,labels=F,include.lowest = T,right=F)
+    dataToMap$class <- cut(dataToMap[,variableToMap],breaks=q,labels=F,include.lowest = T,right=F)
     dataToMap <- merge(dataToMap,paletti,by='class')
     # Yhdistet‰‰n SVG-tiedostoon
     
@@ -111,7 +112,7 @@ createMap <- function(dataToMap='example',
       
       if (svg$labelRow[i]) {
        svg[i,]$svg <- gsub('>',
-                           paste0(" value='",svg[i,muuttuja],"' style='fill:",svg[i,]$fillColour,"' onmouseover='printInfo(this);' class='polygon'>"),
+                           paste0(" value='",svg[i,variableToMap],"' style='fill:",svg[i,]$fillColour,"' onmouseover='printInfo(this);' class='polygon'>"),
                            svg[i,]$svg )
       }
       
@@ -123,7 +124,7 @@ createMap <- function(dataToMap='example',
     ids <- gsub('\"','',ids)
     ids <- gsub(' ','',ids)
     
-    values <- svg[svg$labelRow,muuttuja]
+    values <- svg[svg$labelRow,variableToMap]
     
     JSON <- data.frame(id=ids,value=values,stringsAsFactors = F)
     JSON$JSON <- paste0('{ id:"',JSON$id,'", value:"',round(JSON$value,3),'" }')
@@ -133,8 +134,8 @@ createMap <- function(dataToMap='example',
     # Tyrk‰t‰‰n title osaksi SVGt‰
     svg[grepl('output_title',svg$svg),]$svg <- paste0("<text id='output_title' x='100' y='150'>",title,"</text>")
     
-    # .. ja muuttuja osaksi JS:‰‰.
-    svg[grepl("muuttuja=",svg$svg),]$svg <- paste0("muuttuja='",muuttuja,"';")
+    # .. ja variableToMap osaksi JS:‰‰.
+    svg[grepl("muuttuja=",svg$svg),]$svg <- paste0("muuttuja='",variableToMap,"';")
         
     if (title=='default') { 
       writeLines(svg$svg,con='svg_map.svg')
