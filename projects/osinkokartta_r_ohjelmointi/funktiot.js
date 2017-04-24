@@ -3,7 +3,7 @@
 chosenVariable='VAR1'; // Variable used to create choropleth. 
 numberOfClasses=10;
 cols=['#A50026','#D73027','#F46D43','#FDAE61','#FEE08B','#D9EF8B','#A6D96A','#66BD63','#1A9850','#006837']
-
+ 
 function init() {
 	
 	// Extract values of property 'VAR1' of all objects in 'kunnat'
@@ -179,7 +179,7 @@ function choropleth(numbs,classes) {
 function limitsTBL(classLimits) {
 	document.getElementById('limitsTBL').innerHTML="";
 	output=[];
-	output.push('<tr><th></th><th>Alaraja</th><th>Yl‰raja</th></tr>')
+	output.push('<tr><th></th><th>Alaraja</th><th>Yl√§raja</th></tr>')
 	for (var i=0;i<(classLimits.length-1);i++) { 
 		id='classLimitTblRow_'+i;
 		output.push('<tr id='+id+'><td>'+(i+1)+'</td><td>'+classLimits[i]+'</td><td>'+classLimits[i+1]+'</td></tr>')
