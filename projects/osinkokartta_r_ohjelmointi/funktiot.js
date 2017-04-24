@@ -2,7 +2,7 @@
 
 chosenVariable='VAR1'; // Variable used to create choropleth. 
 numberOfClasses=10;
-cols=['#a50026','#d73027','#f46d43','#fdae61','#fee08b','#d9ef8b','#a6d96a','#66bd63','#1a9850','#006837'].reverse() // colourpalette for choropleth. TODO: choose direction
+cols=['#A50026','#D73027','#F46D43','#FDAE61','#FEE08B','#D9EF8B','#A6D96A','#66BD63','#1A9850','#006837']
 
 function init() {
 	
