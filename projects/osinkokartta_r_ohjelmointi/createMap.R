@@ -8,7 +8,7 @@ createMap <- function(dataToMap='example',
                       palette='default',numberOfClasses=10) {
   
  
-  url <- "https://topiasp.github.io/projects/project3/"
+  url <- "https://topiasp.github.io/projects/osinkokartta_r_ohjelmointi/"
 
  
   if (length(palette)!=numberOfClasses & palette[1]!='default')  {

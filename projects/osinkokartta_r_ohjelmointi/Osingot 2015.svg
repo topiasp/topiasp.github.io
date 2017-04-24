@@ -1004,7 +1004,7 @@
 </g>
 </g>
 <g id="tilastointialueet:kunta4500_labels" groupmode="layer" label="tilastointialueet:kunta4500_labels" value='NA' style='fill:NA' onmouseover='printInfo(this);' class='polygon'>
-<text id='output_title' x='100' y='150'>Osingot 2015</text>
+<text id='output_title' x='100' y='150'>Osinkoja saaneiden osuus (vv.2015)</text>
 <text id='output_info' x='100' y='200'>...</text>
 </g>
 
@@ -1022,7 +1022,7 @@ function haeObjektiId(arr, value) {
 printInfo=function(e) { 
 	
 	dat = haeObjektiId(kuntadata,e.id);
-	document.getElementById('output_info').innerHTML=dat.value;
+	document.getElementById('output_info').innerHTML=dat.value+'%';
 }
 
 ]]></script>  
