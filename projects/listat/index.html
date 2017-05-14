@@ -7,7 +7,6 @@
 function haeJatekoodi(hakutermi) {
 
 	rtrn=jatekoodit.filter(function(e) { 
-		//return(e['koodi'].indexOf(hakutermi)>-1)
 		return(e['koodi'].substr(0,hakutermi.length)==hakutermi)
 		});
 	rtrn=rtrn.map(function(e) { return(e['koodi_selite']) });
@@ -19,7 +18,6 @@ function inputKeyPress(e) {
 	if (e.keyCode==13) { 
 		hakutermi=document.getElementById("userInputText_jatekoodi").value;
 		loytyneetKoodit=haeJatekoodi(hakutermi);
-		
 		document.getElementById("hakuOutput").innerHTML=loytyneetKoodit.join('<br>');
 
 	}
