@@ -1,8 +1,16 @@
 
 <html>
 <head>
+<style>
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+	
+}
+</style>
 <script>
 
+testi='A';
 
 function haeJatekoodi(hakutermi) {
 
@@ -31,12 +39,46 @@ function haeJatekoodi(hakutermi) {
 	
 	return(rtrn);
 }
+function haeKasittelyJaHyodyntamiskoodi(hakutermi) {
+
+	/* Ratkaistaan sisältääkö hakusana kirjaimia */
+	
+	
+	
+	
+	rtrn=kasittelyJaHyodyntamiskoodit.filter(function(e) { 
+		return(e['koodi'].substr(0,hakutermi.length)==hakutermi)
+		});
+	if (rtrn.length==0) {
+		rtrn=kasittelyJaHyodyntamiskoodit.filter(function(e) { 
+		return(e['koodi'].replace(' ','').substr(0,hakutermi.length)==hakutermi.replace(' ',''))
+		});
+
+	}	
+
+	rtrn=rtrn.map(function(e) { return('<th>'+e['koodi']+'</th><th>'+e['selite']+'</th><th>'+e['esim'].replace('.','\n')+'</tr>') });
+	
+	return(rtrn);
+}
 
 function inputKeyPress(e) {
+
+
 	if (e.keyCode==13) { 
-		hakutermi=document.getElementById("userInputText_jatekoodi").value;
-		loytyneetKoodit=haeJatekoodi(hakutermi);
-		document.getElementById("hakuOutput").innerHTML=loytyneetKoodit.join('<br>');
+		
+		inputID=e['path'][0]['id'];
+		
+		if (inputID=="userInputText_jatekoodi")  {
+			hakutermi=document.getElementById(inputID).value;
+			loytyneetKoodit=haeJatekoodi(hakutermi);
+			document.getElementById("hakuOutput").innerHTML=loytyneetKoodit.join('<br>');
+		} 
+		if (inputID=="userInputText_kasittelyJaHyodyntamisKoodit")  {
+			hakutermi=document.getElementById(inputID).value;
+			loytyneetKoodit=haeKasittelyJaHyodyntamiskoodi(hakutermi);
+			document.getElementById("hakuOutputKasittelyJaHyodytamiskoodi").innerHTML="<tr> <th>Koodi</th>    <th>Selite</th>     <th>Esimerkit</th></tr>"+loytyneetKoodit.join('<br>');
+		} 
+		
 
 	}
 }
@@ -62,8 +104,23 @@ function inputKeyPress(e) {
 <p id="hakuOutput">
 </p>
 <br>
-
+<br>
+<h3>Käsittely- ja hyödyntämiskoodit</h3>
+<input type="text"  class="userInputText" id="userInputText_kasittelyJaHyodyntamisKoodit"  onclick="this.value='';"  onkeypress="inputKeyPress(event);" value="Syötä koodi" size="35">
+<br>
+<br>
+<table id="hakuOutputKasittelyJaHyodytamiskoodi">
+<tr>
+    <th>Koodi</th>
+    <th>Selite</th> 
+    <th>Esimerkit</th>
+</tr>
+  
+  </table>
+<br>
 </center>
+
+
 
 <datalist id="kuntaList">
 
@@ -654,6 +711,17 @@ jatekoodit = [
 
 ]
 
+
+kasittelyJaHyodyntamiskoodit=[
+{ koodi: "D01" ,selite: "Sijoittaminen maahan tai maan päälle, kuten kaatopaikalle." ,esim: "Jätteen loppusijoittaminen pysyvän jätteen tai tavanomaisen jätteen kaatopaikalle.Jätteen loppusijoittaminen maankaatopaikalle.Jätteen hautaaminen (esim. vähäriskisen eläinperäisen jätteen hautaaminen)."},{koodi: "D02" ,selite: "Maaperäkäsittely, kuten nestemäisen tai lietemäisen jätteen biologinen hajottaminen maaperässä." ,esim: "Öljyisen jätteen hajottaminen pellossa mikrobien vaikutuksesta."},{koodi: "D03" ,selite: "Syväinjektointi, kuten pumpattavien jätteiden injektoiminen kaivoihin, suolakupuihin tai luontaisesti esiintyviin muodostumiin." ,esim: ""},{koodi: "D04" ,selite: "Allastaminen, kuten nestemäisen tai lietemäisen jätteen sijoittaminen kaivantoihin, lammikoihin tai patoaltaisiin." ,esim: "Lietemäisen teollisuusjätteen allastaminen maa-alueella oleviin lietealtaisiin.Rikastushiekan sijoittaminen patoaltaisiin."},{koodi: "D05" ,selite: "Erityisesti suunniteltu kaatopaikka, kuten sijoittaminen vuorattuihin erillisiin osastoihin, jotka on katettu tai eristetty toisistaan ja ympäristöstä." ,esim: "Jätteen sijoittaminen ongelmajätteen kaatopaikalle tai muuhun erilliseen ympäristöstä eristettyyn paikkaan.Asbestijätteen loppusijoittaminen kaatopaikan erillisiin soluihin."},{koodi: "D06" ,selite: "Päästäminen vesistöön, lukuun ottamatta meriä." ,esim: ""},{koodi: "D07" ,selite: "Päästäminen mereen, mukaan lukien sijoittaminen merenpohjaan." ,esim: ""},{koodi: "D08" ,selite: "Biologinen käsittely, jota ei mainita muualla tässä liitteessä ja jossa syntyy yhdisteitä tai seoksia, jotka käsitellään jollakin toiminnoista D1 - D12." ,esim: "Jätevedenpuhdistamolietteen kompostointi siten, että se voidaan loppusijoittaa kompostoituna kaatopaikalle ja kyseessä ei ole kompostoidun jätteen hyödyntäminen (jos kyseessä on jätteen käsitteleminen ennen sen hyödyntämistä esim. kaatopaikan maisemoinnissa tai peitemateriaalina, käytetään R-koodia).Öljyisen maan kompostointi."},{koodi: "D09" ,selite: "Fysikaalis-kemiallinen käsittely, jota ei mainita muualla tässä liitteessä ja jossa syntyy yhdisteitä tai seoksia, jotka käsitellään jollakin toiminnoista D01–D12, kuten haihduttamalla, kuivaamalla tai pasuttamalla." ,esim: "Jätteen haihdutus, kuivaus, kovetus, pasutus, kuiva-aineen pitoisuuden lisäys, terminen käsittely, stabilointi tai muu vastaava fys.-kem.käsittely.Saastuneen maan betonointi tai muun jätteen jähmettäminen.Tuhkien, kuonien tai valimohiekkojen käsittely fysikaalisin tai kemiallisin menetelmin kaatopaikkakelpoiseksi. Lietteen ja tartuntavaarallisen jätteen terminen käsittely (pl. poltto).Happojen ja emästen neutralointi.Öljyvesiemulsioiden puhdistaminen."},{koodi: "D10" ,selite: "Polttaminen maalla." ,esim: "Jätteen hävittäminen polttamalla.Jätteen polttaminen varsinaisessa jätteen polttolaitoksessa.Eläinperäisen riskijätteen hävittäminen destruktiolaitoksessa."},{koodi: "D11" ,selite: "Polttaminen merellä." ,esim: "Jätteen polttaminen merellä aluksen jätteenpolttouuneissa."},{koodi: "D12" ,selite: "Pysyvä varastointi, kuten säiliöiden sijoittaminen kaivokseen." ,esim: "Jätteen (esim. romurenkaat, lasijäte ja kannot) pysyvä varastointi maan päällä, joka jatkuu määräämättömän ajan.Jätteiden loppusijoitus kaivokseen (esim. jätedirektiivin tarkoittamaan maanalaiseen varastoon tai pysyviä orgaanisia yhdisteitä (POPS) koskevan asetuksen mukaiseen tai kaivannaisdirektiivin mukaiseen onkaloon, joihin voidaan sijoittaa esim. ongelmajätteitä, pysyviä org.yhdisteitä tai kaivannaisjätteitä)."},{koodi: "D13" ,selite: "Yhdistäminen tai sekoittaminen ennen toimittamista johonkin toiminnoista D1 - D12." ,esim: "Sakokaivolietteen vastaanotto jätevedenpuhdistamolla."},{koodi: "D14" ,selite: "Uudelleen pakkaaminen ennen toimittamista johonkin toiminnoista D1 - D13." ,esim: "Jätteiden vastaanottopaikat (esim. siirtokuormausasema), joissa jätteet lajitellaan ja pakataan ennen niiden toimittamista loppukäsittelyyn."},{koodi: "D15" ,selite: "Varastoiminen ennen toimittamista johonkin toiminnoista D1 - D14, lukuun ottamatta väliaikaista varastointia jätteen syntypaikalla ennen poiskuljetusta." ,esim: "Muualta vastaanotettujen jätteiden vuoden aikana tapahtuva välivarastointi esim. siirtokuormausasemalla tai ongelmajätevarastossa, joista jäte toimitetaan edelleen käsittelyyn tai loppusijoitukseen kaatopaikalle."},{koodi: "R01" ,selite: "Käyttö pääasiassa polttoaineena tai muutoin energian tuottamiseksi." ,esim: "Prosessilietteiden ja siistausjätteen polttaminen voima- ja kattilalaitoksessa.Energiajätejakeen (RDF, REF, jätepelletti jne.) polttaminen voima- ja kattilalaitoksessa.Jäteöljyn polttaminen voima- ja kattilalaitoksessa.Jätemuovin tai -puun hyödyntäminen energiantuotannon polttoaineena.Jätteen polttaminen rinnakkaispolttolaitoksessa."},{koodi: "R02" ,selite: "Liuottimien talteenotto tai uudistaminen." ,esim: "Lääketehtaan jäännösliuottimien tislaus.Automaalaamoiden ja korjaamoiden liuottimien ja glykolien tislaus."},{koodi: "R03" ,selite: "Sellaisten orgaanisten aineiden kierrätys tai talteenotto, joita ei käytetä liuottimina, mukaan lukien kompostointi ja muut biologiset muuntamismenetelmät." ,esim: ""},{koodi: "R031" ,selite: "Kierrätyspolttoaineen valmistus" ,esim: "Energiajätejakeen talteenotto ja esikäsittely (lajittelu, paloittelu, murskaus, paalaus jne.) sekä pelletin valmistus, jonka jälkeen jäte toimitetaan varsinaiseen energiahyödyntämiseen.Kierrätyspolttoaineen valmistus jäteöljystä."},{koodi: "R032" ,selite: "Orgaanisen jätteen kompostointi" ,esim: "Biojätteen ja jätevedenpuhdistamolietteen kompostointi, kun kompostoitu tuote hyödynnetään. Jos ei ole kyse hyödyntämisestä, käytetään kirjauksessa D08-koodia."},{koodi: "R033" ,selite: "Orgaanisen jätteen mädätys" ,esim: "Biokaasun valmistus puunjalostus- ja elintarviketeollisuuden orgaanisista jätteistä, jätevedenpuhdistamojen lietteistä, biojätteistä tai lannasta. Jos ei ole kyse hyödyntämisestä, käytetään kirjauksessa D08-koodia."},{koodi: "R034" ,selite: "Orgaanisen jätteen muu esikäsittely" ,esim: "Biojätteen, paperin, pahvin, puun, nahan, tekstiilin ja muun org.materiaalin talteenotto sekä esikäsittely (lajittelu, yhdistäminen, paloittelu, murskaus, paalaus jne.), jonka jälkeen jäte toimitetaan varsinaiseen materiahyödyntämiseen.Jätepaperin siistaus."},{koodi: "R035" ,selite: "Orgaanisen jätteen materiahyödyntäminen" ,esim: "Puumateriaalisten rakennusjätteiden prosessointi uusiomateriaaleiksi (lastulevy).Keräyspaperin hyödyntäminen esim. kartonkiteollisuuden ja pehmopaperituotteiden sekä sanomalehtipaperin valmistuksen raaka-aineena.Keräyspahvin hyödyntäminen kartonkiteollisuuden raaka-aineena ja kierrätettävien kuitukuormalavojen valmistuksessa.Nestepakkauskartongin hyödyntäminen uusiokartonkihylsyjen valmistuksessa.Kompostoidun biojätteen ja lietteen hyödyntäminen viherrakentamisessa maanparannus- ja lannoitusaineena.Kompostoidun biojätteen ja lietteen käyttö kaatopaikan maisemoinnissa ja pintaverhoilussa sekä kaatopaikan viherrakentamisessa maanparannus- ja lannoitusaineena osana kaatopaikan käytöstä poistamista ja jälkihoitoa.Kompostoidun biojätteen hyödyntäminen lannoitteen raaka-aineena.Orgaanisen ylijäämämaan (multa) hyödyntäminen kaatopaikan peittomateriaalina.Selluvillan valmistus jätepaperista.Muoviprofiilien ja rumpuputkien valmistus jätemuovista.Autonrenkaiden hyödyntäminen maanrakentamisessa, mm. meluvalleissa.Autonrengassilpun tai muun kumivalmisteen käyttäminen kaatopaikan rakennekerroksessa kaatopaikkaa rakennettaessa rakeEsikäsitellyn ruoka- ja teurasjätteen hyödyntäminen raaka-aineena eläinten rehunvalmistuksessa."},{koodi: "R04" ,selite: "Metallien ja metalliyhdisteiden kierrätys tai talteenotto" ,esim: ""},{koodi: "R041" ,selite: "Metalli- ja metallipitoisten jätteiden talteenotto ja esikäsittely" ,esim: "Romuliike- , autohajottamo- ja -purkaamotoiminta (metalliromun talteenotto, lajittelu, yhdistäminen, paloittelu, murskaus, paalaus jne.), josta esikäsitelty metalliromu toimitetaan varsinaiseen materiahyödyntämiseen.Metalliromun (mm. kylmälaitteet, pesukoneet, sähköuunit, astianpesukoneet, tietokoneiden keskusyksiköiden metallikuoret jne.) talteenotto, lajittelu, murskaus, paalaus jne., ja em. esikäsitellyn jätteen toimittaminen varsinaiseen materiahyödyntämiseen. Amalgaamijätteen talteenotto ja elohopean erottaminen amalgaamijätteestä, jonka jälkeen elohopeajäte toimitetaan varsinaiseen materiahyödyntämiseen.Hopeaa sisältävien kiinnitteiden talteenotto ja hopean erottaminen esim. elektrolyysillä, jonka jälkeen jäte toimitetaan varsinaiseen materiahyödyntämiseen."},{koodi: "R042" ,selite: "Metalli- ja metallipitoisten jätteiden materiahyödyntäminen" ,esim: "Valimo- ja sulattotoiminta (esim. esikäsitellyn metalliromun sulatus terästehtaalla ja sulan valu harkoiksi, langoiksi, levyiksi tai putkiksi.Kuonien ja tuhkien sisältämien metallien sulatus tai muu talteenotto.Käytöstä poistettujen metallitynnyrien kunnostus sekä niiden toimitus uusiokäyttöön."},{koodi: "R05" ,selite: "Muiden epäorgaanisten aineiden kierrätys tai talteenotto." ,esim: ""},{koodi: "R051" ,selite: "Epäorgaanisen jätteen talteenotto ja esikäsittely" ,esim: "Keräyslasin talteenotto ja esikäsittely (lajittelu, murskaus jne.), jonka jälkeen lasimurske toimitetaan varsinaiseen materiahyödyntämiseen.Elektroniikkaromun (mm. käytöstä poistetut televisiot, sähkötyökalut, kamerat, puhelimet, vatkaimet, lelut, valaisimet jne.) talteenotto, lajittelu, murskaus, paalaus jne., ja em. esikäsitellyn jätteen toimittaminen varsinaiseen materiahyödyntämiseen. Ei kuitenkaan koske metalliromua (ks. R04). Epäorg.rakennusjätteiden (esim. ikkunalasi-, betoni- ja tiilijäte) talteenotto ja esikäsittely (murskaus jne.) ja murskeen toimitus varsinaiseen materiahyödyntämiseen (esim. maa- tai vesirakentamiseen).Ylijäämämaan seulonta ja seuleen (esim. mineraalimaa) toimitus varsinaiseen materiahyödyntämiseen (esim. maa- tai vesirakentamiseen)."},{koodi: "R052" ,selite: "Epäorgaanisen jätteen materiahyödyntäminen" ,esim: "Kemianteollisuuden kipsijätteen hyödyntäminen kipsilevyksi.Lasimurskeen hyödyntäminen uusiolasin valmistuksessa.Lasi- tai betonimurskeen hyödyntäminen maanrakentamisessa (tienpohjana, kaatopaikan kaasunkeräysjärjestelmissä (kaasukaivot), salaojituksissa, pengerryksissä jne.).Lasivillan valmistus jätelasista.Pilaantuneen maamassan hyödyntäminen kaatopaikan maarakenteissa puhtaan maan sijaan.Turvevoimalan lentotuhkan hyödyntäminen maanrakennusmateriaalina.Kivihiilivoimalaitoksen lentotuhkan hyödyntäminen betonin valmistuksen tai asfalttiteollisuuden raaka-aineena."},{koodi: "R06" ,selite: "Happojen tai emästen uudistaminen." ,esim: "Pintakäsittelylaitosten peittaushapon uudistaminen.Heikon hapon suolaliuosten väkevöittäminen vahvalla hapolla (esim. rikkihappojätteen väkevöinti)."},{koodi: "R07" ,selite: "Päästöjen torjuntaan käytettyjen aineiden hyödyntäminen." ,esim: "Jätevedenpuhdistuksessa käytettävän aktiivihiilen regenerointi.Savukaasujen rikinpoistossa muodostuvan kipsin hyödyntäminen."},{koodi: "R08" ,selite: "Katalyyttien ainesosien hyödyntäminen." ,esim: "Katalyyttien regenerointi kuumentamalla."},{koodi: "R09" ,selite: "Öljyn uudelleenjalostaminen tai muu uudelleenkäyttö." ,esim: "Teräketjuöljyjen valmistaminen kirkkaista miner.jäteöljyistä. Polttoaineen valmistus jäteöljystä kirjataan R031-koodille.Käytettyjen miner.öljyemulsioiden puhdistaminen uudelleen käytettäväksi."},{koodi: "R10" ,selite: "Maaperän käsitteleminen siten, että siitä on hyötyä maataloudelle tai että sillä on ekologisesti hyödyllinen vaikutus." ,esim: "Kompostoidun tai kompostoimattoman lannan, lietteen, biojätteen tmv. orgaanisen jätteen levittäminen peltoon tai metsiin.Mädätetyn tai stabiloidun lietteen hyödyntäminen maanparannusaineena maataloudessa."},{koodi: "R11" ,selite: "Toiminnoissa R1 - R10 syntyneiden jätteiden käyttö." ,esim: "Ko. koodia ei käytetä. Sen sijaan käytetään R01-R10-koodeja."},{koodi: "R12" ,selite: "Jätteiden vaihtaminen jonkin toiminnoista R1 - R11 soveltamiseksi jätteeseen." ,esim: "Ko. koodia ei käytetä."},{koodi: "R13" ,selite: "Jätteiden varastointi ennen toimittamista johonkin toiminnoista R1 - R12, lukuun ottamatta väliaikaista varastointia jätteen syntypaikalla ennen poiskuljetusta." ,esim: "Hyödynnettäväksi toimitettavan jätteen (esim. erilliskerätyt paperi- ja kartonkijätteet, -lasijätteet, - metallijätteet, romurenkaat, romuautot, SER jne.) väliaikainen varastointi esim. jäteasemalla tai muulla jätteen vastaanottoasemalla." }
+
+
+
+]
+
+
+ 
+ 
 </script>
 
 </body>
