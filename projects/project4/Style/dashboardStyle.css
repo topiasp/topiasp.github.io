@@ -1,0 +1,68 @@
+
+
+#indicatorButtons {
+	background-color: white;
+	width:30%;
+	float:left;
+	padding-top:5%;
+	
+}
+
+#header1 {
+
+	margin:0%;
+	margin-bottom:10%;
+	font-size:30px;
+	color:grey;
+	float:left;
+	margin-left:30%;
+	
+}
+#container {
+	height:70%;
+	width:100%;
+	float:left;
+	
+}
+
+
+
+.button {
+	
+	margin-bottom:1%;
+	margin-top:1%;
+	
+	background-color: #4CAF50;
+    color: white;
+    border: 2px solid white;
+
+    text-align: center;
+	padding:5%;
+	
+	border-radius:8px;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 13px;
+	opacity: 0.8;
+
+	float:left;
+	width:75%;
+	margin-right:60%;
+	margin-left:10%;
+	-webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+	
+}
+
+.button:hover {
+    border: 8px solid #006837;
+    color: white;
+}
+
+
+#testButton {
+	background-color: black;
+	width:20%;
+	margin-bottom: 0%;
+	
+}
