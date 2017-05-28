@@ -39,32 +39,11 @@ function toggleChosen(e) {
 		}
 		
 	}
-
-
 	// Compare to country level
-	
-	/*
-	indicators=municipalities.filter(function(x) { return(x['id']=='SSS'); });
-	indicators=indicators[0]['indicators'];
-	comp=indicators.filter(function(e) {return(e['code']==chosen) })[0].getLastValue()*1;
-	*/
-	
+
 	for (b=0;b<muns.length;b++) {
-		
-		//tmp=coloringMuns.filter(function(x) { return(x['id']==muns[b].id)})[0]['col'];
 		muns[b].style.fill='white';
 		muns[b].style.fill=coloringMuns.filter(function(x) { return(x['id']==muns[b].id)})[0]['col'];
-		
-		/*
-		
-		val=tmp[0]['indicators'].filter(function(x) { return(x['code']==chosen)});
-		
-		if ((val[0].getLastValue()*1)>comp) {
-			muns[b].style.fill='red';
-		}	else {
-			muns[b].style.fill='green';
-		}
-		*/
 	}
 		
 	

@@ -120,29 +120,40 @@ function choro(values,muns,varCode) {
 		this.classLimits=[];
 		this.cols=[];
 		this.classes=[];
-		// Add min value first
 		
-		this.classLimits.push({ boundary: this.values[0], index: 0, color: this.colPalette[0] });
+		// Add min value first
+		this.classLimits.push({ boundary: this.values[0], index: 0, color: this.colPalette[0], unitIndex: 0 });
 		
 		
 		tmp=this.getValuesInClass(classes);
 		help=0;
-		indexOfClass=0;
+		indexOfClass=1;
+		
+		
 		
 		for (var i=0;i<=this.values.length;i++) {
+			if (i>(tmp*classes-1)) { 
+				// Break if number of classes demands so
+				console.log('breaking at'+i);
+				break;
+			}
 			if (help==tmp) {
-				indexOfClass++;
-				this.classLimits.push({ boundary: this.values[i], index: indexOfClass, color: this.colPalette[indexOfClass] });
-				help=0;
 				
+				this.classLimits.push({ boundary: this.values[i], index: indexOfClass, color: this.colPalette[indexOfClass], unitIndex: i });
+				help=0;
+				indexOfClass++;
 				
 			}
 			
 			
 			help++;
 		}
-		// Change the last one 
-		this.classLimits[classes] = ({ boundary: this.values[this.values.length-1], index: indexOfClass, color: this.colPalette[indexOfClass] });
+		
+		
+		
+		// Set the last boundary to max value
+		//this.classLimits[this.classLimits.length-1]['boundary'] = this.values[this.values.length-1];
+		
 		
 		return(this.classLimits);
 	}

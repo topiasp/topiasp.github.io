@@ -1,10 +1,7 @@
 
 
 
-//var indicator1 = new indicator();
 
-
-//var indicators = []; 	// Holds for country level
 var municipalities=[];	// Municipalities
 var chosen='TYOTOSUUS';
 var chosenMun;
@@ -37,19 +34,19 @@ function init() {
 	}
 	
 	
-	// drop other regionlevels (maa-,seutukunta)
+	// drop other region levels (maa- & seutukunta)
 	
 	municipalities=municipalities.filter(function(x) { return(x['name'].indexOf(' Kunta')>0 || x['id']=='SSS' ) } );
 	municipalitiesList=municipalities.map(function(x) { return(x['id']);})
-	
-	// Retrieve data from API
-	
+
 	// Last timeunit
 	
 	last=tyonvalitystilastoMeta[0]['values']["length"]-1;
 	time=[];
 	time.push(tyonvalitystilastoMeta[0]['values'][ (last-12)]);
 	time.push(tyonvalitystilastoMeta[0]['values'][ last])
+	
+	// Retrieve data from API
 
 	municipalitiesDat=pxwebGet(PXwebCodes,municipalitiesList,time);
 	
@@ -88,8 +85,7 @@ function init() {
 			
 		}
 		
-	 //	tmp=municipalitiesDat.filter(function(x) { return(x['key'][1]==municipalities[z]['value']); })
-		
+	
 		municipalities[z]['indicators']=obs;
 		
 	}
@@ -97,6 +93,7 @@ function init() {
 	
 	// Create indicator buttons
 	indicators=municipalities.filter(function(x) { return(x['id']=='SSS'); });
+	
 	// Initial chosenMun='SSS'
 	chosenMun=indicators[0];
 	indicators=indicators[0]['indicators'];
@@ -113,7 +110,7 @@ function init() {
 		}
 		
 		document.getElementById('indicatorButtons').innerHTML+="<button chosen='false'  class='"+buttonClass+"' id='"+indicators[i]['code']+"'>"+indicators[i].getInfo()
-		+"</button>"; // "\n("+comp+")"+"
+		+"</button>"; 
 		
 		
 		
@@ -125,7 +122,7 @@ function init() {
 			btns[b].addEventListener("click", function() 	{ 	toggleChosen(this);	});
 	}
 	
-	// Initial coloring + choise
+	// Initial coloring + choice
 	toggleChosen(document.getElementById(PXwebCodes[0]));
 	
 }
