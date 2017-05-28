@@ -43,10 +43,11 @@ function toggleChosen(e) {
 
 	// Compare to country level
 	
+	/*
 	indicators=municipalities.filter(function(x) { return(x['id']=='SSS'); });
 	indicators=indicators[0]['indicators'];
 	comp=indicators.filter(function(e) {return(e['code']==chosen) })[0].getLastValue()*1;
-	
+	*/
 	
 	for (b=0;b<muns.length;b++) {
 		
@@ -72,6 +73,8 @@ function toggleChosen(e) {
 }
 
 function onClickKunta(e) {
+	
+	
 	
 	
 	// Which is clicked

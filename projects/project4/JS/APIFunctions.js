@@ -1,5 +1,5 @@
 
-urli='http://pxnet2.stat.fi/PXWeb/api/v1/fi/StatFin/tym/tyonv/statfin_pxt_tym_tyonv_001.px';
+urli='https://pxnet2.stat.fi/PXWeb/api/v1/fi/StatFin/tym/tyonv/statfin_pxt_tym_tyonv_001.px';
 
 function pxwebGetMeta(urli) {
 		
