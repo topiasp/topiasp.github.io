@@ -3,8 +3,8 @@
 
 
 var municipalities=[];	// Municipalities
-var chosen='TYOTOSUUS';
-var chosenMun;
+var chosen='TYOTOSUUS'; // Code for which indicator/button is chosen
+
 
 function init() {
 	
@@ -23,7 +23,7 @@ function init() {
 										 }	
 	}
 
-	//// Retrieve and form municipal data ----------------------------------------------------------------- /////////////////////////
+	// Retrieve and form municipal data
 	
 	
 	
@@ -43,7 +43,7 @@ function init() {
 	
 	last=tyonvalitystilastoMeta[0]['values']["length"]-1;
 	time=[];
-	time.push(tyonvalitystilastoMeta[0]['values'][ (last-12)]);
+	time.push(tyonvalitystilastoMeta[0]['values'][ (last-12)]); 
 	time.push(tyonvalitystilastoMeta[0]['values'][ last])
 	
 	// Retrieve data from API
@@ -85,31 +85,50 @@ function init() {
 			
 		}
 		
-	
+		// Add indicator based on hardcoded data
+		
+		// Get index of last month of TYOTOSUUS
+		
+		lastTime=obs[0].getLastLabel().split('M')[1]*1;
+		
+		
+		hardcodedInd=[];
+		hardcodedInd=EMP1824.filter(function(x) { return(x['kuntakoodi']==municipalities[z].getId() & x['kuukausi']==lastTime) })[0];
+		
+		
+		tmp=obs.filter(function(x) {  return(x['code']=='TH5') })[0].getLastValue();
+		comp=obs.filter(function(x) {  return(x['code']=='TH5') })[0].getComparison(1);
+		
+		var obj = new indicator(
+				values=[
+					(comp/(hardcodedInd['tyollisia']*1+comp)*100).toFixed(1),
+					(tmp/(hardcodedInd['tyollisia']*1+tmp)*100).toFixed(1)   ],
+				labels=hardcodedInd['vuosi']+'M'+hardcodedInd['kuukausi'],
+				name='Työttömien osuus työvoimasta (18-24.v)',
+				code='tyollisia1824',
+				id=municipalities[z].getId()+'tyollisia1824'
+				);
+				
+		obs.push(obj)	
+		
+				
 		municipalities[z]['indicators']=obs;
 		
 	}
 	
+
 	
-	// Create indicator buttons
-	indicators=municipalities.filter(function(x) { return(x['id']=='SSS'); });
 	
-	// Initial chosenMun='SSS'
-	chosenMun=indicators[0];
-	indicators=indicators[0]['indicators'];
+	// Create indicator buttons with default value from SSS
+	indicators=municipalities.filter(function(x) { return(x['id']=='SSS'); })[0];
+	
+	document.getElementById('header1').innerHTML=indicators.getName()+': '+indicators.getLastValueOfIndicator(chosen);
+	
+	indicators=indicators['indicators'];
 	
 	for (i=0;i<indicators.length;i++) {
-		
-		comp=indicators[i].getComparison(1);
-	    if (comp<0) {
-			buttonClass='button positiveButton';
-			type='positive';
-		} else {
-			buttonClass='button negativeButton';
-			type='negative';
-		}
-		
-		document.getElementById('indicatorButtons').innerHTML+="<button chosen='false'  class='"+buttonClass+"' id='"+indicators[i]['code']+"'>"+indicators[i].getInfo()
+				
+		document.getElementById('indicatorButtons').innerHTML+="<button class='button' id='"+indicators[i]['code']+"'>"+indicators[i].getInfo()
 		+"</button>"; 
 		
 		

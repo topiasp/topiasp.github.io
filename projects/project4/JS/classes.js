@@ -19,6 +19,8 @@ function municipality(id,name) {
 	
 	
 	
+	
+	
 	this.getId = function() {
 		return this.id;
 	}
@@ -26,6 +28,10 @@ function municipality(id,name) {
 	
 	this.getLastValueOfIndicator=function(indicatorCode) {
 		return(this['indicators'].filter(function(x) { return(x['code']==indicatorCode)})[0].getLastValue());
+		
+	}
+	this.getLastLabelOfIndicator=function(indicatorCode) {
+		return(this['indicators'].filter(function(x) { return(x['code']==indicatorCode)})[0].getLastLabel());
 		
 	}
 	this.getInfoOfIndicator=function(indicatorCode) {
@@ -65,9 +71,13 @@ function indicator(values,labels,name,code,id) {
     };
 
 	this.getLastValue = function() {
-       
-		return(this.values[this.values.length-1]);
+
+       return(this.values[this.values.length-1]*1)
 		
+    };
+	this.getLastLabel = function() {
+
+       return(this.labels[this.labels.length-1])
 		
     };
 	this.getColorBasedOnComparisonForButton = function() {
@@ -162,32 +172,6 @@ function choro(values,muns,varCode) {
 	
 	
 }
-
-/*
-values=municipalities.map(function(x) { return(x.getLastValueOfIndicator('TYOTOSUUS')) })
-values=values.map(function(x) { return(parseFloat(x))} )
-
-codes=municipalities.map(function(x) { return(x.getIds()); })
-
-c=new choro(values,codes,'tyytt','titittyyy');
-
-c['values'];
-c.getValuesInClass(10);
-c.getClasses(8)
-
-
-taste=9;
-limits=c.getClasses(10);
-
-
-
-step1=limits.filter(function(x) { return(x['boundary']<=taste) })
-step1[step1.length-1]
-
-
-
-
-*/
 
 
 
