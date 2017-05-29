@@ -82,7 +82,7 @@ function init() {
 			
 			
 			obs.push(obj)
-			
+			 
 		}
 		
 		// Add indicator based on hardcoded data
