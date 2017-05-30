@@ -2,11 +2,39 @@
 <html>
 <head>
 <style>
-table, th, td {
-    border: 1px solid black;
+table {
     border-collapse: collapse;
+    width: 90%;
+}
+
+th, td {
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even){background-color: #f2f2f2}
+
+th {
+    background-color: #bababa;
+    color: white;
+}
+
+
+#oikea_sarake {
+
+	width: 75%;
+	float: right;
+	background-color: white;
+}
+
+#vasen_sarake {
+
+	width: 24%;
+	float: left;
+	background-color: white;
 	
 }
+
 </style>
 <script>
 
@@ -20,9 +48,12 @@ function haeJatekoodi(hakutermi) {
 			return(e['koodi'].substr(0,hakutermi.length)==hakutermi)
 			});
 		if (rtrn.length==0) {
+			
 			rtrn=jatekoodit.filter(function(e) { 
 			return(e['koodi'].replace(' ','').substr(0,hakutermi.length)==hakutermi.replace(' ',''))
 			});
+			
+			
 
 		}	
 	} else {
@@ -55,7 +86,7 @@ function haeKasittelyJaHyodyntamiskoodi(hakutermi) {
 
 	}	
 
-	rtrn=rtrn.map(function(e) { return('<th>'+e['koodi']+'</th><th>'+e['selite']+'</th><th>'+e['esim'].replace('.','\n')+'</tr>') });
+	rtrn=rtrn.map(function(e) { return('<td>'+e['koodi']+'</td><td>'+e['selite']+'</td><td>'+e['esim'].replace('.','\n')+'</tr>') });
 	
 	return(rtrn);
 }
@@ -75,7 +106,7 @@ function inputKeyPress(e) {
 		if (inputID=="userInputText_kasittelyJaHyodyntamisKoodit")  {
 			hakutermi=document.getElementById(inputID).value;
 			loytyneetKoodit=haeKasittelyJaHyodyntamiskoodi(hakutermi);
-			document.getElementById("hakuOutputKasittelyJaHyodytamiskoodi").innerHTML="<tr> <th>Koodi</th>    <th>Selite</th>     <th>Esimerkit</th></tr>"+loytyneetKoodit.join('<br>');
+			document.getElementById("hakuOutputKasittelyJaHyodytamiskoodi").innerHTML="<tr> <th>Koodi</th>    <th>Selite</th>     <th>Esimerkit</th></tr><tr>"+loytyneetKoodit.join('<br>');
 		} 
 		
 
@@ -87,9 +118,87 @@ function inputKeyPress(e) {
 <title>Annastiinan listat</title>
 <body>
 <center>
+
+<div id='container'>
+
+
+<div id='vasen_sarake'>
+
+<table>
+  <tr>
+    <th>Jätteen tyyppi</th>
+  </tr>
+  <tr>
+    <td>1 Tavanomainen jäte</td>
+  </tr>
+    <tr>
+    <td>2 Pysyvä jäte</td>
+  </tr>
+    <tr>
+    <td>3 Vaarallinen jäte</td>
+  </tr>
+</table>
+
 <br>
 <br>
-<br>
+
+<table>
+  <tr>
+    <th>Jätteen alkuperä</th>
+  </tr>
+  <tr>
+    <td>1.0 Oma toiminta (Vain samasta laitoksesta peräisin oleva jäte, yrityksen muista toimipisteistä tuleva jäte koodeille 2.2 -3.1)</td>
+  </tr>
+    <tr>
+    <td>1.1 Omasta varastosta purettu (edellisten vuosien kertymän purku)</td>
+  </tr>
+    <tr>
+    <td>2.0 Muualta tuotu</td>
+  </tr>
+    </tr>
+    <tr>
+    <td>2.1 Muualta, varastosta purettu</td>
+  </tr>
+    </tr>
+    <tr>
+    <td>2.2 Maa-, metsä- ja kalatalous</td>
+  </tr>
+    <tr>
+    <td>2.3 Teollisuus</td>
+  </tr>
+    </tr>
+    <tr>
+    <td>2.4 Rakentaminen, sisältää uudisrakentamisen, korjausrakentamisen ja purkamisen</td>
+  </tr>
+     <tr>
+    <td>2.5 Yhdyskunnat</td>
+  </tr>
+     <tr>
+    <td>2.6 Mineraalien kaivu</td>
+  </tr>
+       <tr>
+    <td>2.7 Energiahuolto
+</td>
+  </tr>
+       <tr>
+    <td>2.8 Erittelemätön alkuperä</td>
+  </tr>
+       <tr>
+    <td>2.9 Jätehuolto ja kierrätys</td>
+  </tr>
+       <tr>
+    <td>3.0 Ulkomailta</td>
+  </tr>
+       <tr>
+    <td>3.1 Erittelemätön muu
+</td>
+  </tr>
+</table>
+
+
+</div>
+
+<div id='oikea_sarake'>
 <br>
 <h3>Kuntakoodit</h3>
 <input type="text"  class="userInputText" id="userInputText_area" list="kuntaList"   onclick="this.value='';" value="Syötä kuntakoodi" size="35">
@@ -114,11 +223,16 @@ function inputKeyPress(e) {
     <th>Selite</th> 
     <th>Esimerkit</th>
 </tr>
+<tr>
   
   </table>
 <br>
 </center>
 
+
+</div>
+
+</div> <!-- end of container -->
 
 
 <datalist id="kuntaList">
