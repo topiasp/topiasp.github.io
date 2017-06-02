@@ -1,6 +1,6 @@
 
 
-
+ 
 
 var municipalities=[];	// Municipalities
 var chosen='TYOTOSUUS'; // Code for which indicator/button is chosen
