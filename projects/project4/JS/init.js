@@ -104,7 +104,7 @@ function init() {
 					(comp/(hardcodedInd['tyollisia']*1+comp)*100).toFixed(1),
 					(tmp/(hardcodedInd['tyollisia']*1+tmp)*100).toFixed(1)   ],
 				labels=hardcodedInd['vuosi']+'M'+hardcodedInd['kuukausi'],
-				name='Työttömien osuus työvoimasta (18-24.v)',
+				name='TyÃ¶ttÃ¶mien osuus tyÃ¶voimasta (18-24.v)',
 				code='tyollisia1824',
 				id=municipalities[z].getId()+'tyollisia1824'
 				);
@@ -146,6 +146,6 @@ function init() {
 	
 }
 
-
+ 
 
 
