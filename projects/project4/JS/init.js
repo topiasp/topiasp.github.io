@@ -82,7 +82,7 @@ function init() {
 			
 			
 			obs.push(obj)
-			 
+			
 		}
 		
 		// Add indicator based on hardcoded data
@@ -97,14 +97,14 @@ function init() {
 		
 		
 		tmp=obs.filter(function(x) {  return(x['code']=='TH5') })[0].getLastValue();
-		comp=obs.filter(function(x) {  return(x['code']=='TH5') })[0].getComparison(1);
+		comp=obs.filter(function(x) {  return(x['code']=='TH5') })[0]['values'][0]*1;
 		
 		var obj = new indicator(
 				values=[
 					(comp/(hardcodedInd['tyollisia']*1+comp)*100).toFixed(1),
 					(tmp/(hardcodedInd['tyollisia']*1+tmp)*100).toFixed(1)   ],
 				labels=hardcodedInd['vuosi']+'M'+hardcodedInd['kuukausi'],
-				name='TyÃ¶ttÃ¶mien osuus tyÃ¶voimasta (18-24.v)',
+				name='Työttömien osuus työvoimasta (18-24.v)',
 				code='tyollisia1824',
 				id=municipalities[z].getId()+'tyollisia1824'
 				);
