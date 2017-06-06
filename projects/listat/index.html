@@ -96,7 +96,11 @@ function inputKeyPress(e) {
 
 	if (e.keyCode==13) { 
 		
-		inputID=e['path'][0]['id'];
+		
+		//inputID=e['path'][0]['id'];
+		inputID=e['srcElement']['id'];
+		
+		
 		
 		if (inputID=="userInputText_jatekoodi")  {
 			hakutermi=document.getElementById(inputID).value;
