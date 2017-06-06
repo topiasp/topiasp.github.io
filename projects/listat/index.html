@@ -50,7 +50,7 @@ function haeJatekoodi(hakutermi) {
 		if (rtrn.length==0) {
 			
 			rtrn=jatekoodit.filter(function(e) { 
-			return(e['koodi'].replace(' ','').substr(0,hakutermi.length)==hakutermi.replace(' ',''))
+			return(e['koodi'].split(' ').join('').substr(0,hakutermi.length)==hakutermi.split(' ').join(''))
 			});
 			
 			
@@ -81,7 +81,7 @@ function haeKasittelyJaHyodyntamiskoodi(hakutermi) {
 		});
 	if (rtrn.length==0) {
 		rtrn=kasittelyJaHyodyntamiskoodit.filter(function(e) { 
-		return(e['koodi'].replace(' ','').substr(0,hakutermi.length)==hakutermi.replace(' ',''))
+		return(e['koodi'].split(' ').join('').substr(0,hakutermi.length)==hakutermi.split(' ').join(''))
 		});
 
 	}	
