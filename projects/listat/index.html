@@ -38,6 +38,7 @@ th {
 </style>
 <script>
 
+nappi="";
 
 function haeJatekoodi(hakutermi) {
 
@@ -93,13 +94,17 @@ function haeKasittelyJaHyodyntamiskoodi(hakutermi) {
 
 function inputKeyPress(e) {
 
-
+	nappi=e;
+	
 	if (e.keyCode==13) { 
 		
 		
 		//inputID=e['path'][0]['id'];
-		inputID=e['srcElement']['id'];
-		
+		if (e['target']['id']) { 
+			inputID=e['target']['id']; // Firefox
+		} else {
+			inputID=e['srcElement']['id']; // Chrome & IE
+		}
 		
 		
 		if (inputID=="userInputText_jatekoodi")  {
