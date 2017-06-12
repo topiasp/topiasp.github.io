@@ -137,6 +137,7 @@ function sliderChange(slider) {
 
 	document.getElementById("series").innerHTML=tab_output.join('');
 	
+	toggleVisibility('series');
 	
 	
 	// Fit statistics-------------------------------------
