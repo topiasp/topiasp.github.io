@@ -1,0 +1,168 @@
+
+.header{ color:black;padding-left:40%;font-size:250%;font-weight:lighter; }
+
+.sliderOutput {
+    font-weight: bold;
+}
+
+
+.container{
+    width: 100%;
+    height: 100%;
+	float:left;
+	
+	}
+.placeholder {
+    width: 80%;
+    height: 80%;
+    font-size: 14px;
+	background-color: white;
+	
+    line-height: 1.2em;
+    float: left; 
+}
+.inputs  {
+	width: 45%;
+	float:right;
+	margin-top: 5%;
+}
+.param_method  { 
+	float:right;
+	margin-right: 45%;
+	margin-top: 10%;
+}
+.param_input  {
+	width:10%;
+	margin-top:10%;
+	
+    height: 20%;
+	background-color: white;
+	padding-left:5%;
+	float:left
+}
+#userInputTextRegion {
+	float:right;
+	margin-right:35%;
+	
+}
+
+#userInputTextVar {
+	float:left;
+	margin-left:15%;
+	
+}
+#forecastButton {
+	margin-right: 45%;
+	margin-top: 1%;
+	padding: 10px 5px;
+	border: none;
+	float:right;
+	border-radius: 8px;
+    color: white;
+    text-align: center;
+	background-color: #4CAF50;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+	width:20%;
+	
+}
+#infoButton {
+	margin-right: 45%;
+	margin-top: 5%;
+	font-size: 10px;
+	border-radius: 8px;
+	padding: 10px 5px;
+    border: none;
+    color: white;
+    text-align: center;
+	
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+	
+	background-color: #f44336;
+	float:right;
+	width:20%;
+}
+#infoButton:hover {
+	background-color: #d73027;
+}	
+#forecastButton:hover {
+	 background-color: #008837; 
+}	
+
+#modelDesc {
+	width:100%;
+	float:left;
+	
+}
+
+#plots{
+	float: left;
+    width:50%;
+    height: 100%;
+	margin:0%;
+	background-color: white;
+	}
+	
+#stats {
+padding-left:25%;
+}
+#initial_values {
+padding-left:25%;
+}
+.axis path {
+    fill: none;
+    stroke: #777;
+    shape-rendering: crispEdges;
+}
+.axis text {
+    font-family: Lato;
+    font-size: 13px;
+}
+
+#tableContainer {
+	width:30%;
+	padding-left:25%;
+	}
+
+#series {
+	visibility:false;
+	
+}	
+
+.textButton {
+	
+	font-family: Lato;
+    font-size: 20px;
+	width:25%;
+	
+}
+.textButton:hover {
+	font-weight:bold;
+	
+	
+}
+	
+table {
+    width:100%;
+}
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 3px;
+    text-align: center;
+}
+table tr:nth-child(even) {
+    background-color: #eee;
+}
+table tr:nth-child(odd) {
+   background-color:#fff;
+}
+table th {
+    background-color: black;
+    color: white;
+}
