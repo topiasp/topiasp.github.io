@@ -59,41 +59,8 @@ function tbl(id,urli,tUnit,tUnits,tMin) {
 $(document).ready(function(){
 		
 
-			$("p").click(function(){
-			//alert('ok')
-			});
-			$("#tyhjennysnappula").click(function(){
-			valitutMuuttujat=[]
-			document.getElementById('boxContainer').innerHTML=""; 
-			$.plot("#placeholder", [1,2,3],
-				{  legend: {     show: true,   container: $('#legend-container')  },
-				xaxis: {ticks: [3,2,1]	}
-				}
-				);
-			});
-			$(".button.check").click(function(){
-			 
-			 this.checked=!this.checked;
-			 if (this.checked) { 			 $(this).css("background", "#286090");			 $(this).css("color", "#fff");			 }
-			 if (!this.checked) { 			 $(this).css("background", "white");			 $(this).css("color", "black");			 }
-			});
 			
-			
-			$( document).keypress(function(e) {
-			
-				if (e.keyCode==13) { 
-
-				piirra()
-				}
-			
-			});
-			
-			
-			// Buttonit falseksi
-			
-			document.getElementById('smoothButton').checked=false;
-			document.getElementById('scaleButton').checked=false;
-			 
+		
 			
 			
 			urlit.forEach(function(item){ tableMeta.push(pxwebGetMeta(item));	})
@@ -168,9 +135,48 @@ $(document).ready(function(){
 			document.getElementById('muuttujaList').innerHTML=tmp;
 			
 			
-			
+			// Get from api and from plot
 			haeSarja("TYOTTOMAT","SSS","Koko maa","Työttömät");
 			
+		
+			
+			// Buttonit falseksi
+			
+			document.getElementById('smoothButton').checked=false;
+			document.getElementById('scaleButton').checked=false;
+			 
+			
+
+			$("#tyhjennysnappula").click(function(){
+				
+
+				valitutMuuttujat=[]
+				document.getElementById('boxContainer').innerHTML=""; 
+								$.plot("#placeholder", [1,2,3],
+					{  legend: {     show: true,   container: $('#legend-container')  },
+					xaxis: {ticks: [3,2,1]	}
+					}
+					);
+			});
+			
+			$(".button").click(function(){
+			 
+			 this.checked=!this.checked;
+			 if (this.checked) { 			 $(this).css("background", "#286090");			 $(this).css("color", "#fff");			 }
+			 if (!this.checked) { 			 $(this).css("background", "white");			 $(this).css("color", "black");			 }
+			});
+			
+		
+			$( document).keypress(function(e) {
+			
+				if (e.keyCode==13) { 
+
+				piirra()
+				}
+			
+			});
+			
+	
 			
 			
 
@@ -193,35 +199,37 @@ function piirra(valinta) {
 // haeSarja
 function haeSarja(muuttuja,aluekoodi,alueNimi) {
 				
-				M=muuttujatObj.find(function(a){ return a.koodi == muuttuja })
-			
-				pxwebGet(muuttuja,aluekoodi,M.aluemuuttuja,M.indicator,M.urli);		
-								
+				M=muuttujatObj.find(function(a){ return a.koodi == muuttuja });
+				pxwebGet(muuttuja,aluekoodi,M.aluemuuttuja,M.indicator,M.urli,alueNimi,M);		
+}
+
+function kasitteleSarja(pxwebTS,alueNimi,M) {
+				
 				sarja = new Array();
 				var d1 = [];
 				var tikkeja = [];
 				var i;
-					for(i = 0; i < pxwebTS.length; i++) {
-							/* Vuosien venytys */
-							if (M.aikayksikko=='vuosi') { 
-								if (pxwebTS[i].key[2]>=(ekaMahdVuosi-1)) { 
-										sarja.push(pxwebTS[i].values);
-										rep=Array(11).join(pxwebTS[i].values+',').split(',');
-										rep.splice(-1,1);
-										sarja=sarja.concat(rep);
-										//tikkeja.push([(i),pxwebTS[0].key[2]])
-								}
-							
-							
+				for(i = 0; i < pxwebTS.length; i++) {
+						/* Vuosien venytys */
+						if (M.aikayksikko=='vuosi') { 
+							if (pxwebTS[i].key[2]>=(ekaMahdVuosi-1)) { 
+									sarja.push(pxwebTS[i].values);
+									rep=Array(11).join(pxwebTS[i].values+',').split(',');
+									rep.splice(-1,1);
+									sarja=sarja.concat(rep);
+									//tikkeja.push([(i),pxwebTS[0].key[2]])
 							}
-							
-					      else {
-							sarja.push(pxwebTS[i].values);
-						//	tikkeja.push([i,pxwebTS[0].key[0]])
+						
+						
+						}
+						
+					  else {
+						sarja.push(pxwebTS[i].values);
+					//	tikkeja.push([i,pxwebTS[0].key[0]])
 
-						  }
+					  }
 						y.push(i+1);
-					}
+				}
 				
 				
 					
@@ -234,6 +242,8 @@ function haeSarja(muuttuja,aluekoodi,alueNimi) {
 				
 				if (document.getElementById("scaleButton").checked) {	sarja=skaalaus(sarja);		}
 				
+				/*--------------- Lisätäänkö sarja olemassaoleviin vai ei ------------- */
+				if (document.getElementById("toAddOrNotButton").checked) {	valitutMuuttujat=[]; document.getElementById('boxContainer').innerHTML=""; 		}
 				
 				
 				var d1 = [];
@@ -249,9 +259,9 @@ function haeSarja(muuttuja,aluekoodi,alueNimi) {
 					 // for (var i=0;i<(M.aikayksikoita*12);i++) { tikkeja.push([i,'T'+1]);}
 
 				}
-//				else { 	
+
 				for (var i=0;i<=ajankohtaValueTexts.length;i+=2) { tikkeja.push([i,ajankohtaValueTexts[i]]); } 
-				//}
+				
 				
 				
 				$.plot("#placeholder", valitutMuuttujat,
@@ -261,7 +271,7 @@ function haeSarja(muuttuja,aluekoodi,alueNimi) {
 				);
 				
 				// Fade out & fade in
-								$('#placeholder').fadeOut().fadeIn('#placeholder');
+				$('#placeholder').fadeOut().fadeIn('#placeholder');
 				
 				/*--------------- Infoboxes---------------- */
 				if (document.getElementById("smoothButton").checked==false & document.getElementById("scaleButton").checked==false) {
@@ -290,6 +300,7 @@ function haeSarja(muuttuja,aluekoodi,alueNimi) {
 				addBox(fig2,"Kuukausimuutos",col);
 				}
 				$('.box').fadeOut().fadeIn('slow');
+				
 }
 
 
@@ -337,12 +348,9 @@ function skaalaus(arr) {
 	for(var i = 0;i < arr.length; i++) { 	skaalattu[i] = (Number(arr[i])-ka)/kh	}
 	return(skaalattu)
 }
-
 function summaa(a, b) {
     return a + b;
 }
-
-
 function leastSquares(y,x) {
 // mY <- mean(y)
 // mX <- mean(x)
@@ -370,7 +378,6 @@ function leastSquares(y,x) {
 		return(palautus)
 	
 }
-
 function kuukausitasoitus(ts) {
 	
 	lm_fit =leastSquares(ts,y);
@@ -417,23 +424,11 @@ function pxwebGetMeta(urli) {
 		xmlhttp.send();
 		
 		return(metaReturn)
-		/*
-		var xmlhttp = new XMLHttpRequest();
-		xmlhttp.onreadystatechange = function() {
-			if (this.readyState == 4 && this.status == 200) {
-				
-				pxwebMetaTyokay = JSON.parse(this.responseText); //this.responseText;//M
-				//document.getElementById('testi').innerHTML=pxwebMeta.title;
-				}
-		};
-		xmlhttp.open("GET", urlit[1], false);
-		xmlhttp.send();
-		*/
-
+	
 	
 }
 
-function pxwebGet(muuttuja,kuntakoodi,aluemuuttuja,indicator,urli) {	
+function pxwebGet(muuttuja,kuntakoodi,aluemuuttuja,indicator,urli,alueNimi,M) {	
 		
 		
 		xhr = new XMLHttpRequest();
@@ -446,6 +441,8 @@ function pxwebGet(muuttuja,kuntakoodi,aluemuuttuja,indicator,urli) {
 
 			pxwebTS = resultRaw.data;
 			
+			kasitteleSarja(pxwebTS,alueNimi,M);
+			
 		}
 		}
 		
@@ -453,7 +450,7 @@ function pxwebGet(muuttuja,kuntakoodi,aluemuuttuja,indicator,urli) {
 		{ "code": indicator,"selection": {"filter": "item","values": [  muuttuja ]  }  }],"response": {"format": "json",   "params": null}});
 		
 
-		xhr.open("POST", urli, false);	
+		xhr.open("POST", urli, true);	
 		xhr.send(data);
 }
 
