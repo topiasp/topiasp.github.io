@@ -1,0 +1,77 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=1" />
+<meta name="description" content="" />
+<meta name="author" content="" />
+    <title>...</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+
+	
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.bundle.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.bundle.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js'></script>
+
+
+
+<script type="text/javascript" src='JS/es_tasoitus.js'></script>
+<script type="text/javascript" src='JS/helpful_functions.js'></script>
+<script type="text/javascript" src='JS/site_functionality.js'></script>
+
+
+</head>
+<body onload="createTS(true,'TYOTOSUUS','SSS');initialize();">
+<p class='header' id='header1'></p> 
+<div class="container">
+
+	<div id='plots' class='canvas'>
+	
+	<!--<svg id="svg_1" width="1000" height="500"></svg>-->
+	<!--<canvas id="canvas_1" width="400" height="200" ></canvas>-->
+	</div>
+	
+	<div class='inputs'>
+		<div class='param_tax'>
+			<input type="text"  id="userInputTextVar" list="taxList"  oninput="if (this.value.length>=3) { createTS(true,this.value,document.getElementById('userInputTextRegion').value); varName=this.label; }"  onclick="this.value='';" value="TYOTOSUUS" size="15">
+		</div>
+		<div class='param_region'>
+			<input type="text"  id="userInputTextRegion" list="regionList"  oninput="if (this.value.length>=3) { createTS(true,document.getElementById('userInputTextVar').value,this.value);varName=document.getElementById('userInputTextVar').label; }"  onclick="this.value='';" value="Koko maa" size="15">
+		</div>
+		<div class='model_params'>
+			<div class='param_method'>
+			<input type="radio" name="radioButton_method" value="M" >Multiplicative<br>
+			<input type="radio" name="radioButton_method" value="A" checked>Additive<br>
+			</div>
+			
+			
+			<div class='param_input'>
+			Level(α):<span class='sliderOutput' id="alpha_output"></span><br>
+			<input type="range" id='alpha' value="35" min="0" max="100" onchange="sliderChange(this)"/>	<br><br>
+			
+			Trend(β):<span class='sliderOutput'  id="beta_output"> </span><br>
+			<input type="range" id='beta' value="2" min="0" max="100" onchange="sliderChange(this)"/> <br><br>
+		
+			Seasonal(γ):<span class='sliderOutput' id="gamma_output"> </span>
+			<br><input type="range" id='gamma' value="1" min="0" max="100" onchange="sliderChange(this)"/>
+			</div>
+			<button class="button" id='infoButton' onclick="window.open('https://www.otexts.org/fpp/7/5', '_blank');">?</button>
+			<button class="button" id='forecastButton' onclick="sliderChange(document.getElementById('alpha'));">Ennusta</button>	
+		</div>
+	</div>
+</div>
+<div class="modelDesc">
+		<div id='params'><p id='initial_values'></p></div>
+		<div id='performance'><p id='stats'></p></div>
+		<div id='tableContainer'>
+		<div onclick="toggleVisibility('series')" class='textButton'>Taulukko</div>
+		<table id='series'></table>
+		</div>
+</div>
+	
+
+		<datalist id="taxList"><option  value="something other than null">....</option></datalist>
+		<datalist id="regionList"><option  value="something other than null">....</option></datalist>
+</body>
+</html>

@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=1" />
+<meta name="description" content="" />
+<meta name="author" content="" />
+    <title>...</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+<!---<script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.1/Chart.js'></script>-->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.bundle.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.bundle.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js'></script>
+
+<!--<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>-->
+
+<script type="text/javascript" src='es_tasoitus.js'></script>
+<script type="text/javascript" src='helpful_functions.js'></script>
+<script type="text/javascript" src='site_functionality.js'></script>
+
+
+</head>
+<body onload="createTS(true,'100');initialize();">
+   
+<a href='http://rawgit.com/topiasp/topiasp.github.io/master/index.html'>in rawGit</a>
+<div class="container">
+<p class='header' id='header1'>Verokertymä</p>
+	<div class='inputs'>
+		<div class='param_tax'>
+		<input type="text"  id="userInputText_area" list="taxList"  oninput="createTS(true,this.value); varName=this;"  onclick="this.value='';" value="1.0.0 - HENKILÖASIAKKAIDEN TULOVERO" size="50">
+		</div>
+
+		<div class='param_method'>
+		<input type="radio" name="radioButton_method" value="M" > Multiplicative
+		<input type="radio" name="radioButton_method" value="A" checked> Additive<br></div>
+		<div class='param_input'>
+		Level(α):<span class='sliderOutput' id="alpha_output"></span>
+		<br><input type="range" id='alpha' value="35" min="0" max="100" onchange="sliderChange(this)"/>	<br>
+		</div>
+		<div class='param_input'>
+		Trend(β):<span class='sliderOutput'  id="beta_output"> </span><br>
+		<input type="range" id='beta' value="2" min="0" max="100" onchange="sliderChange(this)"/>
+		</div>
+		<div class='param_input'>
+		Seasonal(γ):<span class='sliderOutput' id="gamma_output"> </span>
+		<br><input type="range" id='gamma' value="1" min="0" max="100" onchange="sliderChange(this)"/>
+		</div>
+	</div>
+<div id='plot-3d' ></div>
+	<div id='plots' class='canvas'>
+	
+	<!--<svg id="svg_1" width="1000" height="500"></svg>-->
+	<!--<canvas id="canvas_1" width="400" height="200" ></canvas>-->
+	</div>
+	<div id='params'><p id='initial_values'></p></div>
+	<div id='performance'><p id='stats'></p></div>
+	<div id='tableContainer'>
+	<div onclick="toggleVisibility('series')" class='textButton'>Taulukko</div>
+	<table id='series'></table>
+	</div>
+	
+</div>
+		<datalist id="taxList"><option  value="something other than null">....</option></datalist>
+</body>
+</html>
