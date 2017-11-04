@@ -5,6 +5,11 @@
 	margin-left:30%;
 }
 
+#output {
+	margin:2%;
+	margin-left: 23%;
+}
+
 .statusBox  {
     width: 250px;
     height: 15%;
@@ -15,8 +20,31 @@
 	background: #009933;
 	
 	
-  }
-  
+}
+  .statusBox.selected {
+    width: 80%;
+    height: 15%;
+	border: none;
+	
+	margin-top: 5%;
+   
+	background: white;
+	margin-left: 8%;
+
+}
+
+.statusBoxHeader {
+	text-align: center;
+	position: relative;
+	width: 80%;
+	margin-left: 10%;
+	margin-bottom: 5%;
+	font-size: 150%;
+	color: white;
+	background-color: inherit;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
 
 .resultText {
 	font-family: Arial, Helvetica, sans-serif;
@@ -28,7 +56,19 @@
 	font-size: 200%;
 }
 
+.statusInput {
+	text-align: center;
+	position: relative;
+	margin-top: 8%;
+	margin-left: 25%;
+	font-size: 150%;
+	border: 1px solid;
+	border-radius: 25px;
+	color: black;
+	
+    font-family: Arial, Helvetica, sans-serif;
 
+}
 
 .statusInput:hover {
 	border:2px solid;
@@ -49,12 +89,15 @@
 }
 
 .backButton {
-	 border-radius:16px;
-	 border:2px solid;
-	 text-align: center;
-	 font-weight: 50;
-	border-color: black;
+	 
 	width: 8%;
 	height: 4%;
-	background-color: red;
+	background-color: white;
 }
+.backButton img {
+	
+	visibility: inherit;
+	height: 30px;
+	width: 30px;
+}
+

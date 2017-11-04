@@ -66,16 +66,36 @@ function search(paramName,searchString) {
 
 
 function createInputBox(paramName,divToAppendTo) {
-		   
+		   	
+			headerText = $('<p>' +paramName+'</p>').addClass('statusBoxHeader');
 
-		
-			var statusText = $('<input type="text" id="' +  paramName + '_input" value="' + paramName + '" size="'  + paramName.length + '">')
-				.addClass('statusInput')
-				.on('click', function() {
-					//$(this).attr('value','');
-					$('.statusInput').attr('value','');
+		   $('<div></div>')
+		    .append(headerText)
+			.addClass('statusBox')
+			.on('click',function() {
+				
+				$(this).addClass('selected')
+				$('.statusBox').fadeOut('slow', function(){ 
+
+					
+					$('.backButton').css('visibility','visible');
+					$('.resultText').fadeIn('fast');
+					$('.statusBox.selected').next().fadeIn().select();
 					
 				})
+				
+
+
+			})
+
+			.appendTo(divToAppendTo)
+			
+			;
+
+		
+			var statusText = $('<input type="text" id="' +  paramName + '_input" size="'  + paramName.length + '">') // value="' + paramName + '" 
+				.addClass('statusInput')
+
 				.bind('keyup', function(e) {
 					
 					console.log( 
@@ -90,31 +110,12 @@ function createInputBox(paramName,divToAppendTo) {
 					}
 					
 				})
-				.bind('reset',function() {
-					this.value = paramName;
-				})
+				.css('display','none')
 				;
 				
-		  
-
-		   $('<div></div>')
-			.append(statusText)
-			.addClass('statusBox')
-			.on('click',function() {
 				
-				$('.backButton').css('visibility','visible');
-				
-				$('.statusBox').fadeOut('fast');
-				$(this).fadeIn('fast');
-				$('.statusInput').attr('value','')
-				$('.resultText').fadeIn('fast');
-				
-
-			})
-
-			.appendTo(divToAppendTo)
+			$(divToAppendTo).append(statusText);
 			
-			;
 			
 			
 		
@@ -127,14 +128,22 @@ $(document).ready(function() {
 	
     console.log( "ready!" );
 	
-	obj = $("<div id='backButton'>B</div>").addClass('backButton').css('visibility','hidden').on('click',function() {
+	obj = $("<div id='backButton'><img src='BackButton.png'></img></div>").addClass('backButton').css('visibility','hidden').on('click',function() {
 		
 		$(this).css('visibility','hidden');
-		$('.resultText').fadeOut('slow');
-		$('.resultText').html('');
-
-		$('.statusBox').fadeIn('slow');
-		$('.statusInput').trigger('reset');
+		
+		$('.statusInput').fadeOut('slow', function() {
+			$('.resultText').fadeOut('slow');
+			
+			$('.resultText').html('');
+			$('.statusBox.selected').toggleClass('selected')
+			$('.statusBox').fadeIn('slow');
+		
+		})
+	
+		
+		
+		
 		
 	});
 	$('.container').append(obj);

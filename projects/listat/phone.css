@@ -14,27 +14,58 @@
 
 }
 
-.statusInput {
+
+.statusBoxHeader {
+	width: 80%;
+	margin-left: 10%;
+	margin-bottom: 5%;
 	text-align: center;
 	position: relative;
-	margin: 8%;
-	margin-left: 20%;
+
 	font-size: 150%;
-	border:none;
-	border-radius: 25px;
 	color: white;
 	background-color: inherit;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.statusBox.selected {
+    width: 80%;
+    height: 15%;
+	border: none;
+
+   
+	background: white;
+
+	
+
+}
+
+.statusInput {
+	text-align: center;
+	
+	margin-bottom: 40%;
+	margin-left: 27%;
+	font-size: 150%;
+	border: 2px solid;
+	border-radius: 10px;
+	color: black;
+	
     font-family: Arial, Helvetica, sans-serif;
 
 }
 
 
+
+
 .statusInput:hover {
 	border:2px solid;
 	border-color: black;
-	border-radius: 2px;
-	 border-radius:10px;
+
+	border-radius:10px;
 }
+
+
+
 
 
 .resultText {
@@ -46,14 +77,15 @@
 	margin-top: 20%;
 	font-size: 200%;
 }
-
 .backButton {
-	 border-radius:16px;
-	 border:2px solid;
-	 text-align: center;
-	 font-weight: 50;
-	border-color: black;
+	 
 	width: 8%;
 	height: 4%;
-	background-color: red;
+	background-color: white;
+}
+.backButton img {
+	
+	visibility: inherit;
+	height: 30px;
+	width: 30px;
 }
