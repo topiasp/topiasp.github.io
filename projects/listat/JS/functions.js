@@ -127,7 +127,7 @@ $(document).ready(function() {
 	
     console.log( "ready!" );
 	
-	obj = $("<div id='backButton'></div>").addClass('backButton').css('visibility','hidden').on('click',function() {
+	obj = $("<div id='backButton'>B</div>").addClass('backButton').css('visibility','hidden').on('click',function() {
 		
 		$(this).css('visibility','hidden');
 		$('.resultText').fadeOut('slow');
@@ -137,19 +137,19 @@ $(document).ready(function() {
 		$('.statusInput').trigger('reset');
 		
 	});
-	$('#container').append(obj);
+	$('.container').append(obj);
 	
 	
 	
-	createInputBox('Kunta','#container');
-	createInputBox('Jäte','#container');
-	createInputBox('Käsittely','#container');
+	createInputBox('Kunta','.container');
+	createInputBox('Jäte','.container');
+	createInputBox('Käsittely','.container');
 	
 	
 	//obj = $("<div id='searchOut'></div>").css('visibility','hidden')
 
 	obj = $("<div id='output'></div>").addClass('resultText')
-	$('#container').append(obj);
+	$('.container').append(obj);
 	
 	
 	

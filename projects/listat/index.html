@@ -2,132 +2,10 @@
 <head>
 <meta charset="UTF-8"> 
 <meta name="viewport" content="width=device-width, initial-scale=1" /> 
-<style>
-table {
-    border-collapse: collapse;
-    width: 90%;
-}
-
-th, td {
-    text-align: left;
-    padding: 8px;
-}
-
-tr:nth-child(even){background-color: #f2f2f2}
-
-th {
-    background-color: #bababa;
-    color: white;
-}
 
 
-#oikea_sarake {
-
-	width: 75%;
-	float: right;
-	background-color: white;
-}
-
-#vasen_sarake {
-
-	width: 24%;
-	float: left;
-	background-color: white;
-	
-}
-
-
-
-</style>
-<link rel="stylesheet"
-  media="handheld, only screen and (max-device-width: 320px)" href="phone.css">
-<script>
-
-nappi="";
-
-function haeJatekoodi(hakutermi) {
-
-	/* Ratkaistaan sisältääkö hakusana kirjaimia */
-	
-	if (hakutermi.search('[A-Za-z]')==-1) {
-		rtrn=jatekoodit.filter(function(e) { 
-			return(e['koodi'].substr(0,hakutermi.length)==hakutermi)
-			});
-		if (rtrn.length==0) {
-			
-			rtrn=jatekoodit.filter(function(e) { 
-			return(e['koodi'].split(' ').join('').substr(0,hakutermi.length)==hakutermi.split(' ').join(''))
-			});
-			
-			
-
-		}	
-	} else {
-			
-			rtrn=jatekoodit.filter(function(e) { 
-			return(e['koodi_selite'].indexOf(hakutermi)>-1);
-			});
-	
-	}
-		
-		
-	rtrn=rtrn.map(function(e) { return(e['koodi_selite']) });
-	
-	return(rtrn);
-}
-function haeKasittelyJaHyodyntamiskoodi(hakutermi) {
-
-	/* Ratkaistaan sisältääkö hakusana kirjaimia */
-	
-	
-	
-	
-	rtrn=kasittelyJaHyodyntamiskoodit.filter(function(e) { 
-		return(e['koodi'].substr(0,hakutermi.length)==hakutermi)
-		});
-	if (rtrn.length==0) {
-		rtrn=kasittelyJaHyodyntamiskoodit.filter(function(e) { 
-		return(e['koodi'].split(' ').join('').substr(0,hakutermi.length)==hakutermi.split(' ').join(''))
-		});
-
-	}	
-
-	rtrn=rtrn.map(function(e) { return('<td>'+e['koodi']+'</td><td>'+e['selite']+'</td><td>'+e['esim'].replace('.','\n')+'</tr>') });
-	
-	return(rtrn);
-}
-
-function inputKeyPress(e) {
-
-	nappi=e;
-	
-	if (e.keyCode==13) { 
-		
-		
-		//inputID=e['path'][0]['id'];
-		if (e['target']['id']) { 
-			inputID=e['target']['id']; // Firefox
-		} else {
-			inputID=e['srcElement']['id']; // Chrome & IE
-		}
-		
-		
-		if (inputID=="userInputText_jatekoodi")  {
-			hakutermi=document.getElementById(inputID).value;
-			loytyneetKoodit=haeJatekoodi(hakutermi);
-			document.getElementById("hakuOutput").innerHTML=loytyneetKoodit.join('<br>');
-		} 
-		if (inputID=="userInputText_kasittelyJaHyodyntamisKoodit")  {
-			hakutermi=document.getElementById(inputID).value;
-			loytyneetKoodit=haeKasittelyJaHyodyntamiskoodi(hakutermi);
-			document.getElementById("hakuOutputKasittelyJaHyodytamiskoodi").innerHTML="<tr> <th>Koodi</th>    <th>Selite</th>     <th>Esimerkit</th></tr><tr>"+loytyneetKoodit.join('<br>');
-		} 
-		
-
-	}
-}
-
-</script>
+<link rel="stylesheet" href="phone.css">
+<link rel="stylesheet" media="screen and (min-device-width: 400px)" href="style.css" />
 
 <script src='JS/jquery-3.2.1.min.js'></script>
 <script src='JS/functions.js'></script>
@@ -135,22 +13,9 @@ function inputKeyPress(e) {
 </head>
 <title>Annastiinan listat</title>
 <body>
-<center>
-
-<div id='container'>
 
 
-
-
-</div> <!-- end of container -->
-
-
-<datalist id="kuntaList">
-
-
-
-
-</datalist>
+<div class='container'></div> <!-- end of container -->
 
 
 <script>
