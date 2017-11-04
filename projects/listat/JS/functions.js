@@ -29,11 +29,11 @@ function search(paramName,searchString) {
 		
 		$('.resultText').css('font-size','100%');
 		
-		if (searchString.search('[A-Za-z]')==-1) {
-			res = kasittelyJaHyodyntamiskoodit.filter(function(x) {  return(  x.koodi.indexOf(searchString)>-1  )  });
+		
+		res = kasittelyJaHyodyntamiskoodit.filter(function(x) {  return(  x.koodi.indexOf(searchString)>-1  )  });
 			
-		}
-		if (searchString.search('[A-Za-z]')>-1) {
+		
+		if (res.length==0) {
 			res = kasittelyJaHyodyntamiskoodit.filter(function(x) {  return(  x.selite.toLowerCase().indexOf(searchString)>-1  )  });
 			
 		}
