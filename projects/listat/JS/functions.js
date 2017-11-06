@@ -38,8 +38,11 @@ function search(paramName,searchString) {
 			
 		}
 		
+		$('#output').html('');
+		
 		if (res.length>0) {
-			$('#output').html(  res[0].koodi + '<br>'  + res[0].selite );
+			res =  res.map(function(x) { return(  "<p class='resultRow'>"+ x['koodi'] + ' \ ' + x['selite'] + '</p>' ) }).join('');	
+			$('#output').append(   res			);
 		}
 		
 	}
@@ -57,10 +60,12 @@ function search(paramName,searchString) {
 			
 		}
 		
-		if (res.length>0) {
-			$('#output').html(  res[0].selite );
-		}
+		$('#output').html('');
 		
+		if (res.length>0) {
+			res =  res.map(function(x) { return(  "<p class='resultRow'>"+ x['koodi'] + ' \ ' + x['selite'] + '</p>' ) }).join('');	
+			$('#output').append(   res			);
+		}		
 	}
 }
 
