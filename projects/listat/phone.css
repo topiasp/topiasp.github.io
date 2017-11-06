@@ -8,7 +8,7 @@
 	margin-top: 5%;
     border: 2px solid ;  
 	border-radius: 25px;
-	background: #b30000;
+	background: #99ccff;
 	
 	margin-left: 8%;
 
@@ -52,9 +52,9 @@
 	border: 2px solid;
 	border-radius: 10px;
 	color: white;
-	background-color: #b30000;
+	background-color: #99ccff;
 	border-color: black;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: Rasa, Helvetica, sans-serif;
 
 }
 
@@ -73,7 +73,7 @@
 
 
 .resultText {
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: Rasa, Helvetica, sans-serif;
 	display:block;
 	border:none;
 	width: 100%;
