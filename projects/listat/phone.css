@@ -1,14 +1,22 @@
 .container {
 	
 }
+
+
+.colorChooser {
+	
+	display: none;
+	
+}
+
+
 .statusBox  {
     width: 80%;
     height: 15%;
  
 	margin-top: 5%;
-    border: 2px solid ;  
-	border-radius: 25px;
-	background: #99ccff;
+    border-radius: 25px;
+	background: #3973ac;
 	
 	margin-left: 8%;
 
@@ -16,16 +24,16 @@
 
 
 .statusBoxHeader {
+	text-align: center;
+	
 	width: 80%;
 	margin-left: 10%;
-	margin-bottom: 5%;
-	text-align: center;
-	position: relative;
-
-	font-size: 150%;
+	padding-top: 0%;
+	height: 10%;
+	font-size: 250%;
 	color: white;
 	background-color: inherit;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: Quicksand, Helvetica, sans-serif;
 }
 
 .statusBox.selected {
@@ -49,12 +57,12 @@
 	margin-bottom: 5%;
 	margin-left: 13%;
 	font-size: 150%;
-	border: 2px solid;
+	border: 0px solid;
 	border-radius: 10px;
 	color: white;
-	background-color: #99ccff;
+	background-color: #3973ac;
 	border-color: black;
-    font-family: Rasa, Helvetica, sans-serif;
+    font-family: Quicksand, Helvetica, sans-serif;
 
 }
 
@@ -73,7 +81,7 @@
 
 
 .resultText {
-	font-family: Rasa, Helvetica, sans-serif;
+	font-family: Quicksand, Helvetica, sans-serif;
 	display:block;
 	border:none;
 	width: 100%;

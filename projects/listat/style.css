@@ -1,4 +1,11 @@
 
+.colorChooser {
+	
+	margin: 1%;
+	display: inline;
+	
+}
+
 
 .container {
 	
@@ -11,9 +18,9 @@
     height: 15%;
 	margin-left: 35%;
 
-    border: 1px solid ;  
+    border: 0px solid ;  
 	border-radius: 25px;
-	background: #99ccff;
+	background: #3973ac;
 	
 	
 }
@@ -32,14 +39,15 @@
 
 .statusBoxHeader {
 	text-align: center;
-	position: relative;
-	width: 80%;
+	
+	width: 75%;
 	margin-left: 10%;
-	margin-bottom: 5%;
-	font-size: 200%;
+	padding-top: 13%;
+	height: 12%;
+	font-size: 250%;
 	color: white;
 	background-color: inherit;
-    font-family: Rasa, Helvetica, sans-serif;
+    font-family: Quicksand, Helvetica, sans-serif;
 }
 
 
@@ -69,7 +77,7 @@
 	border: 1px solid;
 	border-radius: 25px;
 	color: white;
-		background: #99ccff;
+		background: #3973ac;
 	
     font-family: Arial, Helvetica, sans-serif;
 

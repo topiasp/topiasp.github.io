@@ -63,7 +63,7 @@ function search(paramName,searchString) {
 		$('#output').html('');
 		
 		if (res.length>0) {
-			res =  res.map(function(x) { return(  "<p class='resultRow'>"+ x['koodi'] + ' \ ' + x['selite'] + '</p>' ) }).join('');	
+			res =  res.map(function(x) { return(  "<p class='resultRow'>" + x['selite'] + '</p>' ) }).join('');	
 			$('#output').append(   res			);
 		}		
 	}
@@ -132,7 +132,21 @@ function createInputBox(paramName,divToAppendTo) {
 $(document).ready(function() {
 	
     console.log( "ready!" );
+		
+		
+	obj = $("<input class='colorChooser' value='#3973ac' size='6'></input>").bind('keyup',function(e) {
+		if (e.keyCode == 13)  {
+			
+			globalHelp = this.value;
+				$('.statusBox').css('background',this.value);
+		}
+	});
 	
+	$('.container').append(obj)
+	
+	
+		
+		
 	obj = $("<div id='backButton'><img src='BackButton.png'></img></div>").addClass('backButton').css('visibility','hidden').on('click',function() {
 		
 		$(this).css('visibility','hidden');
