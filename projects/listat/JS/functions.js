@@ -5,8 +5,7 @@ var searchString = '';
 
 function search(paramName,searchString) {
 	
-	searchString = searchString.toLowerCase();
-	
+
 	//console.log(paramName);
 	if (paramName=='Kunta') {
 		
@@ -19,6 +18,9 @@ function search(paramName,searchString) {
 			
 		}
 		if (searchString.search('[A-Za-z]')>-1) {
+			
+			searchString = searchString.toLowerCase();
+	
 			res = kunnat.filter(function(x) {  return(  x.nimi.toLowerCase().indexOf(searchString)>-1  )  });
 			
 		}
@@ -28,12 +30,14 @@ function search(paramName,searchString) {
 	if (paramName=='Käsittely') {
 		
 		$('.resultText').css('font-size','100%');
-		
-		
+				
 		res = kasittelyJaHyodyntamiskoodit.filter(function(x) {  return(  x.koodi.indexOf(searchString)>-1  )  });
-			
+		
 		
 		if (res.length==0) {
+			
+			searchString = searchString.toLowerCase();
+	
 			res = kasittelyJaHyodyntamiskoodit.filter(function(x) {  return(  x.selite.toLowerCase().indexOf(searchString)>-1  )  });
 			
 		}
@@ -41,6 +45,7 @@ function search(paramName,searchString) {
 		$('#output').html('');
 		
 		if (res.length>0) {
+
 			res =  res.map(function(x) { return(  "<p class='resultRow'>"+ x['koodi'] + ' \ ' + x['selite'] + '</p>' ) }).join('');	
 			$('#output').append(   res			);
 		}
@@ -49,13 +54,16 @@ function search(paramName,searchString) {
 	if (paramName=='Jäte') {
 		
 		
+		console.log('jäte');
 		$('.resultText').css('font-size','100%');
 		
 		if (searchString.search('[A-Za-z]')==-1) {
-			res = jatekoodit.filter(function(x) {  return(  x.koodi.indexOf(searchString)>-1  )  });
+			res = jatekoodit.filter(function(x) {  return(  x.koodi.toLowerCase().indexOf(searchString)>-1  )  });
 			
 		}
 		if (searchString.search('[A-Za-z]')>-1) {
+			searchString = searchString.toLowerCase();
+	
 			res = jatekoodit.filter(function(x) {  return(  x.selite.toLowerCase().indexOf(searchString)>-1  )  });
 			
 		}
@@ -103,10 +111,11 @@ function createInputBox(paramName,divToAppendTo) {
 
 				.bind('keyup', function(e) {
 					
+					/*
 					console.log( 
 						this.value
 					);
-					
+					*/
 					search(paramName, this.value );
 					
 					if (this.value.length==0) {
@@ -137,8 +146,8 @@ $(document).ready(function() {
 	obj = $("<input class='colorChooser' value='#3973ac' size='6'></input>").bind('keyup',function(e) {
 		if (e.keyCode == 13)  {
 			
-			globalHelp = this.value;
-				$('.statusBox').css('background',this.value);
+
+			$('.statusBox').css('background',this.value);
 		}
 	});
 	
