@@ -1,0 +1,40 @@
+
+
+.animalButton {
+	width: 40%;
+}
+
+.animalButton img {
+	
+	visibility: inherit;
+	height: 300px;
+	width: 300px;
+	padding: 50px;
+
+}
+.animalButton img:hover {
+	
+	visibility: inherit;
+	height: 350px;
+	width: 350px;
+
+}
+.animalButton img:active {
+	
+	visibility: inherit;
+	height: 300px;
+	width: 300px;
+
+
+}
+
+
+
+.count {
+	
+	float: right;
+	width: 30%;
+	margin-right: 10%;
+	font-size: 1200%;
+	font-family: Quicksand;
+}
