@@ -10,7 +10,7 @@ $(document).ready(function() {
 		
 		
 	
-	obj = $("<div value='0'><p>AAA</p></div>").addClass('count');
+	obj = $("<div value='0'><p>...</p></div>").addClass('count');
 	
 	$('.container').append(obj)
 	
