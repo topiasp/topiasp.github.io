@@ -9,9 +9,10 @@
 	visibility: inherit;
 	height: 100px;
 	width: 100px;
-	padding: 20px;
+
 
 }
+/*
 .animalButton img:hover {
 	
 	visibility: inherit;
@@ -19,6 +20,7 @@
 	width: 150px;
 
 }
+*/
 .animalButton img:active {
 	
 	visibility: inherit;
