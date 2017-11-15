@@ -1,6 +1,77 @@
 body {font-family: Quicksand;}
 
 
+.animalSelectorContainer {
+	width: 15%;
+
+	font-size: 90%;
+	margin: 10px;
+	padding: 5px;
+	
+	display: inline-block
+
+}
+
+.animalSelector {
+	background-color: #f0f5f5;
+
+	width: 100%;
+	font-size: 100%;
+	margin: 5px;
+	padding: 5px;
+	
+	
+}
+
+.selectedAnimal {
+	
+	border: 5px;
+	background-color: #47d147;
+	color: white;
+}
+
+.animalSelector:hover {
+	
+	border: 2px solid;
+	background-color: #47d147;
+	color: white;
+
+}
+.animalSelectorCountInputContainer {
+	
+	float: right;
+	
+	position: sticky;
+	top: 50%;
+	right: 60%;
+
+	
+	
+	
+}
+.animalSelectorCountInput {
+	
+	height: 50px;
+	border: 0px;
+	font-size: 200%;
+	font-family: Quicksand
+	
+	
+}
+
+
+.animalImage {
+	
+	float: right;
+	
+	position: sticky;
+	top: 10%;
+	right: 60%;
+	height: 200px;
+	width: 200px;
+	
+}
+
 .animalButton {
 	width: 40%;
 	margin: 5%;
@@ -40,6 +111,10 @@ body {font-family: Quicksand;}
 	margin-right: 10%;
 	font-size: 900%;
 	font-family: Quicksand;
+	
+	position: sticky;
+	top: 10%;
+	right: 10%;
 }
 
 
@@ -68,14 +143,20 @@ body {font-family: Quicksand;}
 	margin: 0;
 }
 
+
+
+
+
 /* Style the tab */
 
 
 
 div.tab {
-    overflow: hidden;
+     position: sticky;
+	top: 0;
     border: 1px solid #ccc;
     background-color: #c2c2a3;
+	
 }
 
 /* Style the buttons inside the tab */
@@ -107,4 +188,5 @@ div.tab button.active {
     padding: 6px 12px;
     border: 1px solid #ccc;
     border-top: none;
+	
 }
