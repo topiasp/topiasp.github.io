@@ -11,38 +11,63 @@ body {font-family: Quicksand;}
 	display: inline-block
 
 }
-
-.animalSelector {
-	background-color: #f0f5f5;
+.speciesContainer {
+	background-color:  #00cc66;
 
 	width: 100%;
-	font-size: 100%;
+	font-size: 200%;
+	margin: 15px;
+	padding: 7px;
+	color: white;
+}
+.speciesContainer:hover {
+	
+	border: 2px solid black;
+}
+
+
+.animalSelector {
+	background-color: #ff794d;
+
+	width: 80%;
+	font-size: 50%;
 	margin: 5px;
 	padding: 5px;
 	
+	display: none;
 	
 }
 
-.selectedAnimal {
+
+.visible {
+
+	display: block;
 	
-	border: 5px;
-	background-color: #47d147;
-	color: white;
 }
+
 
 .animalSelector:hover {
 	
 	border: 2px solid;
-	background-color: #47d147;
+	background-color: #ff794d;
 	color: white;
 
 }
+.selectedAnimal {
+	
+	border: 5px;
+	background-color: #ff9900;
+	color: white;
+}
+
+
+
 .animalSelectorCountInputContainer {
 	
 	float: right;
 	
 	position: sticky;
-	top: 50%;
+	top: 30%;
 	right: 60%;
 
 	
@@ -53,12 +78,22 @@ body {font-family: Quicksand;}
 	
 	height: 50px;
 	border: 0px;
-	font-size: 200%;
+	font-size: 150%;
 	font-family: Quicksand
 	
 	
 }
-
+.animalImageIcon {
+	
+	float: right;
+	
+	position: sticky;
+	top: 10%;
+	right: 60%;
+	height: 40px;
+	width: 45px;
+	
+}
 
 .animalImage {
 	
@@ -104,35 +139,47 @@ body {font-family: Quicksand;}
 }
 
 
+/* Right wing */
+
 .countContainer {
 	
 	float: right;
-	width: 30%;
-	margin-right: 10%;
-	font-size: 900%;
+	width: 40%;
+
+	font-size: 400%;
 	font-family: Quicksand;
 	
 	position: sticky;
-	top: 10%;
+	top: 5%;
 	right: 10%;
 }
 
 
-.countHeader {
-		
-
-	font-size: 50%;
-	font-family: Quicksand;
-	padding-bottom: 5px;
-	margin: 10;
-}
 
 .countText {
 	
-	font-size: 90%;
 	font-family: Quicksand;
-	margin: 10;
-	margin-top: 40;
+}
+.countTable {
+	
+	margin: 5%;
+	visibility: hidden;
+}
+
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 15px;
+}
+th {
+	background-color: #00cc66;
+	color: white;
+    text-align: left;
+}
+td {
+    text-align: center;
 }
 
 .addedAnimal {
@@ -188,5 +235,5 @@ div.tab button.active {
     padding: 6px 12px;
     border: 1px solid #ccc;
     border-top: none;
-	
+	height: 100%;
 }

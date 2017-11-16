@@ -108,11 +108,16 @@ $(document).ready(function() {
 
    
 	
+	//<p class='countHeader'>Eläinyksiköitä</p>
 	
-	obj = $("<div value='0'><p class='countHeader'>Eläinyksiköitä</p><p class='countText'>...</p><p class='addedAnimal'></p></div>").addClass('countContainer');
+	// Count number of units
+	obj = $("<div value='0'><p class='countText'>...</p><p class='addedAnimal'></p></div>").addClass('countContainer');
 	$('#elainyksikkoLaskuri').append(obj);
 	
+	// Tabulate number of units per species
+	obj = $("<div><table id='countTable'><tr><th>Eläin</th><th>Lukumäärä</th><th>Eläinyksiköitä</th><th>Kerroin</th><tr></table></div>").addClass('countTable');
 	
+	$('.countContainer').append(obj);
 	
 	
 	
@@ -130,24 +135,44 @@ $(document).ready(function() {
 			
 			
 			// Print name of added animal
+			/*
 			$('.addedAnimal').fadeIn(1);
 			$('.addedAnimal')[0].innerHTML = '+ ' + elukka;
 			$('.addedAnimal').fadeOut(1000);
-			
+			*/
 			// Calc new value
 			prevValue = $('.countContainer').attr('value')*1;
 			
+			lisaysLkm = $('.animalSelectorCountInput')[0].value;
+			lisaysYksikoita = kerroin * lisaysLkm;
+			
 			// Update value
-			$('.countContainer').attr('value',prevValue + ( kerroin * $('.animalSelectorCountInput')[0].value) );
-			$('.countText')[0].innerHTML = parseFloat($('.countContainer').attr('value')).toFixed(1);
+			$('.countContainer').attr('value',prevValue + lisaysYksikoita);
+			$('.countText')[0].innerHTML = 'Eläinyksiköitä ' + parseFloat($('.countContainer').attr('value')).toFixed(1);
 		
 			// Remove animal selection, empty and hide input
 			$('.selectedAnimal').removeClass('selectedAnimal');
 			$('.animalSelectorCountInputContainer').fadeOut(500);
 			$('.animalSelectorCountInput')[0].value = ""
 			$('.animalImage').fadeOut(1000);
-				
 			
+			// Hide all species under containers
+			//$('.speciesContainer').children().removeClass('visible');
+			
+			// Table visible 
+			
+			if ($('#countTable').css('visibility') == 'hidden') {
+				$('#countTable').css('visibility','visible');
+			}
+			
+			// Push to table 
+			
+			tblRow = '<tr><td>' +  elukka  + '</td><td> ' + lisaysLkm + '  </td><td> ' + parseFloat(lisaysYksikoita).toFixed(1) +  ' </td><td>' + kerroin + '</td></tr>';
+			//$('.countTable').children('table').get(0).append(tblRow);
+			
+			$('#countTable > tbody:first').append(tblRow); 
+			//$("#myTable > tbody").append("<tr><td>row content</td></tr>");
+			//$('.countTable').children('table').get(0).append(tblRow);
 		}
 	
 	})
@@ -161,13 +186,64 @@ $(document).ready(function() {
 	obj = $("<div></div>").addClass('animalSelectorContainer');
 	$('#elainyksikkoLaskuri').append(obj);
 	
+	
+	/* Add divs for each elukka-laji */
+	
+	
+	// Cow
+	obj = $("<div></div>").addClass('speciesContainer').addClass('cow').attr('species','cow').html('Lehmät').on('click',function(e) {
+		
+		
+		$('.speciesContainer.cow').children().toggleClass('visible')
+	});
+	
+	imgObj = $("<img src='cow.png'></img>").addClass('animalImageIcon');
+	$(obj).append(imgObj);
+	
+	$('.animalSelectorContainer').append(obj);
+	
+	
+	// Pig
+	obj = $("<div></div>").addClass('speciesContainer').addClass('pig').attr('species','pig').html('Possut').on('click',function(e) {
+		$('.speciesContainer.pig').children().toggleClass('visible')
+	});
+	imgObj = $("<img src='pig.png'></img>").addClass('animalImageIcon');
+	$(obj).append(imgObj);
+	
+	$('.animalSelectorContainer').append(obj);
+	
+	
+	// Horse
+	obj = $("<div></div>").addClass('speciesContainer').addClass('horse').attr('species','horse').html('Hepat').on('click',function(e) {
+		$('.speciesContainer.horse').children().toggleClass('visible')
+	});
+	
+	imgObj = $("<img src='horse.png'></img>").addClass('animalImageIcon');
+	$(obj).append(imgObj);
+	
+	$('.animalSelectorContainer').append(obj);
+	
+	// Muu
+	obj = $("<div></div>").addClass('speciesContainer').addClass('muu').attr('species','muu').html('Muut').on('click',function(e) {
+		$('.speciesContainer.muu').children().toggleClass('visible')
+	});
+	
+	$('.animalSelectorContainer').append(obj);
+	
+	
 	/* Add divs for each elukka */
 	
 	
 	
 	for (i = 0; i < elaimet.length; i++) { 
 		
-		obj = $("<div>" + elaimet[i].elain + "</div>").addClass('animalSelector').attr('elainID', elaimet[i].id ).on('click',function() {
+		obj = $("<div>" + elaimet[i].elain + "</div>").addClass('animalSelector').attr('elainID', elaimet[i].id ).on('click',function(e) {
+			
+			// now this part stops the click from propagating
+			if (!e) var e = window.event;
+			e.cancelBubble = true;
+			if (e.stopPropagation) e.stopPropagation();
+			
 			
 			$('.selectedAnimal').removeClass('selectedAnimal')
 			
@@ -180,23 +256,29 @@ $(document).ready(function() {
 			})
 			
 			
-		}).on('mouseover',function() {
-				
+		})
+		/*
+		.on('mouseover',function() {
 				$('.animalImage').fadeIn(500);
-				//console.log(  $(this).attr('elainID') );
-				
-				showAnimal( $(this).attr('elainID') );
-				
-		}).on('mouseout',function() {
-				
-				$('.animalImage').fadeOut(100);
-				//console.log(  $(this).attr('elainID') );
-				
-				//showAnimal( $(this).attr('elainID') );
-				
+				showAnimal( $(this).attr('elainID') );				
+		}).on('mouseout',function() {				
+				$('.animalImage').fadeOut(100);	
 		});
 		
-		$('.animalSelectorContainer').append(obj);
+		*/
+		
+		// Get species and add to species specific container
+		
+		toAppendTo = '.animalSelectorContainer';
+		
+		if (elaimet[i].laji !='NA' ) {
+			toAppendTo = '.speciesContainer.' + elaimet[i].laji; // .speciesContainer.cow
+		} else {
+			toAppendTo = '.speciesContainer.muu';
+		}
+		
+		
+		$(toAppendTo).append(obj);
 		
 		
 		
@@ -204,9 +286,10 @@ $(document).ready(function() {
 	
 	
 	
+	/*
 	obj = $("<img src='pigButton.png'></img>").addClass('animalImage').css('display','none');
 	$('#elainyksikkoLaskuri').append(obj);
-		
+	*/	
 	
 	/*
 	obj = $("<div id='pigButton'><img src='pigButton.png'></img></div>").addClass('animalButton').on('click',function() {
