@@ -37,8 +37,7 @@ dat$laji[1:11] <- 'cow'
 dat$laji[8:12] <- 'pig'
 dat$laji[13:17] <- 'horse'
 dat$laji[18:19] <- 'sheep'
-dat$laji[20:26] <- 'chicken'
-dat$laji[27:29] <- 'duck'
+dat$laji[20:29] <- 'chicken'
 
 
 writeLines(toJSON(dat),'clipboard')

@@ -35,7 +35,7 @@ function animalsToTable(arr,targetTableId='countTable') {
 		tblRow = '<tr id='+x.id+'>'
 		tblRow += '<td contenteditable="true" class="editableCell" onclick="selectAnimal(this);">' + x.animalName +' </td>'
 		tblRow += '<td contenteditable="true" class="editableCell countCell">' + x.count +' </td>' 
-		tblRow += '<td contenteditable="true" class="nonEditableCell">' + x.unitFactorial +' </td>'
+		tblRow += '<td contenteditable="true" class="nonEditableCell">' + x.elainYksikoita +' </td>'
 		tblRow += '<td contenteditable="true" class="editableCell countCell">' + x.lietelanta +' </td>'
 		tblRow += '<td contenteditable="true" class="editableCell countCell">' + x.kuivalantaVirtsa +' </td>'
 		tblRow += '<td contenteditable="true" class="editableCell countCell">' + x.kuivikelanta +' </td>'
@@ -175,7 +175,7 @@ $(document).ready(function() {
 		
 
 	// Add for inserting data and holding counts
-	obj = $("<table id='countTable'><tr>	<th>El√§in</th>	<th>Kokonaism√§√§r√§</th>	 <th>El√§inyksik√∂it√§</th> <th>Lietelanta</th>	<th>Kuivalanta  + virtsa</th>	<th>Kuivikelanta</th>	</tr></table>").addClass('countTable');
+	obj = $("<table id='countTable'><tr>	<th>El‰in</th>	<th>Kokonaism‰‰r‰</th>	 <th>El‰inyksikˆit‰</th> <th>Lietelanta</th>	<th>Kuivalanta  + virtsa</th>	<th>Kuivikelanta</th>	</tr></table>").addClass('countTable');
 	$('.container').append(obj);
 	
 	// Add add animal button
@@ -255,7 +255,7 @@ $(document).ready(function() {
 	
 	// Add input for asking for animal count
 	
-	obj = $("<input placeholder='M√§√§r√§, esim. 200..' size=14 ></input>").addClass('animalSelectorCountInput').on('keyup',function(e) {
+	obj = $("<input placeholder='M‰‰r‰, esim. 200..' size=14 ></input>").addClass('animalSelectorCountInput').on('keyup',function(e) {
 	
 		
 		if (e.keyCode==13) { // Something happens if its enter
