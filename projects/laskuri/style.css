@@ -3,8 +3,10 @@
 body {font-family: Quicksand;}
 
 /* Styles for selecting animals */
-.animalSelectorContainer {
+.container {
 	
+	float: left;
+	width: 40%;
 }
 
 .speciesContainer {
@@ -101,11 +103,17 @@ td {
 }
 
 .editableCell img {
-	
-
 	height: 13px;
-	width: 18px;}
+	width: 18px;
+	
+}
 
+.clickableCell:hover {
+	color: blue;
+	font-size: 120%;
+	opacity: 0.7;
+	
+}
 
 .editableCell:hover {
 	
@@ -132,6 +140,21 @@ td {
 
 }
 
+/* The result div */
+
+.results {
+	 float: right;
+    width: 20%;
+    margin-right: 10%;
+    margin-top: 2%;
+    background-color: #ff5252;
+    color: white;
+    display: inline;
+    padding: 20px;
+    font-weight: bold;
+    font-size: 21;
+    border: 1px solid black;
+}
 
 
 

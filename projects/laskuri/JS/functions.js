@@ -23,8 +23,10 @@ IdGenerator = new valueKeeper(12345);
 function animalsToTable(arr,targetTableId='countTable') {
 	
 	// Clear table
-	$('#countTable tr .editableCell').remove()
-	$('#countTable tr .deleteCell').remove()
+	$('#countTable tr .clickableCell').remove();
+	$('#countTable tr .editableCell').remove();
+	$('#countTable tr .nonEditableCell').remove();
+	$('#countTable tr .deleteCell').remove();
 	
 	
 	arr.map(function(x) { 
@@ -33,12 +35,12 @@ function animalsToTable(arr,targetTableId='countTable') {
 		console.log('Kierros' + x.animalName)
 
 		tblRow = '<tr id='+x.id+'>'
-		tblRow += '<td contenteditable="true" class="editableCell" onclick="selectAnimal(this);">' + x.animalName +' </td>'
-		tblRow += '<td contenteditable="true" class="editableCell countCell">' + x.count +' </td>' 
-		tblRow += '<td contenteditable="true" class="nonEditableCell">' + x.unitFactorial +' </td>'
-		tblRow += '<td contenteditable="true" class="editableCell countCell">' + x.lietelanta +' </td>'
-		tblRow += '<td contenteditable="true" class="editableCell countCell">' + x.kuivalantaVirtsa +' </td>'
-		tblRow += '<td contenteditable="true" class="editableCell countCell">' + x.kuivikelanta +' </td>'
+		tblRow += '<td contenteditable="true" class="clickableCell" onclick="selectAnimal(this);">' + x.animalName +' </td>'
+		tblRow += '<td contenteditable="true" class="editableCell countCell">' 	+ x.count +'</td>' 
+		tblRow += '<td contenteditable="true" class="nonEditableCell">' 	 	+ x.units +'</td>'
+		tblRow += '<td contenteditable="true" class="editableCell countCell">' 	+ x.lietelanta +'</td>'
+		tblRow += '<td contenteditable="true" class="editableCell countCell">' 	+ x.kuivalantaVirtsa +'</td>'
+		tblRow += '<td contenteditable="true" class="editableCell countCell">' 	+ x.kuivikelanta +'</td>'
 		
 		tblRow += '<td class="deleteCell" onclick="deleteRow(this)">' + '<img src="garbagebin.png" ></img>' + '</td>';
 		tblRow += '</tr>'
@@ -50,41 +52,66 @@ function animalsToTable(arr,targetTableId='countTable') {
 
 	});
 	
-	
 	// Add onclick to cells
+	$('td').on('click',function() { cellClick(this); });
+	
+	// Add onclick to countcells
 	$('.countCell').on('click',function() { this.innerText=""; });
+	
+	// Alter relevant animal onFocusOut
+	
+	$(".editableCell").focusout(function(){ 
+			
+			
+			console.log('Focus out' + this.innerText);
+			
+			cell = this;
+	
+			// Manipulate JSON based on values in selected row
+			selectedRowId = cell.parentElement.id;
+			selectedRow = cell.parentElement;
+			selectedAnimal = animals.filter(function(x) { return( x.id==selectedRowId ) })[0]
+			
+			
+			
+			selectedAnimal.animalName 		= $(selectedRow).children().get(0).innerText;
+			selectedAnimal.count 			= $(selectedRow).children().get(1).innerText;
+			selectedAnimal.units 			= parseFloat(selectedAnimal.unitFactorial * selectedAnimal.count).toFixed(1);
+
+			selectedAnimal.lietelanta		= $(selectedRow).children().get(3).innerText;
+			selectedAnimal.kuivalantaVirtsa	= $(selectedRow).children().get(4).innerText;
+			selectedAnimal.kuivikelanta		= $(selectedRow).children().get(5).innerText;
+			
+			
+			// Update
+			animalsToTable(animals);
+			
+	});
 	
 	// Clear empty rows that appear
 	$('#'+targetTableId+' tr').each(function () {
      if (!$.trim($(this).text())) $(this).remove();
 	});
 	
+	
+	// Create results
+	$('.results').trigger('createResults');
 }
 
-// Function for selecting cell clicks
 
-function cellClick(obj) {
-	
-	globalHelp = obj;
-	obj.innerText=""
-
-	
-}
 
 // Function for adding empty rows to count table
 
 function addEmptyRow(targetTableId) {
-	
-	
-		
-	
-		nullValue = '...';
+
+		nullValue = 0;
 		
 		animals.push({ 
 				"id": IdGenerator.nextValue() //$('#countTable tr').length
-				,"animalName": nullValue
+				,"animalName": '-'
 				,"animalId": nullValue
 				,'count': nullValue
+				,'units': '-'
 				,"species": nullValue
 				,"unitFactorial": nullValue	
 				,"lietelanta": nullValue	
@@ -125,19 +152,20 @@ function getAnimalInfoById(animalId) {
 	);
 	
 }
+// Function for handling cell clicks
+
+function cellClick(cell) {
+	
+	$('tr').removeClass('selectedRow');
+	$(cell.parentElement).addClass('selectedRow');
+	
+	
+}
+
 
 // Function for opening overlay for animal selection
 
 function selectAnimal(cell) {
-	
-	
-	console.log(cell.parentElement.id)
-	
-	// Mark row as selected 
-	
-	
-	$(cell.parentElement).addClass('selectedRow');
-	
 		
 	// Make animals belonging to selected species invisible
 	$('.animalSelector').removeClass('visible');
@@ -145,12 +173,9 @@ function selectAnimal(cell) {
 	// Remove selection from previously selected animal 
 	$('.animalSelector').removeClass('selectedAnimal')
 
-
-	
 	// Fade in species container
 	$('.speciesContainer').fadeIn();
 
-	
 	openNav();
 }
 
@@ -186,6 +211,34 @@ $(document).ready(function() {
 	$('.container').append(obj);
 	
 	
+	// Add result div 
+	
+	//obj = $('<div></div>').addClass('results').bind('createResults',function() {
+	$('.results').bind('createResults',function() {
+			
+		// Count "lietesäiliö" and "KUIVALANTALA + KUIVIKEPOHJA"
+		lieteSailioSum = 0;
+		kuivalantala_kuivikepohjaSum = 0;
+		
+		animals.map(function(x) { 
+				info = getAnimalInfoById(x.animalId);
+				lieteSailioSum += (info.lietelanta * x.lietelanta) + (info.virtsa * x.kuivalantaVirtsa); // Multiply by factorials
+				
+				
+				kuivalantala_kuivikepohjaSum += (info.kuivikelanta_kuivikepohjalanta * x.kuivikelanta) + (info.kuivalanta * x.kuivalantaVirtsa); // Multiply by factorials
+		});
+		
+		// Round to two decimals
+		
+		lieteSailioSum = parseFloat(lieteSailioSum).toFixed(1);
+		kuivalantala_kuivikepohjaSum = parseFloat(kuivalantala_kuivikepohjaSum).toFixed(1);
+		
+		$(this).html('<p>Lietesäiliö: '+lieteSailioSum+'</p><p>Kuivalantala+kuivikepohja: '+kuivalantala_kuivikepohjaSum+'</p>');
+		
+		
+		
+	});
+	//$('.container').append(obj);
 	
 	
 	// Add species to animalSelectors-container
@@ -238,7 +291,8 @@ $(document).ready(function() {
 			// Fade in only selected animal
 			$('.selectedAnimal').toggleClass('visible');
 			
-			$('.animalSelectorCountInput').toggleClass('visible');
+			$('.animalSelectorCountInput').toggleClass('visible').focus();
+			
 			
 		});
 				
@@ -253,7 +307,10 @@ $(document).ready(function() {
 		
 	} // End of for-loop
 	
-	// Add input for asking for animal count
+	
+	
+	
+	// Add input for asking for animal count to overlay
 	
 	obj = $("<input placeholder='Määrä, esim. 200..' size=14 ></input>").addClass('animalSelectorCountInput').on('keyup',function(e) {
 	
@@ -272,23 +329,11 @@ $(document).ready(function() {
 			selectedAnimal.animalName 		= animalInfo.elain;
 			selectedAnimal.count 			= $('.animalSelectorCountInput').get(0).value;
 			selectedAnimal.unitFactorial 	= animalInfo.kerroin;
+			selectedAnimal.units 			= parseFloat(selectedAnimal.unitFactorial * selectedAnimal.count).toFixed(1);
 			selectedAnimal.animalId 		= animalInfo.id;
 			selectedAnimal.species 			= animalInfo.laji;
 			
-			/*
-				
-				"rowIndex": $('#countTable tr').length
-				,"animalName": nullValue
-				,"animalId": nullValue
-				,'count': nullValue
-				,"species": nullValue
-				,"unitFactorial": nullValue	
-				,"lietelanta": nullValue	
-				,"kuivalantaVirtsa": nullValue
-				,"kuivikelanta": nullValue
 			
-			});
-			*/
 			animalsToTable(animals,'countTable');
 			
 			closeNav();
