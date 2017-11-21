@@ -2,7 +2,10 @@ var globalHelp;
 
 // Id generator
 
-function valueKeeper(initvalue=0) {
+function valueKeeper(initvalue) {
+	
+	initvalue = initvalue || 0;
+	
     this.currentValue = initvalue;
 
 	this.nextValue = function() {
@@ -20,7 +23,13 @@ IdGenerator = new valueKeeper(12345);
 
 /* Function for inserting animals into table */
 
-function animalsToTable(arr,targetTableId='countTable') {
+function animalsToTable(arr,targetTableId,updateResults) {
+	
+	
+	// this line will check if the argument is undefined, null, or false
+    // if so set it to false, otherwise set it to it's original value
+    targetTableId = targetTableId || 'countTable';
+	updateResults = updateResults || 'update';
 	
 	// Clear table
 	$('#countTable tr .clickableCell').remove();
@@ -95,7 +104,9 @@ function animalsToTable(arr,targetTableId='countTable') {
 	
 	
 	// Create results
-	$('.results').trigger('createResults');
+	if (updateResults=='update') {
+		$('.results').trigger('createResults');
+	}
 }
 
 
@@ -119,8 +130,9 @@ function addEmptyRow(targetTableId) {
 				,"kuivikelanta": nullValue
 			
 			});
-	
-		animalsToTable(animals,'countTable');
+		
+		console.log('fromm add empty row');
+		animalsToTable(animals,targetTableId,'dont_update');
 		
 		
 }
@@ -238,11 +250,13 @@ $(document).ready(function() {
 		
 		
 	});
-	//$('.container').append(obj);
+	
 	
 	
 	// Add species to animalSelectors-container
-	const species = [...new Set(elaimet.map(item => item.laji))];
+	//const species = [...new Set(elaimet.map(item => item.laji))];
+	species = elaimet.map(function(x) { return(x.laji) });
+	species = $.unique(species);
 	
 	
 	for (i=0;i<species.length;i++) {	
