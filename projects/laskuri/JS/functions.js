@@ -85,7 +85,7 @@ function animalsToTable(arr,targetTableId,updateResults) {
 			
 			selectedAnimal.animalName 		= $(selectedRow).children().get(0).innerText;
 			selectedAnimal.count 			= $(selectedRow).children().get(1).innerText;
-			selectedAnimal.units 			= parseFloat(selectedAnimal.unitFactorial * selectedAnimal.count).toFixed(1);
+			selectedAnimal.units 			= parseFloat(selectedAnimal.unitCoefficient * selectedAnimal.count).toFixed(1);
 
 			selectedAnimal.lietelanta		= $(selectedRow).children().get(3).innerText;
 			selectedAnimal.kuivalantaVirtsa	= $(selectedRow).children().get(4).innerText;
@@ -124,14 +124,13 @@ function addEmptyRow(targetTableId) {
 				,'count': nullValue
 				,'units': '-'
 				,"species": nullValue
-				,"unitFactorial": nullValue	
+				,"unitCoefficient": nullValue	
 				,"lietelanta": nullValue	
 				,"kuivalantaVirtsa": nullValue
 				,"kuivikelanta": nullValue
 			
 			});
 		
-		console.log('fromm add empty row');
 		animalsToTable(animals,targetTableId,'dont_update');
 		
 		
@@ -146,13 +145,7 @@ function deleteRow(cell)  {
 	selectedRowId = cell.parentElement.id;
 	animals = animals.filter(function(x) { return( x.id!=selectedRowId ) });
 	
-	
 	animalsToTable(animals);
-	//child  = cell.parentElement;  		// Get parent of cell for removal
-	//parent = child.parentElement; 		// Get parent of tablerow for removal
-	//parent.removeChild(child);			// Remove child (= tablerow)
-	
-	
 	
 }
 // Function for retrieving animal information by ID
@@ -216,7 +209,6 @@ $(document).ready(function() {
 	$('.container').append(obj);
 	
 	// Add add animal button
-	
 	obj = $("<img src='table_row_add_after.png'></img>").addClass('icon').on('click',function(x) {
 		addEmptyRow('countTable');
 	});
@@ -225,7 +217,6 @@ $(document).ready(function() {
 	
 	// Add result div 
 	
-	//obj = $('<div></div>').addClass('results').bind('createResults',function() {
 	$('.results').bind('createResults',function() {
 			
 		// Count "lietesäiliö" and "KUIVALANTALA + KUIVIKEPOHJA"
@@ -234,10 +225,10 @@ $(document).ready(function() {
 		
 		animals.map(function(x) { 
 				info = getAnimalInfoById(x.animalId);
-				lieteSailioSum += (info.lietelanta * x.lietelanta) + (info.virtsa * x.kuivalantaVirtsa); // Multiply by factorials
 				
+				lieteSailioSum += (info.lietelanta * x.lietelanta) + (info.virtsa * x.kuivalantaVirtsa); // Multiply by coefficient
 				
-				kuivalantala_kuivikepohjaSum += (info.kuivikelanta_kuivikepohjalanta * x.kuivikelanta) + (info.kuivalanta * x.kuivalantaVirtsa); // Multiply by factorials
+				kuivalantala_kuivikepohjaSum += (info.kuivikelanta_kuivikepohjalanta * x.kuivikelanta) + (info.kuivalanta * x.kuivalantaVirtsa); // Multiply by coefficient
 		});
 		
 		// Round to two decimals
@@ -254,13 +245,12 @@ $(document).ready(function() {
 	
 	
 	// Add species to animalSelectors-container
-	//const species = [...new Set(elaimet.map(item => item.laji))];
 	species = elaimet.map(function(x) { return(x.laji) });
 	species = $.unique(species);
 	
 	
 	for (i=0;i<species.length;i++) {	
-		obj = $("<div></div>").addClass('speciesContainer').addClass(species[i]).attr('species',species[i]).html(lajit[i]).on('click',function() {
+		obj = $("<div></div>").addClass('speciesContainer').addClass(species[i]).attr('species',species[i]).html('<span>'+lajit[i]+'</span>').on('click',function() { // html('<span>'+lajit[i]+'</span>')
 			
 			// Make animals belonging to selected species visible
 			$(this).children('.animalSelector').toggleClass('visible');
@@ -273,8 +263,8 @@ $(document).ready(function() {
 			$(this).css('border','1px solid white');
 		});
 		
-		imgObj = $("<img src='"+species[i]+".png'></img>").addClass('animalIcon');
-		$(obj).prepend(imgObj);
+		imgObj = $("<img src='"+species[i]+".png'></img>").addClass('animalIcon'); // <span>"+lajit[i]+"</span>
+		$(obj).append(imgObj);
 		
 		// Add to overlay
 		$('.overlay-content').append(obj);
@@ -336,14 +326,14 @@ $(document).ready(function() {
 			// Retrieve info on selected animal 
 			animalInfo = getAnimalInfoById(  $('.selectedAnimal').attr('animalId')  );
 			
-			selectedRowId = $('.selectedRow').attr('id'); //$('.selectedRow').get(0).rowIndex;
+			selectedRowId = $('.selectedRow').attr('id'); 
 			
 			selectedAnimal = animals.filter(function(x) { return( x.id==selectedRowId ) })[0]
 			
 			selectedAnimal.animalName 		= animalInfo.elain;
 			selectedAnimal.count 			= $('.animalSelectorCountInput').get(0).value;
-			selectedAnimal.unitFactorial 	= animalInfo.kerroin;
-			selectedAnimal.units 			= parseFloat(selectedAnimal.unitFactorial * selectedAnimal.count).toFixed(1);
+			selectedAnimal.unitCoefficient 	= animalInfo.kerroin;
+			selectedAnimal.units 			= parseFloat(selectedAnimal.unitCoefficient * selectedAnimal.count).toFixed(1);
 			selectedAnimal.animalId 		= animalInfo.id;
 			selectedAnimal.species 			= animalInfo.laji;
 			

@@ -4,8 +4,7 @@ body {font-family: Quicksand;}
 
 /* Styles for selecting animals */
 .container {
-	
-	float: left;
+	height: 50%;
 	width: 40%;
 }
 
@@ -24,8 +23,9 @@ body {font-family: Quicksand;}
 
 }
 .animalIcon {
-	height: 75px;
-	width: 68px;
+	height: 65px;
+	width: 50px;
+	padding-top: 5px;
 	
 }
 
@@ -74,10 +74,10 @@ body {font-family: Quicksand;}
 .countTable {
 	
 	visibility: visible;
-	width: 600;
-	margin-left:5%;
-	margin-top: 5%;
-	margin-bottom: 1%;
+	width: 50%;
+	margin-left: 2%;
+	margin-top: 2%;
+
 }
 
 table, th, td {
@@ -85,7 +85,8 @@ table, th, td {
     border-collapse: collapse;
 }
 th, td {
-    padding: 15px;
+    padding: 10px;
+	font-size: 90%
 }
 th {
 	background-color: #ff5252;
@@ -94,6 +95,7 @@ th {
 }
 td {
     text-align: center;
+		font-size: 85%
 }
 
 
@@ -143,21 +145,28 @@ td {
 /* The result div */
 
 .results {
-	 float: right;
-    width: 20%;
-    margin-right: 10%;
+	
+    width: 75%;
+	margin-left: 5%;
     margin-top: 2%;
-    background-color: #ff5252;
-    color: white;
-    display: inline;
+
+    color: black;
+    display: block;
     padding: 20px;
     font-weight: bold;
     font-size: 21;
-    border: 1px solid black;
+    border: 1px dotted grey;
 }
 
 
-
+@media screen and (max-height: 450px) {
+    .overlay a {font-size: 20px}
+    .overlay .closebtn {
+        font-size: 40px;
+        top: 15px;
+        right: 35px;
+    }
+}
 
 
 
