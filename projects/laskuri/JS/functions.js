@@ -316,7 +316,7 @@ $(document).ready(function() {
 	
 	// Add input for asking for animal count to overlay
 	
-	obj = $("<input placeholder='Määrä, esim. 200..' size=14 ></input>").addClass('animalSelectorCountInput').on('keyup',function(e) {
+	obj = $("<input placeholder='Määrä, esim. 200..' size=14  type='number' ></input>").addClass('animalSelectorCountInput').on('keyup',function(e) {
 	
 		
 		if (e.keyCode==13) { // Something happens if its enter

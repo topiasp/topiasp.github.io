@@ -32,7 +32,7 @@ body {font-family: Quicksand; font-size: 90%;}
 
 }
 .animalIcon {
-	height: 50px;
+	height: 46px;
 	width: 43px;
 
 	
@@ -43,7 +43,8 @@ body {font-family: Quicksand; font-size: 90%;}
 	width: 100%;
 	font-size: 100%;
 	display: none;
-	margin-top: 13%
+	margin-top: 13%;
+	background-color: blue;
 }
 
 
@@ -51,8 +52,9 @@ body {font-family: Quicksand; font-size: 90%;}
 
 .animalSelector:hover {
 	
+	
+	background-color: rgb(51, 51, 255,0.9);
 
-	background-color: inherit;
 	color: white;
 
 }
@@ -137,15 +139,15 @@ td {
 	padding: 1px;
 }
 .deleteCell img {
-	height: 15px;
-	width: 20px;
+	height: 18px;
+	width: 15px;
 	text-align: left;
 	
 
 }
 .deleteCell img:hover {
-	height: 20px;
-	width: 25px;
+	height: 25px;
+	width: 15px;
 	text-align: left;
 	
 
@@ -197,7 +199,7 @@ td {
 /* Position the content inside the overlay */
 .overlay-content {
     position: relative;
-    top: 25%; /* 25% from the top */
+    top: 10%; /* 25% from the top */
     width: 100%; /* 100% width */
     text-align: center; /* Centered text/links */
     margin-top: 30px; /* 30px top margin to avoid conflict with the close button on smaller screens */
@@ -205,7 +207,7 @@ td {
 
 /* The navigation links inside the overlay */
 .overlay a {
-    padding: 8px;
+    padding: 4px;
     text-decoration: none;
     font-size: 36px;
     color: #818181;
@@ -245,8 +247,8 @@ td {
 }
 
 .icon {
-	height: 20px;
-	width: 20px;
+	height: 30px;
+	width: 30px;
 	margin-left: 3%;
 }
 
