@@ -54,7 +54,7 @@ body {font-family: Quicksand; font-size: 90%;}
 .animalSelector:hover {
 	
 	
-	background-color: rgb(51, 51, 255,0.9);
+	background-color: rgba(51, 51, 255,0.9);
 
 	color: white;
 
@@ -95,19 +95,21 @@ body {font-family: Quicksand; font-size: 90%;}
 table, th, td {
     border: 1px solid black;
     border-collapse: collapse;
+	width: 50;
 }
 th, td {
     padding: 1px;
-	font-size: 50%
+	font-size: 100%
 }
 th {
 	background-color: blue;
 	color: white;
     text-align: left;
+	
 }
 td {
     text-align: center;
-		font-size: 40%
+	font-size: 75%
 }
 
 
@@ -152,6 +154,15 @@ td {
 	text-align: left;
 	
 
+}
+
+
+.addRowIcon {
+	height: 30px;
+	width: 30px;
+	opacity: 0.7;
+	margin-left: 15%;
+	
 }
 
 /* The result div */
@@ -251,5 +262,6 @@ td {
 	height: 30px;
 	width: 30px;
 	margin-left: 3%;
+	
 }
 

@@ -203,7 +203,7 @@ $(document).ready(function() {
 	$('.container').append(obj);
 	
 	// Add add animal button
-	obj = $("<img src='table_row_add_after.png'></img>").addClass('icon').on('click',function(x) {
+	obj = $("<img src='table_row_add_after.png'></img>").addClass('addRowIcon').on('click',function(x) {
 		addEmptyRow('countTable');
 	});
 	$('.container').append(obj);
