@@ -6,6 +6,7 @@ body {font-family: Quicksand;}
 .container {
 	height: 50%;
 	width: 40%;
+	display: inline;
 }
 
 .speciesContainer {

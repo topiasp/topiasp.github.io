@@ -6,6 +6,7 @@ body {font-family: Quicksand; font-size: 90%;}
 .container {
 	height: 20%;
 	width: 200px;
+	display: inline;
 	margin-top: 5;
 }
 
@@ -69,14 +70,14 @@ body {font-family: Quicksand; font-size: 90%;}
 
 .animalSelectorCountInput {
 	
-	margin-top: 15%;
+	margin-top: 20%;
 	height: 50px;
 	border: 0px;
 	font-size: 150%;
 	font-family: Quicksand;
 	text-align: center;
 	display: none;
-	margin-left: 25%;
+	margin-left: 16%;
 }
 
 

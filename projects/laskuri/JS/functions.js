@@ -26,9 +26,7 @@ IdGenerator = new valueKeeper(12345);
 function animalsToTable(arr,targetTableId,updateResults) {
 	
 	
-	// this line will check if the argument is undefined, null, or false
-    // if so set it to false, otherwise set it to it's original value
-    targetTableId = targetTableId || 'countTable';
+	targetTableId = targetTableId || 'countTable';
 	updateResults = updateResults || 'update';
 	
 	// Clear table
@@ -40,23 +38,17 @@ function animalsToTable(arr,targetTableId,updateResults) {
 	
 	arr.map(function(x) { 
 	
-		
-		console.log('Kierros' + x.animalName)
-
 		tblRow = '<tr id='+x.id+'>'
-		tblRow += '<td contenteditable="true" class="clickableCell" onclick="selectAnimal(this);">' + x.animalName +' </td>'
-		tblRow += '<td contenteditable="true" class="editableCell countCell">' 	+ x.count +'</td>' 
-		tblRow += '<td contenteditable="true" class="nonEditableCell">' 	 	+ x.units +'</td>'
-		tblRow += '<td contenteditable="true" class="editableCell countCell">' 	+ x.lietelanta +'</td>'
-		tblRow += '<td contenteditable="true" class="editableCell countCell">' 	+ x.kuivalantaVirtsa +'</td>'
-		tblRow += '<td contenteditable="true" class="editableCell countCell">' 	+ x.kuivikelanta +'</td>'
+		tblRow += '<td contenteditable="false" 	class="clickableCell" onclick="selectAnimal(this);">' + x.animalName +' </td>'
+		tblRow += '<td contenteditable="true" 	class="editableCell countCell">' 	+ x.count +'</td>' 
+		tblRow += '<td contenteditable="false" 	class="nonEditableCell">' 	 	+ x.units +'</td>'
+		tblRow += '<td contenteditable="true" 	class="editableCell countCell">' 	+ x.lietelanta +'</td>'
+		tblRow += '<td contenteditable="true" 	class="editableCell countCell">' 	+ x.kuivalantaVirtsa +'</td>'
+		tblRow += '<td contenteditable="true" 	class="editableCell countCell">' 	+ x.kuivikelanta +'</td>'
 		
 		tblRow += '<td class="deleteCell" onclick="deleteRow(this)">' + '<img src="garbagebin.png" ></img>' + '</td>';
 		tblRow += '</tr>'
-		
-		//#countTable
-		
-		
+			
 		$('#'+targetTableId + ' > tbody:first').append(tblRow);
 
 	});
@@ -180,6 +172,8 @@ function selectAnimal(cell) {
 
 	// Fade in species container
 	$('.speciesContainer').fadeIn();
+	
+	console.log($('.animalSelectorCountInput').css('display'));
 
 	openNav();
 }
@@ -233,8 +227,8 @@ $(document).ready(function() {
 		
 		// Round to two decimals
 		
-		lieteSailioSum = parseFloat(lieteSailioSum).toFixed(1);
-		kuivalantala_kuivikepohjaSum = parseFloat(kuivalantala_kuivikepohjaSum).toFixed(1);
+		lieteSailioSum 					=	parseFloat(lieteSailioSum).toFixed(1);
+		kuivalantala_kuivikepohjaSum 	= 	parseFloat(kuivalantala_kuivikepohjaSum).toFixed(1);
 		
 		$(this).html('<p>Lietesäiliö: '+lieteSailioSum+'</p><p>Kuivalantala+kuivikepohja: '+kuivalantala_kuivikepohjaSum+'</p>');
 		
@@ -295,6 +289,7 @@ $(document).ready(function() {
 			// Fade in only selected animal
 			$('.selectedAnimal').toggleClass('visible');
 			
+			console.log('Nyt fokusoidaan!')
 			$('.animalSelectorCountInput').toggleClass('visible').focus();
 			
 			
@@ -321,7 +316,6 @@ $(document).ready(function() {
 		
 		if (e.keyCode==13) { // Something happens if its enter
 			
-			console.log(e.target.value);
 			
 			// Retrieve info on selected animal 
 			animalInfo = getAnimalInfoById(  $('.selectedAnimal').attr('animalId')  );
@@ -345,7 +339,6 @@ $(document).ready(function() {
 			$('.animalSelectorCountInput').toggleClass('visible');
 			$('.animalSelectorCountInput').get(0).value = '';
 			
-			$('.selectedRow').removeClass('selectedRow');
 			
 		}
 	});
