@@ -31,10 +31,12 @@ function createAnimalCard(id,cardId) {
 	
 	rtrnObj = $('<div></div').attr('id',cardId).addClass('animalCard').html('<img src="'+animal.laji+'.png"></img>').on('click',function() {
 		
+		
+		
 		displayAnimal(cardId);
 	});
 	
-	rtrnObj.append($('<div><div>').addClass('animalCardHeader').html('<h4>'+animal.elain+'</h4>'));
+	rtrnObj.append($('<div><div>').addClass('animalCardHeader').html('<p>'+animal.elain+'</p>'));
 	
 	
 	return(rtrnObj);
@@ -88,6 +90,9 @@ function displayAnimal(cardId) {
 	// Fade in species container
 	$('.speciesContainer').fadeOut();
 	
+	// animalCardInfoContainer visible
+	$('.animalCardInfoContainer').addClass('visible');
+	
 	// Create info 
 	
 	animal = animals.filter(function(x)  { return(x.cardId==cardId) })[0];
@@ -115,8 +120,6 @@ function displayAnimal(cardId) {
 			$(this).get(0).value="";
 		
 	});
-	
-	//obj = $('<p>Eläinten lukumäärä</p>').append(inputObj);
 
 	$('.animalCardInfoContainer').append(inputObj);
 	
@@ -196,6 +199,7 @@ function closeNav() {
     document.getElementById("myNav").style.width = "0%";
 	
 	$('.animalCardInfoContainer').children().remove();
+	$('.resultContainer').children().remove();
 	
 }
 
@@ -207,45 +211,6 @@ $(document).ready(function() {
     console.log( "ready!" );
 		
 
-	// Add for inserting data and holding counts
-	//obj = $("<table id='countTable'><tr>	<th>Eläin</th>	<th>Kokonaismäärä</th>	 <th>Eläinyksiköitä</th> <th>Lietelanta</th>	<th>Kuivalanta  + virtsa</th>	<th>Kuivikelanta</th>	</tr></table>").addClass('countTable');
-	//$('.container').append(obj);
-	
-	// Add add animal button
-	obj = $("<img src='table_row_add_after.png'></img>").addClass('addAnimalIcon').addClass('animalCard').on('click',function(x) {
-			
-			selectAnimal();
-				
-	});
-	$('.container').append(obj);
-	
-
-	// Add result div 
-	
-	$('.results').bind('createResults',function() {
-			
-		// Count "lietesäiliö" and "KUIVALANTALA + KUIVIKEPOHJA"
-		lieteSailioSum = 0;
-		kuivalantala_kuivikepohjaSum = 0;
-		
-		animals.map(function(x) { 
-				info = getAnimalInfoById(x.animalId);
-				
-				lieteSailioSum += (info.lietelanta * x.lietelanta) + (info.virtsa * x.kuivalantaVirtsa); // Multiply by coefficient
-				
-				kuivalantala_kuivikepohjaSum += (info.kuivikelanta_kuivikepohjalanta * x.kuivikelanta) + (info.kuivalanta * x.kuivalantaVirtsa); // Multiply by coefficient
-		});
-		
-		// Round to two decimals
-		
-		lieteSailioSum 					=	parseFloat(lieteSailioSum).toFixed(1);
-		kuivalantala_kuivikepohjaSum 	= 	parseFloat(kuivalantala_kuivikepohjaSum).toFixed(1);
-		
-		$(this).html('<p>Lietesäiliö: '+lieteSailioSum+'</p><p>Kuivalantala+kuivikepohja: '+kuivalantala_kuivikepohjaSum+'</p>');
-		
-		
-		
-	});
 	
 	
 	
@@ -338,43 +303,42 @@ $(document).ready(function() {
 	obj = $("<div></div>").addClass('animalCardInfoContainer');
 	$('.overlay-content').append(obj);
 	
+	// Add a container for results
 	
-	
-	// Add input for asking for animal count to overlay
-	/*
-	obj = $("<input placeholder='Määrä, esim. 200..' size=14  type='number' ></input>").addClass('animalSelectorCountInput').on('keyup',function(e) {
-	
+	obj = $("<div></div>").addClass('resultContainer').bind('createResults',function() {
+			
+		lieteSailioSum = 0;
+		kuivalantala_kuivikepohjaSum = 0;
+		elaimiaSum = 0;
+		elainYksikoitaSum = 0;
 		
-		if (e.keyCode==13) { // Something happens if its enter
-			
-			
-			// Retrieve info on selected animal 
-			animalInfo = getAnimalInfoById(  $('.selectedAnimal').attr('animalId')  );
-			
-			selectedRowId = $('.selectedRow').attr('id'); 
-			
-			selectedAnimal = animals.filter(function(x) { return( x.id==selectedRowId ) })[0]
-			
-			selectedAnimal.animalName 		= animalInfo.elain;
-			selectedAnimal.count 			= $('.animalSelectorCountInput').get(0).value;
-			selectedAnimal.unitCoefficient 	= animalInfo.kerroin;
-			selectedAnimal.units 			= parseFloat(selectedAnimal.unitCoefficient * selectedAnimal.count).toFixed(1);
-			selectedAnimal.animalId 		= animalInfo.id;
-			selectedAnimal.species 			= animalInfo.laji;
-			
-			
-			animalsToTable(animals,'countTable');
-			
-			closeNav();
-			
-			$('.animalSelectorCountInput').toggleClass('visible');
-			$('.animalSelectorCountInput').get(0).value = '';
-			
-			
-		}
+		animals.map(function(x) { 
+				info = getAnimalInfoById(x.id);
+				
+				elaimiaSum += x.count;
+				elainYksikoitaSum += x.count * x.kerroin;
+				
+				lieteSailioSum += (info.lietelanta * x.lietelannalla_count) + (info.virtsa * x.kuivalanta_virtsa_count); // Multiuply by coefficient
+				
+				
+				kuivalantala_kuivikepohjaSum += (info.kuivikelanta_kuivikepohjalanta * x.kuivikelannalla_count) + (info.kuivalanta * x.kuivalanta_virtsa_count); // Multiply by coefficient
+		});
+		
+		// Round to two decimals
+		
+		lieteSailioSum 					=	parseFloat(lieteSailioSum).toFixed(1);
+		kuivalantala_kuivikepohjaSum 	= 	parseFloat(kuivalantala_kuivikepohjaSum).toFixed(1);
+		elainYksikoitaSum 				= 	parseFloat(elainYksikoitaSum).toFixed(1);
+		
+		
+		$(this).html('<p>Eläimiä: '+elaimiaSum+'</p><p>Eläinyksiköitä: '+elainYksikoitaSum+'</p><p>Lietesäiliö: '+lieteSailioSum+'</p><p>Kuivalantala+kuivikepohja: '+kuivalantala_kuivikepohjaSum+'</p>');
+		
+		
+		
 	});
 	$('.overlay-content').append(obj);
-	*/
+	
+	
 
 	species_id = 1;
 			
@@ -382,13 +346,72 @@ $(document).ready(function() {
 			
 	animals.push( animal );
 
-// Create card of selected animal
-			
+	// Create card of selected animal		
 	$('.container').prepend(createAnimalCard(species_id,animal['cardId']));
 			
+			
+	// Add add animal button
+	obj = $("<img src='table_row_add_after.png'></img>").addClass('addAnimalIcon').addClass('animalCard').on('click',function(x) {
+			
+			selectAnimal();
+				
+	});
+	$('.container').append(obj);
 	
-	//$('.container').prepend(createAnimalCard(1,'Lehmät'));
-	//$('.container').append(createAnimalCard('horse','Hevoset'));
-	//$('.container').append(createAnimalCard('chicken','Siipieläimet'));
+	// Add result div 
 	
+	obj = $('<div></div>').addClass('resultButton');//.append('<h3>Tulokset</h3>');
+	$('.container').append(obj);
+	
+	$('.resultButton').append('<p>Tulokset<p>');
+
+	$('.resultButton').on('click',function() {
+		
+		// Make animals belonging to selected species invisible
+		$('.animalSelector').removeClass('visible');
+		
+		// Remove selection from previously selected animal 
+		$('.animalSelector').removeClass('selectedAnimal');
+
+		// Fade in species container
+		$('.speciesContainer').fadeOut();
+		
+		$('.animalCardInfoContainer').removeClass('visible');
+		
+		// Create info 
+		$('.resultContainer').trigger('createResults')
+		
+		
+		openNav();
+		
+	});
+	
+	
+	/*
+	
+	$('.results').bind('createResults',function() {
+			
+		// Count "lietesäiliö" and "KUIVALANTALA + KUIVIKEPOHJA"
+		lieteSailioSum = 0;
+		kuivalantala_kuivikepohjaSum = 0;
+		
+		animals.map(function(x) { 
+				info = getAnimalInfoById(x.animalId);
+				
+				lieteSailioSum += (info.lietelanta * x.lietelanta) + (info.virtsa * x.kuivalantaVirtsa); // Multiply by coefficient
+				
+				kuivalantala_kuivikepohjaSum += (info.kuivikelanta_kuivikepohjalanta * x.kuivikelanta) + (info.kuivalanta * x.kuivalantaVirtsa); // Multiply by coefficient
+		});
+		
+		// Round to two decimals
+		
+		lieteSailioSum 					=	parseFloat(lieteSailioSum).toFixed(1);
+		kuivalantala_kuivikepohjaSum 	= 	parseFloat(kuivalantala_kuivikepohjaSum).toFixed(1);
+		
+		$(this).html('<p>Lietesäiliö: '+lieteSailioSum+'</p><p>Kuivalantala+kuivikepohja: '+kuivalantala_kuivikepohjaSum+'</p>');
+		
+		
+		
+	});
+	*/
 });

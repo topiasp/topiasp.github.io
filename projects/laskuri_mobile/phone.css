@@ -4,31 +4,40 @@ body {font-family: Quicksand; font-size: 90%;}
 
 /* Styles for selecting animals */
 .container {
-	height: 20%;
-	width: 200px;
-	display: inline;
+	height: 100%;
+	width: 100%;
+	display: block;
 	margin-top: 5;
 }
 .animalCard  {
-	width: 38%;
-	display: inline-block;
-	height: 18%;
+	width: 70%;
+	display: block;
+	height: 24%;
 	font-size: 80%;
 	border-radius: 5px; /* 5px rounded corners */
 	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-	padding: 15px;
+	
+	margin-top: 10%;
+	margin-left: 15%;
+	
 	text-align: center;
+}
+
+.animalCard:hover {
+	
+	box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 }
 
 .animalCard img {
 	
 
-	width: 100%;
-	height: 75%
-	
+	width: 85%;
+	height: 80%;
 
    
 }
+
+
 .animalCard:active {
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 }
@@ -37,7 +46,8 @@ body {font-family: Quicksand; font-size: 90%;}
 .addAnimalIcon {
 	height: 30px;
 	width: 30px;
-	margin: 5%;
+	margin-left: 45%;
+		margin-top: 5%;
 
 }
 
@@ -45,11 +55,12 @@ body {font-family: Quicksand; font-size: 90%;}
 	width: 38%;
 	height: 80%;
 	margin-left: 20%;
+	display: none;
 }
 
 .animalCardInfoContainer img {
 	
-	width: 150;
+	width: 140;
 	height: 80;
 	
 }
@@ -61,14 +72,15 @@ body {font-family: Quicksand; font-size: 90%;}
 	
 }
 
-
-
 .animalCardInfoContainer input {
 	border: 0px;
 	font-size: 150%;
 	font-family: Quicksand;
 	text-align: left;
 }
+
+
+
 
 
 .speciesContainer {
@@ -218,19 +230,34 @@ td {
 
 /* The result div */
 
-.results {
+.resultButton {
 	
-    width: 75%;
-	margin-left: 5%;
-    margin-top: 2%;
+    width: 40%;
+	height: 1%;
+	background-color:  #00b33c;
+	
+	position: fixed;
+    bottom: 0;
+    left: 25%;
+
+    border: 3px solid #73AD21;
 	
     color: black;
-    display: none;
+    display: block;
     padding: 20px;
     font-weight: bold;
     font-size: 15;
     border: 1px dotted grey;
+	text-align: center;
 }
+
+.resultButton p {
+	position: fixed;
+	bottom: 5;
+	left: 135;
+	color: white;
+}
+
 
 
 @media screen and (max-height: 450px) {
