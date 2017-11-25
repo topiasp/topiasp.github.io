@@ -1,1 +1,69 @@
+<html>
+<head>
+<meta charset="UTF-8"> 
+<meta name="viewport" content="width=device-width, initial-scale=1" /> 
 
+
+<link rel="stylesheet" href="phone.css">
+<link rel="stylesheet" media="screen and (min-device-width: 400px)" href="style.css" />
+<link href='https://fonts.googleapis.com/css?family=Quicksand' rel='stylesheet'>
+
+<script src='JS/jquery-3.2.1.min.js'></script>
+<script src='JS/functions.js'></script>
+
+</head>
+<title>Annastiinan laskurit</title>
+<body>
+
+
+<div class='container'></div> <!-- end of container -->
+<div class='results'></div>
+<!-- The overlay -->
+<div id="myNav" class="overlay">
+
+  <!-- Button to close the overlay navigation -->
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+
+  <!-- Overlay content -->
+  <div class="overlay-content">
+
+  </div>
+
+</div>
+
+
+
+</body>
+<script>
+
+elaimet = [{"lantakerroin_elain":"Lypsylehmä (8500 kg) 1","elain":"Lypsylehmä","kerroin":10.8,"id":1,"laji":"cow","kuivalanta":15.8,"kuivikelanta_kuivikepohjalanta":28.6,"lietelanta":25.5,"virtsa":8.7},{"lantakerroin_elain":"Emolehmä","elain":"Emolehmä","kerroin":4.3,"id":2,"laji":"cow","kuivalanta":16.9,"kuivikelanta_kuivikepohjalanta":20.4,"lietelanta":19,"virtsa":1.9},{"lantakerroin_elain":"Hieho","elain":"Hieho (12-24 kk)","kerroin":4,"id":3,"laji":"cow","kuivalanta":6.6,"kuivikelanta_kuivikepohjalanta":13.4,"lietelanta":8.5,"virtsa":2.9},{"lantakerroin_elain":"Lihanauta, Sonni","elain":"Lihanauta (sonni 12-24 kk)","kerroin":5.7,"id":4,"laji":"cow","kuivalanta":10.1,"kuivikelanta_kuivikepohjalanta":12.9,"lietelanta":12.1,"virtsa":1.7},{"lantakerroin_elain":"Lihanauta, Sonni","elain":"Siitossonni (sonni > 2v)","kerroin":8.1,"id":5,"laji":"cow","kuivalanta":10.1,"kuivikelanta_kuivikepohjalanta":12.9,"lietelanta":12.1,"virtsa":1.7},{"lantakerroin_elain":"Sonnivasikka 6-12 kk","elain":"Vasikka (6-12 kk)","kerroin":3.4,"id":6,"laji":"cow","kuivalanta":8,"kuivikelanta_kuivikepohjalanta":12.1,"lietelanta":9.5,"virtsa":2.1},{"lantakerroin_elain":"Sonnivasikka < 6 kk","elain":"Vasikka (< 6 kk)","kerroin":1.7,"id":7,"laji":"cow","kuivalanta":4,"kuivikelanta_kuivikepohjalanta":7.1,"lietelanta":4.7,"virtsa":1.3},{"lantakerroin_elain":"Emakko ja porsaat 4","elain":"Emakko porsaineen","kerroin":2.6,"id":8,"laji":"pig","kuivalanta":2.2,"kuivikelanta_kuivikepohjalanta":10.7,"lietelanta":9.3,"virtsa":6.8},{"lantakerroin_elain":"Lihasika 2, 3","elain":"Lihasika*","kerroin":1,"id":9,"laji":"pig","kuivalanta":1,"kuivikelanta_kuivikepohjalanta":3,"lietelanta":2.4,"virtsa":1.6},{"lantakerroin_elain":"Karju (täysikasvuinen)","elain":"Karju","kerroin":1.8,"id":10,"laji":"pig","kuivalanta":1.8,"kuivikelanta_kuivikepohjalanta":6.1,"lietelanta":4.9,"virtsa":3.5},{"lantakerroin_elain":"Emakko ja porsaat satelliittisikalassa 5","elain":"Joutilas emakko ydinsikalassa","kerroin":1.8,"id":11,"laji":"pig","kuivalanta":3.5,"kuivikelanta_kuivikepohjalanta":15.5,"lietelanta":12.7,"virtsa":10.4},{"lantakerroin_elain":"Vieroitettu porsas 6","elain":"Vieroitettu porsas (5-11 vk, jos tilalla ei ole emakoita)","kerroin":0.24,"id":12,"laji":"pig","kuivalanta":0.6,"kuivikelanta_kuivikepohjalanta":1.6,"lietelanta":1.2,"virtsa":0.8},{"lantakerroin_elain":"Hevonen > 150 cm","elain":"Hevonen 2 v ->","kerroin":3.9,"id":13,"laji":"horse","kuivalanta":0,"kuivikelanta_kuivikepohjalanta":17,"lietelanta":0,"virtsa":0},{"lantakerroin_elain":"Poni 120-150 cm","elain":"Poni** 2 v ->, hevonen 1 v","kerroin":2.8,"id":14,"laji":"horse","kuivalanta":0,"kuivikelanta_kuivikepohjalanta":12,"lietelanta":0,"virtsa":0},{"lantakerroin_elain":"Pienponi < 120 cm","elain":"Pienponi 2 v, poni 1 v, hevonen < 1 v","kerroin":2,"id":15,"laji":"horse","kuivalanta":0,"kuivikelanta_kuivikepohjalanta":8,"lietelanta":0,"virtsa":0},{"lantakerroin_elain":"Pienponi < 120 cm","elain":"Pienponi 1-2 v, poni < 1 v","kerroin":1.2,"id":16,"laji":"horse","kuivalanta":0,"kuivikelanta_kuivikepohjalanta":8,"lietelanta":0,"virtsa":0},{"lantakerroin_elain":"Pienponi < 120 cm","elain":"Pienponi < 1 v","kerroin":0.8,"id":17,"laji":"horse","kuivalanta":0,"kuivikelanta_kuivikepohjalanta":8,"lietelanta":0,"virtsa":0},{"lantakerroin_elain":"Lampaat ja karitsat","elain":"Lammas (uuhi karitsoineen)","kerroin":0.6,"id":18,"laji":"sheep","kuivalanta":0,"kuivikelanta_kuivikepohjalanta":1.3,"lietelanta":0,"virtsa":0},{"lantakerroin_elain":"Vuohet ja kilit","elain":"Vuohi (kuttu kileineen, pukki)","kerroin":0.6,"id":19,"laji":"sheep","kuivalanta":0,"kuivikelanta_kuivikepohjalanta":1.3,"lietelanta":0,"virtsa":0},{"lantakerroin_elain":"Munituskana, Broileriemo","elain":"Munituskana","kerroin":0.07,"id":20,"laji":"chicken","kuivalanta":0,"kuivikelanta_kuivikepohjalanta":0.04,"lietelanta":0,"virtsa":0},{"lantakerroin_elain":"Munituskana, Broileriemo","elain":"Broileriemo","kerroin":0.07,"id":21,"laji":"chicken","kuivalanta":0,"kuivikelanta_kuivikepohjalanta":0.04,"lietelanta":0,"virtsa":0},{"lantakerroin_elain":"","elain":"Kukko","kerroin":0.1,"id":22,"laji":"chicken","kuivalanta":0,"kuivikelanta_kuivikepohjalanta":0,"lietelanta":0,"virtsa":0},{"lantakerroin_elain":"Kalkkuna 2","elain":"Emokalkkuna","kerroin":0.14,"id":23,"laji":"chicken","kuivalanta":0,"kuivikelanta_kuivikepohjalanta":0.06,"lietelanta":0,"virtsa":0},{"lantakerroin_elain":"Kalkkuna 2","elain":"Lihakalkkuna*","kerroin":0.12,"id":24,"laji":"chicken","kuivalanta":0,"kuivikelanta_kuivikepohjalanta":0.06,"lietelanta":0,"virtsa":0},{"lantakerroin_elain":"Broileri 2","elain":"Broileri*","kerroin":0.03,"id":25,"laji":"chicken","kuivalanta":0,"kuivikelanta_kuivikepohjalanta":15,"lietelanta":0,"virtsa":0},{"lantakerroin_elain":"","elain":"Kananuorikko*","kerroin":0.04,"id":26,"laji":"chicken","kuivalanta":0,"kuivikelanta_kuivikepohjalanta":0,"lietelanta":0,"virtsa":0},{"lantakerroin_elain":"Ankka, Hanhi 2","elain":"Emoankka, liha-ankka, emohanhi, lihahanhi, emofasaani, lihafasaani*","kerroin":0.07,"id":27,"laji":"chicken","kuivalanta":0,"kuivikelanta_kuivikepohjalanta":0.04,"lietelanta":0,"virtsa":0},{"lantakerroin_elain":"Sorsa 2","elain":"Emosorsa, lihasorsa*","kerroin":0.06,"id":28,"laji":"chicken","kuivalanta":0,"kuivikelanta_kuivikepohjalanta":25,"lietelanta":0,"virtsa":0},{"lantakerroin_elain":"","elain":"Viiriäinen, helmikana","kerroin":0.04,"id":29,"laji":"chicken","kuivalanta":0,"kuivikelanta_kuivikepohjalanta":0,"lietelanta":0,"virtsa":0},{"lantakerroin_elain":"","elain":"Kaninaaras poikasineen***","kerroin":0.19,"id":30,"laji":"Muu","kuivalanta":0,"kuivikelanta_kuivikepohjalanta":0,"lietelanta":0,"virtsa":0},{"lantakerroin_elain":"","elain":"Strutsi","kerroin":0.9,"id":31,"laji":"Muu","kuivalanta":0,"kuivikelanta_kuivikepohjalanta":0,"lietelanta":0,"virtsa":0},{"lantakerroin_elain":"","elain":"Biisoni","kerroin":2.5,"id":32,"laji":"Muu","kuivalanta":0,"kuivikelanta_kuivikepohjalanta":0,"lietelanta":0,"virtsa":0},{"lantakerroin_elain":"","elain":"Villisika","kerroin":0.9,"id":33,"laji":"Muu","kuivalanta":0,"kuivikelanta_kuivikepohjalanta":0,"lietelanta":0,"virtsa":0},{"lantakerroin_elain":"Minkki, Hilleri","elain":"Minkki ja hilleri, siitosnaaras pentuineen","kerroin":0.18,"id":34,"laji":"Muu","kuivalanta":0,"kuivikelanta_kuivikepohjalanta":0.25,"lietelanta":0,"virtsa":0},{"lantakerroin_elain":"Minkki, Hilleri","elain":"Minkki ja hilleri, pentu","kerroin":0.18,"id":35,"laji":"Muu","kuivalanta":0,"kuivikelanta_kuivikepohjalanta":0.25,"lietelanta":0,"virtsa":0},{"lantakerroin_elain":"Minkki, Hilleri","elain":"Minkki ja hilleri, siitosuros","kerroin":0.18,"id":36,"laji":"Muu","kuivalanta":0,"kuivikelanta_kuivikepohjalanta":0.25,"lietelanta":0,"virtsa":0},{"lantakerroin_elain":"Kettu, Supi","elain":"Kettu ja supi, siitosnaaras pentuineen","kerroin":0.41,"id":37,"laji":"Muu","kuivalanta":0,"kuivikelanta_kuivikepohjalanta":0.5,"lietelanta":0,"virtsa":0},{"lantakerroin_elain":"Kettu, Supi","elain":"Kettu ja supi, pentu","kerroin":0.41,"id":38,"laji":"Muu","kuivalanta":0,"kuivikelanta_kuivikepohjalanta":0.5,"lietelanta":0,"virtsa":0},{"lantakerroin_elain":"Kettu, Supi","elain":"Kettu ja supi, siitosuros","kerroin":0.41,"id":39,"laji":"Muu","kuivalanta":0,"kuivikelanta_kuivikepohjalanta":0.5,"lietelanta":0,"virtsa":0}]
+
+//[{"elain":"Lypsylehmä","kerroin":10.8,"id":1,"laji":"cow"},{"elain":"Emolehmä","kerroin":4.3,"id":2,"laji":"cow"},{"elain":"Hieho (12-24 kk)","kerroin":4,"id":3,"laji":"cow"},{"elain":"Lihanauta (sonni 12-24 kk)","kerroin":5.7,"id":4,"laji":"cow"},{"elain":"Siitossonni (sonni > 2v)","kerroin":8.1,"id":5,"laji":"cow"},{"elain":"Vasikka (6-12 kk)","kerroin":3.4,"id":6,"laji":"cow"},{"elain":"Vasikka (< 6 kk)","kerroin":1.7,"id":7,"laji":"cow"},{"elain":"Emakko porsaineen","kerroin":2.6,"id":8,"laji":"pig"},{"elain":"Lihasika*","kerroin":1,"id":9,"laji":"pig"},{"elain":"Karju","kerroin":1.8,"id":10,"laji":"pig"},{"elain":"Joutilas emakko ydinsikalassa","kerroin":1.8,"id":11,"laji":"pig"},{"elain":"Vieroitettu porsas (5-11 vk, jos tilalla ei ole emakoita)","kerroin":0.24,"id":12,"laji":"pig"},{"elain":"Hevonen 2 v ->","kerroin":3.9,"id":13,"laji":"horse"},{"elain":"Poni** 2 v ->, hevonen 1 v","kerroin":2.8,"id":14,"laji":"horse"},{"elain":"Pienponi 2 v, poni 1 v, hevonen < 1 v","kerroin":2,"id":15,"laji":"horse"},{"elain":"Pienponi 1-2 v, poni < 1 v","kerroin":1.2,"id":16,"laji":"horse"},{"elain":"Pienponi < 1 v","kerroin":0.8,"id":17,"laji":"horse"},{"elain":"Lammas (uuhi karitsoineen)","kerroin":0.6,"id":18,"laji":"sheep"},{"elain":"Vuohi (kuttu kileineen, pukki)","kerroin":0.6,"id":19,"laji":"sheep"},{"elain":"Munituskana","kerroin":0.07,"id":20,"laji":"chicken"},{"elain":"Broileriemo","kerroin":0.07,"id":21,"laji":"chicken"},{"elain":"Kukko","kerroin":0.1,"id":22,"laji":"chicken"},{"elain":"Emokalkkuna","kerroin":0.14,"id":23,"laji":"chicken"},{"elain":"Lihakalkkuna*","kerroin":0.12,"id":24,"laji":"chicken"},{"elain":"Broileri*","kerroin":0.03,"id":25,"laji":"chicken"},{"elain":"Kananuorikko*","kerroin":0.04,"id":26,"laji":"chicken"},{"elain":"Emoankka, liha-ankka, emohanhi, lihahanhi, emofasaani, lihafasaani*","kerroin":0.07,"id":27,"laji":"chicken"},{"elain":"Emosorsa, lihasorsa*","kerroin":0.06,"id":28,"laji":"chicken"},{"elain":"Viiriäinen, helmikana","kerroin":0.04,"id":29,"laji":"chicken"},{"elain":"Kaninaaras poikasineen***","kerroin":0.19,"id":30,"laji":"Muu"},{"elain":"Strutsi","kerroin":0.9,"id":31,"laji":"Muu"},{"elain":"Biisoni","kerroin":2.5,"id":32,"laji":"Muu"},{"elain":"Villisika","kerroin":0.9,"id":33,"laji":"Muu"},{"elain":"Minkki ja hilleri, siitosnaaras pentuineen","kerroin":0.18,"id":34,"laji":"Muu"},{"elain":"Minkki ja hilleri, pentu","kerroin":0.18,"id":35,"laji":"Muu"},{"elain":"Minkki ja hilleri, siitosuros","kerroin":0.18,"id":36,"laji":"Muu"},{"elain":"Kettu ja supi, siitosnaaras pentuineen","kerroin":0.41,"id":37,"laji":"Muu"},{"elain":"Kettu ja supi, pentu","kerroin":0.41,"id":38,"laji":"Muu"},{"elain":"Kettu ja supi, siitosuros","kerroin":0.41,"id":39,"laji":"Muu"}]
+
+lajit = ["Lehmä",'Possu','Heppa','Lammas','Linnut','Muu'];
+
+animals = [ ];
+/*
+animals = [  { "id":0
+	, "elain":"Lypsylehmä"
+	, "kokonaismaara":123
+	,"lietelanta":0.6
+	,"kuivalantaVirtsa":0.7
+	,"kuivikelanta":999
+	},
+	{ "id":1
+	, "elain":"Hieho"
+	, "kokonaismaara":12124313
+	,"lietelanta":0.65
+	,"kuivalantaVirtsa":0.75
+	,"kuivikelanta":99559
+	}
+	]
+
+*/
+//	,"lisaykset": [ { "lisaysNimi":"maitohuoneen jätevedet", "maara":1243 }, { "lisaysNimi": "Muut pesuvedet", "maara":54 }]
+	
+	
+</script>
+
+</html>
