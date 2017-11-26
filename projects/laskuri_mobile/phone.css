@@ -2,6 +2,10 @@
 /* General styling options */
 body {font-family: Quicksand; font-size: 90%;}
 
+* {
+    box-sizing: border-box;
+}
+
 /* Styles for selecting animals */
 .container {
 	height: 100%;
@@ -12,7 +16,7 @@ body {font-family: Quicksand; font-size: 90%;}
 .animalCard  {
 	width: 70%;
 	display: block;
-	height: 24%;
+	height: auto;
 	font-size: 80%;
 	border-radius: 5px; /* 5px rounded corners */
 	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
@@ -31,8 +35,8 @@ body {font-family: Quicksand; font-size: 90%;}
 .animalCard img {
 	
 
-	width: 85%;
-	height: 80%;
+	width: 100%;
+	height: auto;
 
    
 }
@@ -48,6 +52,7 @@ body {font-family: Quicksand; font-size: 90%;}
 	width: 30px;
 	margin-left: 45%;
 		margin-top: 5%;
+		margin-bottom: 15%;
 
 }
 
@@ -60,8 +65,8 @@ body {font-family: Quicksand; font-size: 90%;}
 
 .animalCardInfoContainer img {
 	
-	width: 140;
-	height: 80;
+	width: 100%;
+	height: auto;
 	
 }
 .animalCardInfoContainer p {
@@ -91,7 +96,8 @@ body {font-family: Quicksand; font-size: 90%;}
 	
 	margin-left: 10%;
 	margin-bottom: 5%;
-	border: 1px solid white;
+	border: 1px solid black;
+
 	text-align: top;
 }
 .speciesContainer span {
@@ -100,11 +106,6 @@ body {font-family: Quicksand; font-size: 90%;}
 	padding-bottom: 10px;
 }
 
-.speciesContainer:hover {
-	
-	border: 2px solid white;
-
-}
 .animalIcon {
 	height: 46px;
 	width: 43px;
@@ -119,6 +120,7 @@ body {font-family: Quicksand; font-size: 90%;}
 	display: none;
 	margin-top: 13%;
 	background-color: inherit;
+	border: 1px solid black;
 }
 
 
@@ -127,7 +129,7 @@ body {font-family: Quicksand; font-size: 90%;}
 .animalSelector:hover {
 	
 	
-	border: 1px solid black
+	border: 2px solid black;
 	color: white;
 
 }
@@ -233,12 +235,12 @@ td {
 .resultButton {
 	
     width: 40%;
-	height: 1%;
+	height: 5%;
 	background-color:  #00b33c;
 	
 	position: fixed;
-    bottom: 0;
-    left: 25%;
+    bottom: 5;
+    left: 29%;
 
     border: 3px solid #73AD21;
 	
@@ -252,10 +254,9 @@ td {
 }
 
 .resultButton p {
-	position: fixed;
-	bottom: 5;
-	left: 135;
-	color: white;
+		color: white;
+		position: fixed;
+		bottom: 6;
 }
 
 

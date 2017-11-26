@@ -220,7 +220,7 @@ $(document).ready(function() {
 	
 	
 	for (i=0;i<species.length;i++) {	
-		obj = $("<div></div>").addClass('speciesContainer').addClass(species[i]).attr('species',species[i]).html('<span>'+lajit[i]+'</span>').on('click',function() { // html('<span>'+lajit[i]+'</span>')
+		obj = $("<div></div>").addClass('speciesContainer').css('display','none').addClass(species[i]).attr('species',species[i]).html('<span>'+lajit[i]+'</span>').on('click',function() { // html('<span>'+lajit[i]+'</span>')
 			
 			// Make animals belonging to selected species visible
 			$(this).children('.animalSelector').toggleClass('visible');
@@ -230,7 +230,7 @@ $(document).ready(function() {
 			$(this).fadeIn();
 			
 			// Pin border style to get rid of hover
-			$(this).css('border','1px solid white');
+			//$(this).css('border','1px solid white');
 		});
 		
 		imgObj = $("<img src='"+species[i]+".png'></img>").addClass('animalIcon'); // <span>"+lajit[i]+"</span>
@@ -315,8 +315,8 @@ $(document).ready(function() {
 		animals.map(function(x) { 
 				info = getAnimalInfoById(x.id);
 				
-				elaimiaSum += x.count;
-				elainYksikoitaSum += x.count * x.kerroin;
+				elaimiaSum += x.count*1;
+				elainYksikoitaSum += (x.count*1) * x.kerroin;
 				
 				lieteSailioSum += (info.lietelanta * x.lietelannalla_count) + (info.virtsa * x.kuivalanta_virtsa_count); // Multiuply by coefficient
 				
@@ -347,8 +347,9 @@ $(document).ready(function() {
 	animals.push( animal );
 
 	// Create card of selected animal		
-	$('.container').prepend(createAnimalCard(species_id,animal['cardId']));
-			
+	//$('.container').prepend(createAnimalCard(species_id,animal['cardId']));
+		
+			selectAnimal();
 			
 	// Add add animal button
 	obj = $("<img src='table_row_add_after.png'></img>").addClass('addAnimalIcon').addClass('animalCard').on('click',function(x) {
