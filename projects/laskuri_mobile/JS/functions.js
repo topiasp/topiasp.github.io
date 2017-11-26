@@ -340,16 +340,16 @@ $(document).ready(function() {
 	
 	
 
-	species_id = 1;
+	//species_id = 1;
 			
-	animal = createAnimal(species_id,567);
+	//animal = createAnimal(species_id,567);
 			
-	animals.push( animal );
+	//animals.push( animal );
 
 	// Create card of selected animal		
 	//$('.container').prepend(createAnimalCard(species_id,animal['cardId']));
 		
-			selectAnimal();
+	selectAnimal();
 			
 	// Add add animal button
 	obj = $("<img src='table_row_add_after.png'></img>").addClass('addAnimalIcon').addClass('animalCard').on('click',function(x) {
