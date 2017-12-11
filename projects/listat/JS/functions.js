@@ -26,7 +26,7 @@ function search(paramName,searchString) {
 		}
 		if (searchString == '*') {
 			
-			res = lajit;
+			res = kunnat;
 		}
 		
 		$('#output').html(  res[0].koodi + '<br>'  + res[0].nimi );
@@ -49,7 +49,7 @@ function search(paramName,searchString) {
 		$('#output').html('');
 		if (searchString == '*') {
 			
-			res = lajit;
+			res = kasittelyJaHyodyntamiskoodit;
 		}
 		
 		if (res.length>0) {
@@ -77,7 +77,7 @@ function search(paramName,searchString) {
 		}
 		if (searchString == '*') {
 			
-			res = lajit;
+			res = jatekoodit;
 		}
 		
 		$('#output').html('');
