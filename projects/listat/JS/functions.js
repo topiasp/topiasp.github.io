@@ -1,6 +1,6 @@
 
 var globalHelp;
-var globalHelp2;
+
 var searchString = '';
 
 function search(paramName,searchString) {
@@ -24,6 +24,10 @@ function search(paramName,searchString) {
 			res = kunnat.filter(function(x) {  return(  x.nimi.toLowerCase().indexOf(searchString)>-1  )  });
 			
 		}
+		if (searchString == '*') {
+			
+			res = lajit;
+		}
 		
 		$('#output').html(  res[0].koodi + '<br>'  + res[0].nimi );
 	}
@@ -43,6 +47,10 @@ function search(paramName,searchString) {
 		}
 		
 		$('#output').html('');
+		if (searchString == '*') {
+			
+			res = lajit;
+		}
 		
 		if (res.length>0) {
 
@@ -67,11 +75,45 @@ function search(paramName,searchString) {
 			res = jatekoodit.filter(function(x) {  return(  x.selite.toLowerCase().indexOf(searchString)>-1  )  });
 			
 		}
+		if (searchString == '*') {
+			
+			res = lajit;
+		}
 		
 		$('#output').html('');
 		
 		if (res.length>0) {
 			res =  res.map(function(x) { return(  "<p class='resultRow'>" + x['selite'] + '</p>' ) }).join('');	
+			$('#output').append(   res			);
+		}		
+	}
+	
+	/* -------------------------------------------------------------- LAJI ------------------------------------------------- */
+	if (paramName=='Laji') {
+		
+		
+		console.log('Laji');
+		$('.resultText').css('font-size','100%');
+		
+		
+	
+		searchString = searchString.toLowerCase();
+
+		res = lajit.filter(function(x) {  
+			return(  x.selite.toLowerCase().indexOf(searchString)>-1  | x.koodi.toLowerCase().indexOf(searchString)>-1 )
+
+			});
+		
+		if (searchString == '*') {
+			
+			res = lajit;
+		}
+		
+		
+		$('#output').html('');
+		
+		if (res.length>0) {
+			res =  res.map(function(x) { return(  "<p class='resultRow'>" + x['koodi'] + ' ' + x['selite'] + '</p>' ) }).join('');	
 			$('#output').append(   res			);
 		}		
 	}
@@ -82,18 +124,21 @@ function createInputBox(paramName,divToAppendTo) {
 		   	
 			headerText = $('<p>' +paramName+'</p>').addClass('statusBoxHeader');
 
-		   $('<div></div>')
-		    .append(headerText)
-			.addClass('statusBox')
-			.on('click',function() {
+		   obj =  $('<div></div>')
+				.append(headerText)
+				.addClass('statusBox')
+				.on('click',function() {
 				
-				$(this).addClass('selected')
-				$('.statusBox').fadeOut('slow', function(){ 
+				$('.statusBox').fadeOut('fast', function(){ 
+				
 
+					globalHelp = $(this);
 					
-					$('.backButton').css('visibility','visible');
+					$('.backButton').css('opacity',1);
 					$('.resultText').fadeIn('fast');
-					$('.statusBox.selected').next().fadeIn().select();
+					
+					$('input').attr('paramName',paramName).fadeIn().select();
+					
 					
 				})
 				
@@ -101,38 +146,7 @@ function createInputBox(paramName,divToAppendTo) {
 
 			})
 
-			.appendTo(divToAppendTo)
-			
-			;
-
-		
-			var statusText = $('<input type="text" id="' +  paramName + '_input" size="'  + paramName.length + '">') // value="' + paramName + '" 
-				.addClass('statusInput')
-
-				.bind('keyup', function(e) {
-					
-					/*
-					console.log( 
-						this.value
-					);
-					*/
-					search(paramName, this.value );
-					
-					if (this.value.length==0) {
-						
-						$('.resultText').html('');
-					}
-					
-				})
-				.css('display','none')
-				;
-				
-				
-			$(divToAppendTo).append(statusText);
-			
-			
-			
-		
+			$(divToAppendTo).append(obj);
 
 }
 
@@ -141,31 +155,20 @@ function createInputBox(paramName,divToAppendTo) {
 $(document).ready(function() {
 	
     console.log( "ready!" );
-		
-		
-	obj = $("<input class='colorChooser' value='#3973ac' size='6'></input>").bind('keyup',function(e) {
-		if (e.keyCode == 13)  {
-			
-
-			$('.statusBox').css('background',this.value);
-		}
-	});
-	
-	$('.container').append(obj)
-	
 	
 		
 		
-	obj = $("<div id='backButton'><img src='BackButton.png'></img></div>").addClass('backButton').css('visibility','hidden').on('click',function() {
+	obj = $("<div id='backButton'><img src='BackButton.png'></img></div>").addClass('backButton').css('opacity',0).on('click',function() {
 		
-		$(this).css('visibility','hidden');
-		
-		$('.statusInput').fadeOut('slow', function() {
-			$('.resultText').fadeOut('slow');
+		$(this).css('opacity',0)//.css('display','none');
+	
+		$('input').fadeOut('quick', function() {
+			$('.resultText').fadeOut('fast');
 			
 			$('.resultText').html('');
 			$('.statusBox.selected').toggleClass('selected')
-			$('.statusBox').fadeIn('slow');
+			$('.statusBox').fadeIn('fast');
+			$('.statusInput').attr('value','');
 		
 		})
 	
@@ -181,12 +184,32 @@ $(document).ready(function() {
 	createInputBox('Kunta','.container');
 	createInputBox('Jäte','.container');
 	createInputBox('Käsittely','.container');
+	createInputBox('Laji','.container');
 	
 	
-	//obj = $("<div id='searchOut'></div>").css('visibility','hidden')
+	var input = $('<input type="text"  size="'  + 10 + '">')
+				.addClass('statusInput')
+				.attr('paramName','Kunta')
+				.bind('keyup', function(e) {
+				
+					search(  $(this).attr('paramName') , this.value );
+					
+					if (this.value.length==0) {
+						
+						$('.resultText').html('');
+					}
+					
+				})
+				.css('display','none')
+				;
+				
+	$('.container').append(input);
 
 	obj = $("<div id='output'></div>").addClass('resultText')
 	$('.container').append(obj);
+	
+	
+	
 	
 	
 	
