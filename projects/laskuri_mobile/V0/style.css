@@ -1,0 +1,254 @@
+body {font-family: Quicksand;}
+
+/*
+
+
+.color-primary-0 { color: #6E9B34 }	/
+.color-primary-1 { color: #C7E99B }
+.color-primary-2 { color: #98C261 }
+.color-primary-3 { color: #4A7413 }
+.color-primary-4 { color: #2C4E00 }
+
+
+*/
+
+
+.animalSelectorContainer {
+	width: 15%;
+
+	font-size: 90%;
+	margin: 10px;
+	padding: 5px;
+	
+	display: inline-block
+
+}
+.speciesContainer {
+	background-color:  #ff5252;
+
+	width: 100%;
+	font-size: 200%;
+	margin: 15px;
+	padding: 7px;
+	color: white;
+	border: 1px solid #8d8d8d;
+}
+.speciesContainer:hover {
+	
+	border: 2px solid #8d8d8d;
+}
+
+
+.animalSelector {
+
+	width: 80%;
+	font-size: 50%;
+	margin: 5px;
+	padding: 5px;
+	
+	display: none;
+	
+}
+
+
+.visible {
+
+	display: block;
+	
+}
+
+
+.animalSelector:hover {
+	
+	border: 2px solid;
+	background-color: inherit;
+	color: white;
+
+}
+.selectedAnimal {
+	
+	border: 5px;
+	border: 2px solid;
+	background-color: inherit;
+	color: white;
+}
+
+
+
+.animalSelectorCountInputContainer {
+	
+	float: right;
+	
+	position: sticky;
+	top: 30%;
+	right: 60%;
+
+	
+	
+	
+}
+.animalSelectorCountInput {
+	
+	height: 50px;
+	border: 0px;
+	font-size: 150%;
+	font-family: Quicksand
+	
+	
+}
+.animalImageIcon {
+	
+	float: right;
+	
+	position: sticky;
+	top: 10%;
+	right: 60%;
+	height: 40px;
+	width: 45px;
+	
+}
+
+.animalImage {
+	
+	float: right;
+	
+	position: sticky;
+	top: 10%;
+	right: 60%;
+	height: 200px;
+	width: 200px;
+	
+}
+
+.animalButton {
+	width: 40%;
+	margin: 5%;
+}
+
+.animalButton img {
+	
+	visibility: inherit;
+	height: 200px;
+	width: 200px;
+
+
+
+}
+/*
+.animalButton img:hover {
+	
+
+	background-color: #b3ffb3;
+
+}
+*/
+.animalButton img:active {
+	
+	visibility: inherit;
+	height: 150px;
+	width: 150px;
+
+
+}
+
+
+/* Right wing */
+
+.countContainer {
+	
+	float: right;
+	width: 40%;
+
+	font-size: 400%;
+	font-family: Quicksand;
+	
+	position: sticky;
+	top: 5%;
+	right: 10%;
+}
+
+
+
+.countText {
+	
+	font-family: Quicksand;
+}
+.countTable {
+	
+	margin: 5%;
+	visibility: hidden;
+}
+
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 15px;
+}
+th {
+	background-color: #ff5252;
+	color: white;
+    text-align: left;
+}
+td {
+    text-align: center;
+}
+
+.addedAnimal {
+	font-size: 30%;
+	font-family: Quicksand;
+	opacity: 80;
+	padding: 0;
+	margin: 0;
+}
+
+
+
+
+
+/* Style the tab */
+
+
+
+div.tab {
+     position: sticky;
+	top: 0;
+    border: 1px solid #ccc;
+    background-color: #ff5252;
+	
+	
+}
+
+/* Style the buttons inside the tab */
+div.tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    font-size: 17px;
+	color: white;
+}
+
+/* Change background color of buttons on hover */
+div.tab button:hover {
+    background-color: inherit;
+	font-size: 20px
+}
+
+/* Create an active/current tablink class */
+div.tab button.active {
+    background-color: #c62828
+}
+
+/* Style the tab content */
+.tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
+	height: 100%;
+}

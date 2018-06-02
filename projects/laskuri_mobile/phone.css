@@ -1,0 +1,345 @@
+
+/* General styling options */
+body {font-family: Quicksand; font-size: 90%;}
+
+* {
+    box-sizing: border-box;
+}
+
+/* Styles for selecting animals */
+.container {
+	height: 100%;
+	width: 100%;
+	display: block;
+	margin-top: 5;
+}
+.animalCard  {
+	width: 70%;
+	display: block;
+	height: auto;
+	font-size: 80%;
+	border-radius: 5px; /* 5px rounded corners */
+	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+	
+	margin-top: 10%;
+	margin-left: 15%;
+	
+	text-align: center;
+}
+
+.animalCard:hover {
+	
+	box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+.animalCard img {
+	
+
+	width: 100%;
+	height: auto;
+
+   
+}
+
+
+.animalCard:active {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+
+.addAnimalIcon {
+	height: 30px;
+	width: 30px;
+	margin-left: 45%;
+		margin-top: 5%;
+		margin-bottom: 15%;
+
+}
+
+.animalCardInfoContainer {
+	width: 38%;
+	height: 80%;
+	margin-left: 20%;
+	display: none;
+}
+
+.animalCardInfoContainer img {
+	
+	width: 100%;
+	height: auto;
+	
+}
+.animalCardInfoContainer p {
+	
+	text-align: left;
+	width: 150;
+
+	
+}
+
+.animalCardInfoContainer input {
+	border: 0px;
+	font-size: 150%;
+	font-family: Quicksand;
+	text-align: left;
+}
+
+
+
+
+
+.speciesContainer {
+	background-color: #9ea7aa;
+	width: 80%;
+	height: 10%;
+	color: white;
+	
+	margin-left: 10%;
+	margin-bottom: 5%;
+	border: 1px solid black;
+
+	text-align: top;
+}
+.speciesContainer span {
+	
+	margin-top: 2%;
+	padding-bottom: 10px;
+}
+
+.animalIcon {
+	height: 46px;
+	width: 43px;
+
+	
+}
+
+
+.animalSelector {
+	width: 100%;
+	font-size: 100%;
+	display: none;
+	margin-top: 13%;
+	background-color: inherit;
+	border: 1px solid black;
+}
+
+
+
+
+.animalSelector:hover {
+	
+	
+	border: 2px solid black;
+	color: white;
+
+}
+.selectedAnimal {
+	
+	margin-top: 10%;
+	background-color: inherit;
+	color: white;
+	border: 1px solid white;
+	
+}
+
+.animalSelectorCountInput {
+	
+	margin-top: 20%;
+	height: 50px;
+	border: 0px;
+	font-size: 150%;
+	font-family: Quicksand;
+	text-align: center;
+	display: none;
+	margin-left: 16%;
+}
+
+
+/* Styles for inputs*/
+
+.countTable {
+	
+	visibility: visible;
+	width: 100%;
+	margin-left: 1%;
+	margin-top: 1%;
+
+}
+
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+	width: 50;
+}
+th, td {
+    padding: 1px;
+	font-size: 100%
+}
+th {
+	background-color: blue;
+	color: white;
+    text-align: left;
+	
+}
+td {
+    text-align: center;
+	font-size: 75%
+}
+
+
+
+.editableCell {
+	
+}
+
+.editableCell img {
+	height: 13px;
+	width: 18px;
+	
+}
+
+.clickableCell:hover {
+	color: blue;
+	font-size: 90%;
+	opacity: 0.7;
+	
+}
+
+.editableCell:hover {
+	
+	color: red;
+	font-size: 90%;
+	opacity: 0.7;
+}
+
+.deleteCell {
+	padding: 1px;
+}
+.deleteCell img {
+	height: 18px;
+	width: 15px;
+	text-align: left;
+	
+
+}
+.deleteCell img:hover {
+	height: 25px;
+	width: 15px;
+	text-align: left;
+	
+
+}
+
+/* The result div */
+
+.resultButton {
+	
+    width: 40%;
+	height: 5%;
+	background-color:  #00b33c;
+	
+	position: fixed;
+    bottom: 5;
+    left: 29%;
+
+    border: 3px solid #73AD21;
+	
+    color: black;
+    display: block;
+    padding: 20px;
+    font-weight: bold;
+    font-size: 15;
+    border: 1px dotted grey;
+	text-align: center;
+}
+
+.resultButton p {
+		color: white;
+		position: fixed;
+		bottom: 6;
+}
+
+
+
+@media screen and (max-height: 450px) {
+    .overlay a {font-size: 20px}
+    .overlay .closebtn {
+        font-size: 40px;
+        top: 15px;
+        right: 35px;
+    }
+}
+
+
+
+/* The Overlay (background) */
+.overlay {
+    /* Height & width depends on how you want to reveal the overlay (see JS below) */    
+    height: 100%;
+    width: 0;
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    background-color: rgb(0,0,0); /* Black fallback color */
+    background-color: white; /*//rgba(51, 51, 255,0.6);/* Black w/opacity */
+    overflow-x: hidden; /* Disable horizontal scroll */
+    transition: 0.5s; /* 0.5 second transition effect to slide in or slide down the overlay (height or width, depending on reveal) */
+}
+
+/* Position the content inside the overlay */
+.overlay-content {
+    position: relative;
+    top: 10%; /* 25% from the top */
+    width: 100%; /* 100% width */
+    text-align: center; /* Centered text/links */
+    margin-top: 30px; /* 30px top margin to avoid conflict with the close button on smaller screens */
+}
+
+/* The navigation links inside the overlay */
+.overlay a {
+    padding: 4px;
+    text-decoration: none;
+    font-size: 36px;
+    color: #818181;
+    display: block; /* Display block instead of inline */
+    transition: 0.3s; /* Transition effects on hover (color) */
+}
+
+/* When you mouse over the navigation links, change their color */
+.overlay a:hover, .overlay a:focus {
+    color: #f1f1f1;
+}
+
+/* Position the close button (top right corner) */
+.overlay .closebtn {
+    position: absolute;
+    top: 20px;
+    right: 45px;
+    font-size: 60px;
+}
+
+/* When the height of the screen is less than 450 pixels, change the font-size of the links and position the close button again, so they don't overlap */
+@media screen and (max-height: 450px) {
+    .overlay a {font-size: 20px}
+    .overlay .closebtn {
+        font-size: 40px;
+        top: 15px;
+        right: 35px;
+    }
+}
+
+/* --------------------------------------------------------------------------------------- ------------------------------------------------------------------------------- */
+
+.visible {
+
+	display: block;
+	
+}
+
+.icon {
+	height: 30px;
+	width: 30px;
+	margin-left: 3%;
+}
+
