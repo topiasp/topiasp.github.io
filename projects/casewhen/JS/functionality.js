@@ -38,15 +38,39 @@ function sqlQuote(s) {
 }
 
 
-function createCASEWHEN(arr,varname) {
+function createCASEWHEN(arr,varname,openEnded,RowNumbers) {
 
     varname = varname || 'variable';
 
-    arr = arr.map((cur,prev) => { 
-        
-        if (prev>0) { 
-            prevValue = arr[(prev-1)];
+    arr = arr.map((cur,idx,a) => { 
 
+        // Create rownumber string
+        // If under 10 and array lenght>9 then add leading zero to ensure order by goes as expected
+        rowNumber =  (function() { 
+
+            s = idx+'. ';
+            if (a.length>10 & idx<10) {
+                s = '0'+idx+'. '
+            }
+
+            if (RowNumbers) return(s); 
+            return('') }
+            )()  ; 
+        
+        if (
+                idx>0 &  idx < (a.length-1) // Not first and not the last
+                | ( idx == (a.length-1) & !openEnded) // If last and openended is false
+            ) 
+            { 
+            
+            prevValue = a[(idx-1)];
+            cur = (cur-1);
+
+            if (idx == (a.length-1)) {
+                cur += 1
+            }
+           
+        
             return(
                     sqlClause('  WHEN ')
                     +varname
@@ -54,8 +78,30 @@ function createCASEWHEN(arr,varname) {
                     + prevValue +
                     sqlClause(' AND ') 
                     + cur +
-                    sqlClause(' THEN ')
-                     + sqlQuote("'" + prevValue + " - " + cur + "'"))
+                    sqlClause(' THEN ') +
+                    sqlQuote("'" + rowNumber  + prevValue + " - " + (cur) + "'")
+                )
+        }
+        // If last of array
+        if (idx == (a.length-1) ) { 
+            prevValue = a[(idx-1)];
+
+
+            if (openEnded) {
+                return(
+                    sqlClause('  WHEN ')
+                    + varname
+                    + sqlClause(' > ')
+                    + prevValue 
+                    + sqlClause(' THEN ') 
+                    + sqlQuote("'" + rowNumber  + prevValue + " - " + (cur-1) + "'")
+                )
+            }
+
+            
+
+
+
         }
         
 
@@ -76,7 +122,11 @@ function update() {
         let resultTextNode = document.getElementsByClassName('result-text')[0];
         let breaks =  createBreaks(LowerBound,UpperBound,Breaks=NumberOfBreaks) ;
 
-        resultTextNode.innerHTML = createCASEWHEN(breaks)
+        let OpenEnded = document.getElementById('checkbox-openended').checked;
+        let Rownames = document.getElementById('checkbox-rownames').checked;
+        let varname = 'variable'
+
+        resultTextNode.innerHTML = createCASEWHEN(breaks,varname,OpenEnded,Rownames)
     }
 }
 
@@ -151,7 +201,6 @@ function init() {
     // Add to container
 
     inputContainer = createElement('','container-input','div')
-
     inputContainer.appendChild(createElement('Alaraja','input-header'))
     inputContainer.appendChild(InputRangeLB);
     inputContainer.appendChild(createElement('Yläraja','input-header'))
@@ -161,21 +210,58 @@ function init() {
 
     topContainer.appendChild(inputContainer)
 
+    // --------- Add checkboxes
+    // --- Loppu auki
+    let checkBoxOpenEnd = createElement('','checkbox','input');
+    checkBoxOpenEnd.setAttribute('type','checkbox')
+    checkBoxOpenEnd.setAttribute('checked','true')
+    checkBoxOpenEnd.setAttribute('id','checkbox-openended')
+
+    inputContainer.appendChild(checkBoxOpenEnd)
+    inputContainer.appendChild(document.createTextNode('Loppu auki'))
+
+    // Row change ...
+    inputContainer.appendChild(document.createElement('br'))
+
+    // ---- Järjestysnumerot
+    checkBoxRownumber = createElement('','checkbox','input');
+    checkBoxRownumber.setAttribute('type','checkbox')
+    checkBoxRownumber.setAttribute('checked','true')
+    checkBoxRownumber.setAttribute('id','checkbox-rownames')
+
+    inputContainer.appendChild(checkBoxRownumber)
+    inputContainer.appendChild(document.createTextNode('Järjestysnumero'))
+
+    // ---- Add event listeners
+
+    let checkboxes = document.getElementsByClassName('checkbox') // Contains only checkboxes
+
+    
+    for (idx = 0;idx<checkboxes.length;idx++) {
+        i = checkboxes[idx];
+        // Update case when
+        i.addEventListener('change',(e) => { 
+            update();
+        })
+
+    }
+
+
+    // Add inputs to left container
+    topContainer.appendChild(inputContainer)
+    
+
+    // Add clipboard icon
     clipboardIcon = createElement('<i class="far fa-clipboard"></i>','container-clipboardIcon','div')
-
     clipboardIcon.addEventListener('click',(e) => {
-
         var copyText = document.getElementsByClassName("result-text")[0].innerText;
-
-        console.log(copyText)
         fallbackCopyTextToClipboard(copyText)
     } ) 
-
     topContainer.appendChild(clipboardIcon)
 
     // Add event listener to inputs
 
-    let inputs = document.getElementsByClassName('input')
+    let inputs = document.getElementsByClassName('input') // Contains only text-input
 
     //inputs.forEach((i) => {  // Does not work, is a HTML collection, not an array
     for (idx = 0;idx<inputs.length;idx++) {
@@ -199,9 +285,6 @@ function init() {
 
     // Select current value on click
     resultTextContainer.addEventListener('click',(e) => {
-    
-        console.log('Clicked on result textNode',e.currentTarget)
-
         window.getSelection().selectAllChildren(e.currentTarget)
     })
 
