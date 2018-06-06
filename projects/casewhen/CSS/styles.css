@@ -68,6 +68,10 @@ html, body{
     box-sizing: border-box;
 }
 
+#input-variablename { 
+    width: 60%;
+}
+
 .sql-function {
 
     color: #FF00FF;

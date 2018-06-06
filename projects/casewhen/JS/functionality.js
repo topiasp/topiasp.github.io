@@ -124,7 +124,7 @@ function update() {
 
         let OpenEnded = document.getElementById('checkbox-openended').checked;
         let Rownames = document.getElementById('checkbox-rownames').checked;
-        let varname = 'variable'
+        let varname = document.getElementById('input-variablename').value;
 
         resultTextNode.innerHTML = createCASEWHEN(breaks,varname,OpenEnded,Rownames)
     }
@@ -198,6 +198,15 @@ function init() {
     InputBreaks.setAttribute('id','input-breaks')
     InputBreaks.setAttribute('class','input')
 
+    // Name of var
+    
+    let InputVariable = document.createElement("INPUT");
+    InputVariable.setAttribute('type','text');
+    InputVariable.setAttribute('placeholder','Muuttujan nimi');
+    InputVariable.setAttribute('value','variable2')
+    InputVariable.setAttribute('id','input-variablename')
+    InputVariable.setAttribute('class','input')
+    
     // Add to container
 
     inputContainer = createElement('','container-input','div')
@@ -207,6 +216,8 @@ function init() {
     inputContainer.appendChild(InputRangeUB);
     inputContainer.appendChild(createElement('Luokkien määrä','input-header'))
     inputContainer.appendChild(InputBreaks);
+    inputContainer.appendChild(createElement('Muuttujan nimi','input-header'))
+    inputContainer.appendChild(InputVariable);
 
     topContainer.appendChild(inputContainer)
 
