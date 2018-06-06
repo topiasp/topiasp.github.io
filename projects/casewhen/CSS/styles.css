@@ -1,0 +1,107 @@
+
+
+* {
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+    overflow-x:hidden;
+    
+}
+html, body{
+    height:99%;
+}
+
+.container {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+
+
+}
+
+.container-left {
+
+    height: 100%;
+    width: 15%;
+    
+    /*position: absolute;
+    left: 0;
+    top: 0;
+    */
+    float: left;
+    overflow: hidden;
+    border: 0.5px solid;
+
+
+
+}
+
+.container-middle {
+    height: 100%;
+    width: 80%;
+    overflow: hidden;
+    float: left;
+
+}
+.container-input {
+
+    margin-left: 10%;
+    margin-top: 3%;
+}
+
+.result-text {
+
+    float: left;
+    
+    margin-left: 2%;
+   
+    padding: 15px;
+}
+
+.input {
+
+    width: 50%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.sql-function {
+
+    color: #FF00FF;
+}
+.sql-clause {
+    color: #0000FF
+}
+
+.sql-custom {
+    color: #000000;
+}
+.sql-quote {
+    color: #FF0000
+}
+
+.container-clipboardIcon {
+
+    margin-left: 10%;
+    margin-top: 5%;
+}
+
+.fa-clipboard {
+
+    font-size: 60px;
+    overflow: hidden;
+    color: steelblue;
+}
+
+.fa-clipboard:hover {
+
+    color: lightsteelblue;
+}
+
+.fa-clipboard:active {
+
+    font-size: 50px;
+}
