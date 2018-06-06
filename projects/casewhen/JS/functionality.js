@@ -48,8 +48,8 @@ function createCASEWHEN(arr,varname,openEnded,RowNumbers) {
     
     
     if (/\(.+\)/.test(varname))  {
-       tmp =  varname.match(/[A-Za-z]{1,}\(/g).map((s) => { return(    sqlFunction(s.replace('(',''))   ) }).join('(')
-       funcs = varname.match(/[A-Za-z]{1,}\(/g);
+       tmp =  varname.match(/[A-Za-z]+\(/g).map((s) => { return(    sqlFunction(s.replace('(',''))   ) }).join('(')
+       funcs = varname.match(/[A-Za-z]+\(/g);
        
        // TODO: clean
 
@@ -68,7 +68,7 @@ function createCASEWHEN(arr,varname,openEnded,RowNumbers) {
 
             s = idx+'. ';
             if (a.length>10 & idx<10) {
-                s = '0'+idx+'. '
+                s = '0'+idx+'.  '
             }
 
             if (RowNumbers) return(s); 
@@ -112,7 +112,7 @@ function createCASEWHEN(arr,varname,openEnded,RowNumbers) {
                     + sqlClause(' > ')
                     + prevValue 
                     + sqlClause(' THEN ') 
-                    + sqlQuote("'" + rowNumber  + prevValue + " - " + (cur-1) + "'")
+                    + sqlQuote("'" + rowNumber  + prevValue + " - '")
                 )
             }
 
