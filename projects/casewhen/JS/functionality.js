@@ -36,11 +36,29 @@ function sqlQuote(s) {
 
     return("<span class='sql-quote'>"+s+"</span>")
 }
+function sqlFunction(s) {
 
+    return("<span class='sql-function'>"+s+"</span>")
+}
 
 function createCASEWHEN(arr,varname,openEnded,RowNumbers) {
 
     varname = varname || 'variable';
+
+    
+    
+    if (/\(.+\)/.test(varname))  {
+       tmp =  varname.match(/[A-Za-z]{1,}\(/g).map((s) => { return(    sqlFunction(s.replace('(',''))   ) }).join('(')
+       funcs = varname.match(/[A-Za-z]{1,}\(/g);
+       
+       // TODO: clean
+
+       sulkuAuki = new RegExp(/\(/g,)
+       komennot = new RegExp(funcs.join('|').replace(sulkuAuki,'\\('))
+       tmp2 = varname.match(/\(.+\)/g).map((s) => { return(s) }).join('')
+
+       varname = tmp + tmp2.replace(komennot,'');
+    }
 
     arr = arr.map((cur,idx,a) => { 
 
@@ -126,6 +144,7 @@ function update() {
         let Rownames = document.getElementById('checkbox-rownames').checked;
         let varname = document.getElementById('input-variablename').value;
 
+
         resultTextNode.innerHTML = createCASEWHEN(breaks,varname,OpenEnded,Rownames)
     }
 }
@@ -203,7 +222,7 @@ function init() {
     let InputVariable = document.createElement("INPUT");
     InputVariable.setAttribute('type','text');
     InputVariable.setAttribute('placeholder','Muuttujan nimi');
-    InputVariable.setAttribute('value','variable2')
+    InputVariable.setAttribute('value','variable')
     InputVariable.setAttribute('id','input-variablename')
     InputVariable.setAttribute('class','input')
     
