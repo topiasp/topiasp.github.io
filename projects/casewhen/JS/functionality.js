@@ -38,6 +38,8 @@ function sqlQuote(s) {
 }
 function sqlFunction(s) {
 
+    
+
     return("<span class='sql-function'>"+s+"</span>")
 }
 
@@ -45,19 +47,20 @@ function createCASEWHEN(arr,varname,openEnded,RowNumbers) {
 
     varname = varname || 'variable';
 
-    
-    
-    if (/\(.+\)/.test(varname))  {
-       tmp =  varname.match(/[A-Za-z]+\(/g).map((s) => { return(    sqlFunction(s.replace('(',''))   ) }).join('(')
-       funcs = varname.match(/[A-Za-z]+\(/g);
+    if (/.\(/.test(varname))  { // \(.+\)
+
+        tmp =  varname.split(/([A-Za-z]+\()/g)
+
+        tmp = tmp.map((s) => {
+           if ( /[A-Za-z]+\(/.test(s) ) {                       // Test if includes an opening bracket with leading alphabet
+                return sqlFunction(s.replace(/\(/,'')) + '(' ;  // Dont include trailing bracket
+           } else {
+                return(s)
+           }
+        })
+        
+        varname = tmp.join('')
        
-       // TODO: clean
-
-       sulkuAuki = new RegExp(/\(/g,)
-       komennot = new RegExp(funcs.join('|').replace(sulkuAuki,'\\('))
-       tmp2 = varname.match(/\(.+\)/g).map((s) => { return(s) }).join('')
-
-       varname = tmp + tmp2.replace(komennot,'');
     }
 
     arr = arr.map((cur,idx,a) => { 
@@ -109,7 +112,7 @@ function createCASEWHEN(arr,varname,openEnded,RowNumbers) {
                 return(
                     sqlClause('  WHEN ')
                     + varname
-                    + sqlClause(' > ')
+                    + sqlClause(' >= ')
                     + prevValue 
                     + sqlClause(' THEN ') 
                     + sqlQuote("'" + rowNumber  + prevValue + " - '")
