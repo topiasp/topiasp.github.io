@@ -120,7 +120,6 @@ function init() {
 
     let inputs = document.getElementsByClassName('input') // Return only text-input
 
-    //inputs.forEach((i) => {  // Does not work, is a HTML collection, not an array
     for (idx = 0;idx<inputs.length;idx++) {
 
             i = inputs[idx];

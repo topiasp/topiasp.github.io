@@ -1,19 +1,18 @@
 
 
 function createBreaks(LowerBound,UpperBound,NumberOfBreaks,By) {
-    //console.log(LowerBound,UpperBound,Breaks,By)
+    
     LowerBound = LowerBound || 0;
     UpperBound = UpperBound || 10000;
     NumberOfBreaks = NumberOfBreaks || 0;
     By = By || 0;
 
     let res = [LowerBound];
-    // 
 
     let breakLength = (UpperBound - LowerBound) / NumberOfBreaks;
     let iterator = 0;
 
-    //console.log('breaklenght',breakLength)
+    
 
     while ( Math.max(...res) < UpperBound | iterator > 9999) {
 
@@ -22,7 +21,7 @@ function createBreaks(LowerBound,UpperBound,NumberOfBreaks,By) {
 
         iterator++; // Fail safe
     }
-    //console.log('iterator',iterator)
+    
     return res;
 
 }
@@ -106,7 +105,7 @@ function createCASEWHEN(arr,varname,openEnded,RowNumbers) {
             prevValue = a[(idx-1)];
             cur = (cur-1);
 
-            if (idx == (a.length-1)) {
+            if (idx == (a.length-1) & !openEnded) {
                 cur += 1
             }
            
@@ -124,6 +123,9 @@ function createCASEWHEN(arr,varname,openEnded,RowNumbers) {
         
         // If last of array & openended, add an additional CASE WHEN
         if (idx == (a.length-1) & openEnded) {
+
+            cur += 1 // Add one since its substracted
+
             rtrn += '\n' 
                 + sqlColour('  WHEN ','clause')
                 + varname
@@ -159,25 +161,19 @@ function update() {
 
     if (customStringDefined()) {
 
-        // Split and convert into array
+        // Split and convert into num array
         breaks = customString().split(',').map((x) =>  x*1) 
 
 
     }
 
-        
-
     let OpenEnded = document.getElementById('checkbox-openended').checked;
     let Rownames = document.getElementById('checkbox-rownames').checked;
     let varname = document.getElementById('input-variablename').value;
 
-    //let customArray = document.getElementsByClassName('input-customArray')[0].value
-
     let resultTextNode = document.getElementsByClassName('result-text')[0];
     resultTextNode.innerHTML = createCASEWHEN(breaks,varname,OpenEnded,Rownames) 
-       
-        
-    //}
+
 }
 
 
@@ -201,14 +197,9 @@ function fallbackCopyTextToClipboard(text) {
 
 
 function breaksFromLimits() {
-
-   // if (    // If inputs are filled correctly or a custom array is provided
-    //   (typeof NumberOfBreaks === 'number'& typeof LowerBound === 'number' & typeof UpperBound === 'number')
-    //) {
-        let NumberOfBreaks = document.getElementById('input-breaks').value*1;
-        let LowerBound = document.getElementById('input-lowerbound').value*1;
-        let UpperBound = document.getElementById('input-upperbound').value*1;
-        let breaks =  createBreaks(LowerBound,UpperBound,Breaks=NumberOfBreaks) ;
-        return breaks;
-    //}
+    let NumberOfBreaks = document.getElementById('input-breaks').value*1;
+    let LowerBound = document.getElementById('input-lowerbound').value*1;
+    let UpperBound = document.getElementById('input-upperbound').value*1;
+    let breaks =  createBreaks(LowerBound,UpperBound,Breaks=NumberOfBreaks) ;
+    return breaks;
 }
