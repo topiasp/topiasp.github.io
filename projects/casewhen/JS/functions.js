@@ -126,13 +126,21 @@ function createCASEWHEN(arr,varname,openEnded,RowNumbers) {
 
             cur += 1 // Add one since its substracted
 
+            // Deduce rownumber 
+            rowNumberOpenEnd = (function() { 
+                                    if (RowNumbers) {
+                                         return rowNumber.replace(/[^0-9]/,'')*1+1
+                                    } 
+                                    return '';
+                                })()
+
             rtrn += '\n' 
                 + sqlColour('  WHEN ','clause')
                 + varname
                 + sqlColour(' >= ','clause')
                 + cur 
                 + sqlColour(' THEN ','clause')
-                + sqlColour("'" +  (rowNumber.replace(/[^0-9]/,'')*1+1) + '.' +  " - "  + cur + " - '",'quote')
+                + sqlColour("'" + rowNumberOpenEnd  + '.' +  " - "  + cur + " - '",'quote')
         }
        
         return rtrn;
