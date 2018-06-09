@@ -72,6 +72,12 @@ html, body{
     width: 60%;
 }
 
+.input-customArray {
+
+    margin-top: 5%;
+}
+
+
 .sql-function {
 
     color: #FF00FF;
@@ -91,6 +97,7 @@ html, body{
 
     margin-left: 10%;
     margin-top: 10%;
+    float: left;
 }
 
 .fa-clipboard {
