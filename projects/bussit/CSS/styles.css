@@ -1,0 +1,32 @@
+
+.container {
+
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.departure {
+    background-color: #6A9CE2;
+    color: white;
+    font-size: 120;
+    float: left;
+    margin-bottom: 1%;
+    margin-top: 1%;
+    width: 100%;
+}
+
+.departure-bus-number {
+    color: #0D0A0B;
+    font-weight: 200;
+    display: inline;
+    float: left;
+    margin-left: 20%;
+    text-align: center;
+
+}
+.departure-departure-time {
+    float: right; 
+    margin-right: 20%;
+    display: inline;
+}
