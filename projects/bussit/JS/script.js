@@ -9,15 +9,15 @@ global = {
         stops: [
             {
                 stopId: 'HSL:1293123',
-                busses: [ '52' ]
+                busses: [ { id: '52' } ]
             },
             {
                 stopId: 'HSL:1293165',
-                busses: [ '51' ]
+                busses: [ { id: '51' } ]
             },
             {
                 stopId: 'HSL:1293139',
-                busses: [ '550','552' ]
+                busses: [ { id: '550', color: '#EC4B07' },{ id: '552' } ]
             },
         ],
         getStopsAsString: () => {
@@ -38,7 +38,7 @@ global = {
         busFilter: (departure) => {
 
             let stop = global.selectedStopsAndBusses.stops.filter((s) => { return s.stopId === departure.stopId })[0];
-            return stop.busses.indexOf(departure.bussi)>-1;
+            return stop.busses.map((b) => { return b.id }).indexOf(departure.bussi)>-1;
 
         }
 
@@ -81,8 +81,8 @@ init = () => {
     // Options container
     let options = document.createElement('div');
     options.classList = 'options-container hidden'
-    options.innerHTML = 'Bussit seurannassa:' 
-    options.innerHTML += global.selectedStopsAndBusses.getSelectedBusses().map((b) => { return '<div class="options-buslist-item">'+b+'</div>' }).join('')
+    options.innerHTML = '<div>Bussit seurannassa:</div>' 
+    options.innerHTML += global.selectedStopsAndBusses.getSelectedBusses().map((b) => { return '<div class="options-buslist-item">'+b.id+'</div>' }).join('')
 
     // Add header bar
 
@@ -141,12 +141,19 @@ unixTimeToHoursAndMinutes = (t) => {
 
 createDepartureBar = (l) => {
 
+
+    let selectedBusses = global.selectedStopsAndBusses.getSelectedBusses()
     
+    let busColor = selectedBusses.filter((b) => {  return b.id===l.bussi })[0].color ;
+
     let container = document.getElementById('container')
 
     let lahto = document.createElement('div')
-    lahto.classList += 'departure'
-    lahto.innerHTML = '<div class="departure-bus-number">' + l.bussi + "</div><div class='departure-departure-time'>" + l.lahtoaikaAikataulunMukaan+'</div>'
+    lahto.classList += 'departure';
+    if (busColor !== undefined) {
+        lahto.style = 'background-color:'+busColor; //style="background-color:'+busColour+'"
+    }
+    lahto.innerHTML = '<div class="departure-bus-number"  >' + l.bussi + "</div><div class='departure-departure-time'>" + l.lahtoaikaAikataulunMukaan+'</div>'
 
     container.appendChild(lahto)
 
@@ -233,5 +240,4 @@ getData = (params) => {
 
 
 } 
-
 

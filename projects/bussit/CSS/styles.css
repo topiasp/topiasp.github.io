@@ -35,12 +35,13 @@
 }
 .options-buslist-item {
 
-    font-size: 80;
+    font-size: 100;
     color: white;
     background-color: steelblue;
-    margin-top: 1%;
-    margin-bottom: 1%;
-
+    padding: 5px;
+    margin: 1%;
+    display: inline;
+    text-align: center;
 }
 
 /* Departurebars */
