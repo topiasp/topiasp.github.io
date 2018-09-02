@@ -182,7 +182,8 @@ handleStopInformation = (stopInformation) => {
             bussi: d.trip.route.shortName,
             headsign: d.headsign,
             stopId: stopId,
-            departureUnixTime: departureUnixTime
+            departureUnixTime: d.serviceDay+departureUnixTime, 
+            serviceDay: d.serviceDay
         }
     })
     console.log(departures)
