@@ -12,6 +12,13 @@ global = {
                 busses: [ { id: '52' } ]
             },
             {
+                stopId: 'HSL:1293124',
+                busses: [ { id: '56', color: '#006600' } ]
+
+                
+            },
+			
+            {
                 stopId: 'HSL:1293165',
                 busses: [ { id: '51' } ]
             },
