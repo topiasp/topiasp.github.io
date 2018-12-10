@@ -1,0 +1,13 @@
+
+.testi {
+    color: red;
+}
+
+
+.nav-link {
+    color: white;
+}
+
+.nav-link:hover {
+    color: lightgray
+}
