@@ -17,20 +17,54 @@ doStuff = () => {
 
 CreateCardHTML = (dat) => {
     
+    console.log('Data: ',dat)
+
+    if (dat.error) {
+        card = document.createElement('div')
+        card.classList.add('alert')
+        card.classList.add('alert-danger')
+        card.classList.add('mt-3')
+        card.innerHTML = dat.error
+
+        return(card)
+    }
+
 
     card = document.createElement('div')
 
-    text = document.createElement('h3')
+    text = document.createElement('h4')
     text.classList.add('text')
-    text.style = 'color: grey; margin-bottom: 8%; margin-top: 5%'
-    text.innerHTML = 'CPV-code: ' + dat.CPV
+    text.style = 'color: grey; margin-bottom: 6%; margin-top: 5%'
+    text.innerHTML =  dat.CPV + " " + dat.CPV_en
 
     card.appendChild(text)
     
 
+    BadgeContainer = document.createElement('h4')
+    card.appendChild(BadgeContainer)
+
+
+    OffersBadge = document.createElement('span')
+    OffersBadge.classList.add('badge')
+    OffersBadge.classList.add('badge-primary')
+    OffersBadge.classList.add('mt-3')
+    OffersBadge.style='display: block'
+    OffersBadge.innerHTML = 'Notices typically receive ' + dat.MedianOffers + ' offers'
+    BadgeContainer.appendChild(OffersBadge)
+
+    OffersBadge = document.createElement('span')
+    OffersBadge.classList.add('badge')
+    OffersBadge.classList.add('mt-3')
+
+    OffersBadge.classList.add('badge-danger')
+    OffersBadge.style='display: block'
+    OffersBadge.innerHTML =   (dat.OneOffer  / dat.Obs *100).toFixed(1)  + ' % received only one offer'
+    BadgeContainer.appendChild(OffersBadge)
+    
     
     ListOfFigures = document.createElement('table');
     ListOfFigures.classList.add('table')
+    ListOfFigures.classList.add('mt-3')
 
     HeaderRow = document.createElement('tr')
     HeaderCell = document.createElement('th')
@@ -170,16 +204,24 @@ FindCpvData = (CPV) => {
     //CPV = '45000000'
     dat = procurement_data.filter(function(x) { return(x.CPV==CPV) });
 
+    let RtrnDat = {
+        CPV: CPV,
+        CPV_en: '',
+        CPV_fi: '',
+        Obs: 0,
+        Figures: [],
+        TOP_TYPE: [],
+        MedianOffers: 0,
+        OneOffer: 0
+        
+    }
+
+
     if (dat.length==0) {
 
-        alert('CPV-code '+CPV+' not found or no observations exists')
-        return({
-            CPV: CPV,
-            Obs: 0,
-            Figures: [],
-            TOP_TYPE: []
-          
-        })
+        //alert('CPV-code '+CPV+' not found or no observations exists')
+        RtrnDat.error = 'CPV-code '+CPV+' not found or no observations exists';
+        return(RtrnDat)
     }
 
     Obs = dat.map(function(x) { return(x.Observations) });
@@ -201,13 +243,15 @@ FindCpvData = (CPV) => {
 
     // TOP TYPE
     TOP_TYPES = ['OPE','RES','NIC']
-
+    
     TOP_TYPE = TOP_TYPES.map(function(type) {     
-        count = dat.filter(function(x) { return(x.TOP_TYPE==type ) }).map(function(x) { return(x.Observations) })
 
-        if (count.length>0) {
-            pct = global.Maths.sum( count ) / global.Maths.sum( Obs )
-            count = global.Maths.sum( count )
+
+        count = dat[0][('TOP_TYPE_'+type)]
+
+        if (count) {
+            pct =  count  / global.Maths.sum( Obs )
+            count =  count 
         } else {
             pct = 0
             count = 0
@@ -215,17 +259,19 @@ FindCpvData = (CPV) => {
         return({  type: type, pct: pct, count: count  })
     })
     
+     
+    RtrnDat.CPV_en = dat[0].CPV_en
+    RtrnDat.CPV_fi = dat[0].CPV_fi
+    
+
+    RtrnDat.Obs = global.Maths.sum( Obs )
+    RtrnDat.Figures = Figures
+    RtrnDat.TOP_TYPE = TOP_TYPE 
+    RtrnDat.MedianOffers = dat[0].MedianOffers
+    RtrnDat.OneOffer = dat[0].OneOffer
 
 
-
-
-    return({
-        CPV: CPV,
-        Obs: global.Maths.sum( Obs ),
-        Figures: Figures,
-        TOP_TYPE: TOP_TYPE
-      
-    })
+    return(RtrnDat)
 }
 
 
@@ -237,11 +283,23 @@ init = () => {
     navbar = document.getElementById('navbar');
     //navbar.innerHTML += '<a class="nav-link" href="#" onclick=""></a>'
     
-    // Query
+    // Populate datalist
+
+    datalist_for_CPV_codes  = document.getElementById('datalist_CPV_code');
+    
+    CPV.forEach(function(cpv) {
+
+        item = document.createElement('option')
+        item.value = cpv.CPV;
+        datalist_for_CPV_codes.appendChild(  item   )
+
+    })
+
+
+
+
     query = document.getElementById('query');
-    //query.innerHTML += '<div class="form-group">'
-    //query.innerHTML += '<input type="text" class="form-control" id="CPV_input" placeholder="Enter CPV-code. Eg. 45000000">'
-    //query.innerHTML += '</div>'
+
 
 
     queryDiv = document.createElement('div');
@@ -253,6 +311,8 @@ init = () => {
     queryInput = document.createElement('input')
     queryInput.id = 'CPV_input'
     queryInput.type='text'
+    queryInput.name='datalist_CPV_code'
+    queryInput.setAttribute('list','datalist_CPV_code')
     queryInput.classList.add('form-control');
     queryInput.placeholder='Enter CPV-code. Eg. 45000000 or 80400000'
     //queryInput.value = '45000000'
@@ -270,6 +330,7 @@ init = () => {
     goButton = document.createElement('button')
     goButton.classList.add('btn')
     goButton.classList.add('btn-success')
+    goButton.classList.add('btn-block')
     goButton.innerHTML = 'Search'
     goButton.addEventListener('click',doStuff)
 
