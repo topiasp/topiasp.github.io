@@ -1,0 +1,104 @@
+<html>
+    <head>
+        <script src='./JS/scripts.js' ></script>
+        <script src='./JS/parseutils.js' ></script>
+        <script src='./JS/htmlhelpers.js' ></script>
+        <script src='./JS/modelResultsToTable.js' ></script>
+        <!--<script src='./examples/dummy.js' ></script> -->
+
+        <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+    <style>
+        p {
+            font-size: 80%
+        }
+
+        td, th {
+            padding: 10px;
+        }
+        input[type="file"] {
+            display: none;
+        }
+        label {
+            padding: 0px 0px 0px 0px;
+            font-weight: 100;
+            margin: 0px;
+            
+        }
+        .file-title {
+            margin-left: 15px
+        }
+        .chapter-btn {
+            width: 100%;
+            margin: 1px;
+            font-size: 75%;
+        }
+
+        .navbar-button {
+            margin-top: 10px;
+            padding: 6px 12px;
+            margin-left: 5px;
+        }
+
+        table {
+        overflow: hidden;
+        }
+
+        tr:hover {
+        background-color: #f8f6f6;
+        }
+
+        td, th {
+            position: relative;
+            border: 1px solid lightblue
+        }
+        td:hover::after {
+        content: "";
+        position: absolute;
+        background-color: #f8f6f6;
+        left: 0;
+        top: -5000px;
+        height: 10000px;
+        width: 100%;
+        z-index: -1;
+        }
+        #output-title {
+            color: white
+        }
+    </style>
+
+    </head>
+    <body onload='init()'>
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+              <div class="navbar-header">
+                <a class="navbar-brand" href="#">M<i>Plus</i> output viewer</a>
+              </div>
+              <ul class="nav navbar-nav">
+                <li>
+                    <button type="button" class="btn btn-success navbar-button"><label for="file-upload" class="custom-file-upload">Load input
+                    </label></button>
+                    <input id="file-upload" type="file"/>
+                </li>
+                <li><button type="button" class="btn btn-primary navbar-button" onclick="displayWholeOutput()" id="btn-whole-output" disabled>Whole output</button></li>
+                <li><button type="button" class="btn btn-primary navbar-button" onclick="displayModelResults()"id="btn-just-model-results" disabled>Just the model results</button></li>
+              </ul>
+              <div class="navbar-header" style="float: right">
+                  <div class='navbar-brand' id="output-title"></div>
+              </div>
+            </div>
+        </nav>        
+        
+        <div class="container-fluid" id='content'>
+            
+        </div>
+    </body>
+</html>
+
