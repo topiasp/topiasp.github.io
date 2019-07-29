@@ -1,3 +1,24 @@
+
+const splitIntoChapters = (outputstring) => {
+
+    const RegExpChapter = /(^[A-Z][A-Z ]+[A-Z]$)/gm
+
+    let headers = extractOccurancesOfRegex({ string: outputstring, start: 0, chapters: [], regex: RegExpChapter })
+
+    // Filter non hits 
+    let regexByWithOn = / (BY|WITH|ON)$/m // These specify interactions of groups 
+    headers.occurances = headers.occurances.filter((h) => !regexByWithOn.test(h.result))
+
+    headers = addEnds(headers)
+
+    chapters = extractChapters(headers)
+ 
+
+    return(chapters)
+}
+
+
+
 const locationOfString = (string,substring) => {
     var regexp=new RegExp("\\b"+substring+"\\b")
     
@@ -93,9 +114,11 @@ var OccurancesToTableRows = (occurances) => {
 
     let originalTableRows =  occurances.content.map((r) =>   getTableCellsFromRow(r)).filter((r) => r.length>0)
 
+    
+
     const rowAsObject = (row,additionalKey) => {
         const rowObj = {}
-        rowObj.keys = [ additionalKey, row[0]]
+        rowObj.keys = [ additionalKey, row[0] ]
         row.splice(0,1)
         rowObj.values = row
         return rowObj
