@@ -1,13 +1,9 @@
 // Helpers to create html elements
 
 
-const htmlElement = (params) => {
+const htmlElement = ({ tag, content, classesOfElement, attributes }) => {
 
-    const tag = params.tag
-    const content = params.content
-    const classesOfElement = params.classesOfElement
-    const attributes = params.attributes
-
+  
     const ele = document.createElement(tag)
     if (content !== undefined) {
         ele.innerHTML = content

@@ -19,11 +19,12 @@ const pvalueSignificance = (pvalue) => {
 }
 
 
-const addPvalueToCell = (cell) => {
+const addPvalueToCell = ({ cell, pvalueindex }) => {
 
-    const pvalue = cell.values[ (cell.values.length-1) ] * 1
+    const pvalue = cell.values[ pvalueindex ] * 1
 
-    cell.values = cell.values.concat(pvalueSignificance(pvalue))
+    cell.values[ (cell.values.length-1) ] = pvalueSignificance(pvalue) // Allways the last cell
+    //cell.values = cell.values.concat(pvalueSignificance(pvalue))
     return cell
 }
 

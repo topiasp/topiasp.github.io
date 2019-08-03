@@ -7,6 +7,12 @@ const getModelResultsAsCells = (params) => {
     
     const chapters = params.chapters
     const headerToFind = params.headerToFind
+    const tableheaders = params.tableheaders
+    
+
+
+    let cells
+    
 
     if (chapters === undefined | chapters === null) {
         alert('No output loaded to get model results from!')
@@ -25,8 +31,9 @@ const getModelResultsAsCells = (params) => {
 
         let groups = extractChapters({ string: modelResults.content.join('\n'), regex: RegExpGroup })
 
-        grouptablerows = groups.occurances.map((group) => ExtractGroupSpecificRows(group))
+        let grouptablerows = groups.occurances.map((group) => ExtractGroupSpecificRows(group))
         cells = grouptablerows.map((arr) => arr.flat()).flat()  
+        cells = cells.map((cell) => ensureCellKeyCount({ cell: cell, headercount: tableheaders.length }))
 
     } else {
 
@@ -40,7 +47,19 @@ const getModelResultsAsCells = (params) => {
 }
 
 
+// Ensure that each cell has as many keys as there are headers in the table
 
+const ensureCellKeyCount = ({ cell, headercount }) => {
+
+    while (cell.keys.length + cell.values.length < headercount) {
+
+        cell.values.push("")
+
+    }
+
+    return cell
+    
+}
 
 
 

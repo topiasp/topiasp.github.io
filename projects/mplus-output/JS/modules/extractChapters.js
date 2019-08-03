@@ -58,11 +58,9 @@ const extractChapterContent = (headersObj) => {
 
 const extractChapters = (params) => {
 
-    console.log('params', params)
+
 
     let headers = extractOccurancesOfRegex({ string: params.string, start: 0, chapters: [], regex: params.regex })
-
-    console.log('headers gotten',headers)
 
     if (params.filteringRegex) {
         headers.occurances = headers.occurances.filter((h) => !params.filteringRegex.test(h.result))
@@ -70,10 +68,9 @@ const extractChapters = (params) => {
 
     headers = addEnds(headers)
 
-    console.log('end added',headers)
     chapters = extractChapterContent(headers)
 
-    console.log('chapters gotten', chapters)
+
 
     return chapters
 

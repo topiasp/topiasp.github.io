@@ -28,14 +28,11 @@ const init = () => {
   
     fileInput.addEventListener('change', handleFileLoad);
     
-  
-    /*
-    loadFileIntoStorage(mplusoutput.raw)
-    // Update title
-    updateTitle(storage.title)
 
+    loadFileIntoStorage(mplusoutput.raw)
+    updateTitle(storage.title)
     updateButtonDisability()
-     */
+  
 }
 
 
@@ -141,19 +138,22 @@ const loadFileIntoStorage = (fileAsString) => {
     try {
 
         const header = 'MODEL RESULTS'
-        const cells = getModelResultsAsCells({ chapters: storage.chapters, headerToFind: header })
+        const tableheaders = ['Column1','Column2','Column3','Estimate','S.E.','Est/S.E.','P-Value','Signif.']
+        const cells = getModelResultsAsCells({ chapters: storage.chapters, headerToFind: header,tableheaders: tableheaders })
 
         storage.modelresults = {
             cells: cells,
-            headers: ['Column1','Column2','Column3','Estimate','S.E.','Est/S.E.','P-Value','Signif.'],
+            headers: tableheaders,
             header: header
         }
         // Try to add p-value
-        storage.modelresults.cells = storage.modelresults.cells.map((cell) => addPvalueToCell(cell))
-
+        let pvalueindex = tableheaders.indexOf('P-Value') - 3
+        
+        if (pvalueindex>-1) {
+            storage.modelresults.cells = storage.modelresults.cells.map((cell) => addPvalueToCell({ cell: cell, pvalueindex: pvalueindex }))
+        }
         // Sort
         sortCells([1,2])
-        console.log('sorting done')
 
     } 
     catch(err) {
@@ -163,16 +163,21 @@ const loadFileIntoStorage = (fileAsString) => {
     // standardized model results
     try {
         const header = 'STANDARDIZED MODEL RESULTS'
-        const cells = getModelResultsAsCells({ chapters: storage.chapters, headerToFind: header })
+        const tableheaders = ['Column1','Column2','Column3','Estimate','S.E.','Est/S.E.','P-Value','Variance','Signif.']
+        const cells = getModelResultsAsCells({ chapters: storage.chapters, headerToFind: header, tableheaders: tableheaders })
 
         storage.standardizedmodelresults = {
             cells: cells,
-            headers: ['Column1','Column2','Column3','Estimate','S.E.','Est/S.E.','P-Value','Signif.'],
+            headers: tableheaders,
             header: header
         }
         // Try to add p-value
-        storage.standardizedmodelresults.cells = storage.standardizedmodelresults.cells.map((cell) => addPvalueToCell(cell))
 
+        let pvalueindex = tableheaders.indexOf('P-Value') - 3
+        
+        if (pvalueindex>-1) {
+            storage.standardizedmodelresults.cells = storage.standardizedmodelresults.cells.map((cell) => addPvalueToCell({ cell: cell, pvalueindex: pvalueindex }))
+        }
        
 
     } 
