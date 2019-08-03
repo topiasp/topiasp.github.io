@@ -29,10 +29,11 @@ const init = () => {
     fileInput.addEventListener('change', handleFileLoad);
     
 
+    /*
     loadFileIntoStorage(mplusoutput.raw)
     updateTitle(storage.title)
     updateButtonDisability()
-  
+    */
 }
 
 

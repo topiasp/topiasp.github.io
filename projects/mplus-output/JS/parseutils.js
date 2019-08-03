@@ -41,6 +41,7 @@ const getModelResultsAsCells = (params) => {
         tablerows = ExtractGroupSpecificRows(modelResults)
 
         cells = tablerows.map((arr) => arr.flat()).flat()  
+        cells = cells.map((cell) => ensureCellKeyCount({ cell: cell, headercount: tableheaders.length }))
     }
     return(cells)  
     
