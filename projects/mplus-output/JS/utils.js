@@ -1,87 +1,5 @@
 
-// --------------------------------------------- CSV ------------------------------------------------ */
-//      Source: https://halistechnology.com/2015/05/28/use-javascript-to-export-your-data-as-csv/     */
 
-function convertArrayOfCellsToCSV(args) {
-
-    let headers,data,delimiter
-
-    headers = args.headers
-    data    = args.data
-    delimiter = args.delimiter || ';'
-
-    let result = ''
-
-    result += headers.join(delimiter) + '\n'
-
-
-    result += data.map((d) => cellToArray(d).join(delimiter)).join('\n')
-    return result
-}
-
-
-function convertArrayOfObjectsToCSV(args) {
-    // This is not used as data structure is not applicable  
-    var result, ctr, keys, columnDelimiter, lineDelimiter, data;
-
-    data = args.data || null;
-    if (data == null || !data.length) {
-        console.log('data is null')
-        return null;
-    }
-
-    columnDelimiter = args.columnDelimiter || ';';
-    lineDelimiter = args.lineDelimiter || '\n';
-
-    keys = Object.keys(data[0]);
-
-    result = '';
-    result += keys.join(columnDelimiter);
-    result += lineDelimiter;
-
-    data.forEach(function(item) {
-        ctr = 0;
-        keys.forEach(function(key) {
-            if (ctr > 0) result += columnDelimiter;
-
-            result += item[key];
-            ctr++;
-        });
-        result += lineDelimiter;
-    });
-
-    return result;
-}
-
-
-function downloadCSV(args) {  
-
-    console.log('Creating csv')
-
-    var data, filename, link;
-    var csv = convertArrayOfCellsToCSV(args);
-    if (csv == null) return;
-
-    console.log('Created csv-data')
-
-    filename = args.filename || 'export.csv';
-
-    if (!csv.match(/^data:text\/csv/i)) {
-        csv = 'data:text/csv;charset=utf-8,' + csv;
-    }
-    data = encodeURI(csv);
-
-    link = document.createElement('a');
-    link.setAttribute('href', data);
-    link.setAttribute('download', filename);
-    link.click();
-}
-
-// -------------- CSV
-
-
-
-// general 
 
 // Join keys and values
 const cellToArray = (cell) => [...cell.keys].concat(cell.values)
@@ -110,20 +28,34 @@ const addPvalueToCell = (cell) => {
 }
 
 
-const sortCells = (colidx) => {
+const sortCells = (colidxs) => {
+
+
 
     const sortingFunction = (a,b) => {
-        keyA = a.keys[colidx]
-        keyB = b.keys[colidx]
-
-        let result = 0
-        if (keyA > keyB) {
-            result = 1
+ 
+        const comparer = (keyA,keyB) => {
+            let result = 0
+            if (keyA > keyB) {
+                result = 1
+            } 
+            if (keyA < keyB) {
+                result = -1
+            }
+            return result
         } 
-        if (keyA < keyB) {
-            result = -1
-        }
-        return result
+        keyA = a.keys[colidxs[0]]
+        keyB = b.keys[colidxs[0]]
+
+        result1 = comparer(keyA,keyB)
+        // Second sorting column
+        keyA = a.keys[colidxs[1]]
+        keyB = b.keys[colidxs[1]]
+
+        result2 = comparer(keyA,keyB)
+        
+
+        return result1 || result2
     }
 
 
@@ -154,6 +86,10 @@ const updateButtonDisability = () => {
     const modelResultsButton = document.getElementById('btn-just-model-results')
     modelResultsButton.disabled = storage.modelresults.cells !== undefined ? false : true
 
+    const modelStdResultsButton = document.getElementById('btn-just-std-model-results')
+    modelStdResultsButton.disabled = storage.standardizedmodelresults.cells !== undefined ? false : true
+
+
 }
 
 const loadFileIntoStorage = (fileAsString) => {
@@ -161,11 +97,13 @@ const loadFileIntoStorage = (fileAsString) => {
     storage = initStorage()
     
 
-    const chapters = splitIntoChapters(fileAsString);
-
     
     // Update to storage
     try { 
+        const RegExpChapter = /(^[A-Z][A-Z ]+[A-Z]$)/gm
+
+        const chapters =  extractChapters({ string: fileAsString, regex: RegExpChapter, filteringRegex: / (BY|WITH|ON)$/m  })
+         
         storage.chapters = chapters
     } 
     catch(err) {
@@ -182,21 +120,44 @@ const loadFileIntoStorage = (fileAsString) => {
     // model results
     try {
 
-        const cells = getModelResultsAsCells(chapters)
+        const header = 'MODEL RESULTS'
+        const cells = getModelResultsAsCells({ chapters: storage.chapters, headerToFind: header })
 
         storage.modelresults = {
             cells: cells,
-            headers: ['Column1','Column2','Column3','Estimate','S.E.','Est/S.E.','P-Value','Signif.']
+            headers: ['Column1','Column2','Column3','Estimate','S.E.','Est/S.E.','P-Value','Signif.'],
+            header: header
         }
         // Try to add p-value
         storage.modelresults.cells = storage.modelresults.cells.map((cell) => addPvalueToCell(cell))
 
         // Sort
-        sortCells(1)
+        sortCells([1,2])
+        console.log('sorting done')
 
     } 
     catch(err) {
-        console.log('error here' + err.message)
+        console.log('error in modelring results parsing: ' + err.message)
+        throw 'Error with extracting model results: ' + err.message 
+    }
+    // standardized model results
+    try {
+        const header = 'STANDARDIZED MODEL RESULTS'
+        const cells = getModelResultsAsCells({ chapters: storage.chapters, headerToFind: header })
+
+        storage.standardizedmodelresults = {
+            cells: cells,
+            headers: ['Column1','Column2','Column3','Estimate','S.E.','Est/S.E.','P-Value','Signif.'],
+            header: header
+        }
+        // Try to add p-value
+        storage.standardizedmodelresults.cells = storage.standardizedmodelresults.cells.map((cell) => addPvalueToCell(cell))
+
+       
+
+    } 
+    catch(err) {
+        console.log('error in modelring results parsing: ' + err.message)
         throw 'Error with extracting model results: ' + err.message 
     }
     
@@ -204,7 +165,7 @@ const loadFileIntoStorage = (fileAsString) => {
     // Title
     
 
-    storage.title = extractTitle(chapters)
+    storage.title = extractTitle(storage.chapters)
 }
 
 
@@ -234,61 +195,29 @@ const displayElementsInContent = (elements,clearContents=true) => {
 
 
 
-const downloadModelResultsAsCSV = () => {
-    console.log('got here')
-   downloadCSV({ headers: storage.modelresults.headers, data: storage.modelresults.cells, filename: 'modelresults.csv' })
-
-}
 
 
+const handleFileLoad = (e) => {
+    const fileInput = document.getElementById('file-upload')
+        
+    const file = fileInput.files[0];
 
+    const reader = new FileReader();
 
-const displayModelResults = () => {
-    
-    if (storage.modelresults === undefined) {
-        return
+    reader.onload = (e) =>  {
+
+        // Start from scratch
+        displayElementsInContent(undefined)
+        updateTitle('')
+        updateButtonDisability()
+
+        // Update based on file
+        loadFileIntoStorage(reader.result);
+        updateTitle(storage.title)
+        updateButtonDisability()
+        
     }
-    // Download button
-    const downloadButton = htmlElement('button','Download table as CSV',['btn','btn-primary'],[{ key: 'style',value:'margin-bottom: 15px' }])
-    downloadButton.addEventListener('click',downloadModelResultsAsCSV)
-    displayElementsInContent(downloadButton,clearContents=true)
 
+    reader.readAsText(file,"ISO-881");	
 
-    const cells = storage.modelresults.cells
-
-    
-
-
-    cellKeysAndValuesAsArray = cells.map((cell) => cellToArray(cell) )
-
-    const modelResultTable =createTable([storage.modelresults.headers],cellKeysAndValuesAsArray)
-
-    displayElementsInContent(modelResultTable,clearContents=false)
-    
-}
-
-const displayWholeOutput = () => {
-
-
-
-
-    // Actual table
-    const chapters = storage.chapters
-
-    const tocElements = chapters.occurances.map((chap) => collapsible(chap))
-
-    // Create div for row
-    const row = htmlElement('div',undefined,['row'])
-    const colFrame = htmlElement('div',undefined,['col-sm-4'],[{key:'id', value:'content-frame'}])
-    const colDisplay = htmlElement('div',undefined,['col-sm-4'],[{key:'id', value:'content-display'}])
-
-    tocElements.forEach((ele) => colFrame.appendChild(ele.button))
-    tocElements.forEach((ele) => colDisplay.appendChild(ele.chapter))
-
-    row.appendChild(colFrame)
-    row.appendChild(colDisplay)
-
-    displayElementsInContent(row)
-
-    
 }

@@ -1,5 +1,13 @@
+// Helpers to create html elements
 
-const htmlElement = (tag,content,classesOfElement,attributes) => {
+
+const htmlElement = (params) => {
+
+    const tag = params.tag
+    const content = params.content
+    const classesOfElement = params.classesOfElement
+    const attributes = params.attributes
+
     const ele = document.createElement(tag)
     if (content !== undefined) {
         ele.innerHTML = content
@@ -22,7 +30,7 @@ const addParagraph = (content) => {
     content = content.replace(/ /g,'&nbsp;')
 
 
-    return htmlElement('p',content)
+    return htmlElement({ tag: 'p',content: content })
 
 }
 
@@ -31,9 +39,9 @@ const createRow = (rowcells,celltype='td') => {
 
 
 
-    const htmlCells =  Array.isArray(rowcells) ? rowcells.map((cell) => htmlElement(celltype,cell)) : htmlElement(celltype,cell)
+    const htmlCells =  Array.isArray(rowcells) ? rowcells.map((cell) => htmlElement({ tag: celltype, content: cell})) : htmlElement({ tag: celltype,content: cell})
 
-    const row = htmlElement('tr')
+    const row = htmlElement({ tag: 'tr' })
 
     htmlCells.forEach((cell) =>  row.appendChild(cell))
     return(row)
@@ -42,10 +50,10 @@ const createRow = (rowcells,celltype='td') => {
 
 const createTable = (headers,rows) => {
 
-    const tbl = htmlElement('table',undefined,['omataulukko','table-condensed'])
+    const tbl = htmlElement({ tag: 'table' ,classesOfElement: ['omataulukko','table-condensed']})
 
-    const thead = htmlElement('thead')
-    const tbody = htmlElement('tbody')
+    const thead = htmlElement({ tag: 'thead' })
+    const tbody = htmlElement({ tag: 'tbody'})
 
 
 
@@ -60,37 +68,86 @@ const createTable = (headers,rows) => {
 }
 
 
-const collapsible = (chap) => {
 
-    //const row = htmlElement('div','',['row'])
-    //const col = htmlElement('div','',['col-sm-12'])
 
-    
+const selectList = (options) => {
 
-    const button = htmlElement('button',chap.header.result,['btn','btn-primary','chapter-btn']
-                    ,[
+    const select = htmlElement({ tag: 'select',classesOfElement: ['form-control'],attributes: [{key:'multiple', value:''}] })
+
+    options.forEach((option) => select.appendChild(htmlElement({ tag: 'option',content: option })))
+
+    return select
+
+}
+
+
+
+const checkBoxList = (options) => {
+  
+
+    const form = htmlElement({ tag: 'form' })
+
+    const createCheckBox = (option) => {
+        const div = htmlElement({ tag: 'div', classesOfElement: ['checkbox']})
+        
+        const input = htmlElement({ tag: 'input', attributes: [{ key: 'type', value: 'checkbox' }, { key: 'value', value: ''}] })
+        const label = htmlElement({ tag: 'label'  })
+
+        label.appendChild(input)
+        label.innerHTML += option
+
+
+
+        div.appendChild(label)
+        return div
+    }
+
+    options.forEach((option) => form.appendChild(  createCheckBox(option)  ))
+
+    return form
+
+}
+
+
+
+const collapsibleCheckBoxList = (chap) => {
+
+
+    const div = htmlElement({ tag: 'div', classesOfElement: ['checkbox']})
+    const label = htmlElement({ tag: 'label' })
+    const checkbox = htmlElement({tag: 'input'
+                   
+                    ,attributes: [
                         {key:'data-toggle',value:'collapse'},
                         {key:'data-target',value: '#'+chap.id},
-                        {key:'type',value:'button'}
+                        {key:'type',value:'checkbox'}
                     ]
+                }
                 )
     
+    label.appendChild(checkbox)
+    label.innerHTML += chap.header.result
 
-    const chapt = htmlElement('div',undefined,['collapse'],[{key: 'id',value: chap.id}])
+    div.appendChild(label)
+
+
+    const chapt = htmlElement({ tag: 'div',classesOfElement: ['collapse','chapter'], attributes: [{key: 'id',value: chap.id}] })
     
 
     const paragraphs = chap.content.map((par) => addParagraph(par))
 
+    // add header
+
+    chapt.appendChild(htmlElement({ tag: 'h3', content: chap.header.result }))
+
 
     // Join 'em
     paragraphs.forEach((p) => chapt.appendChild(p))
-    //col.appendChild(button)
-    //col.appendChild(chapt)
-    //row.appendChild(col)
+
     
     //return row
     return {
-        button: button,
+        button: div,
         chapter: chapt
     }
 }

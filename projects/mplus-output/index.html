@@ -2,9 +2,10 @@
     <head>
         <script src='./JS/scripts.js' ></script>
         <script src='./JS/parseutils.js' ></script>
+        <script src='./JS/modules/extractChapters.js'></script>
+        <script src='./JS/modules/convertAndDownloadCSV.js'></script>
         <script src='./JS/utils.js'></script>
         <script src='./JS/htmlhelpers.js' ></script>
-        <script src='./JS/modelResultsToTable.js' ></script>
         <script src='./examples/dummy.js' ></script> 
 
         <!-- Latest compiled and minified CSS -->
@@ -36,10 +37,8 @@
         .file-title {
             margin-left: 15px
         }
-        .chapter-btn {
-            width: 100%;
-            margin: 1px;
-            font-size: 75%;
+        .chapter {
+            border-bottom: 1px solid lightgrey
         }
 
         .navbar-button {
@@ -73,23 +72,41 @@
         #output-title {
             color: white
         }
+        .chapter-frame {
+            position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+            z-index: 1; /* Stay on top */
+            top: 10%; /* Stay at the top */
+            left: 0;
+
+        }
+        .chapter-content {
+            border-left: 1px solid lightgray;
+            left: 30%;
+            
+        }
+
+        #content {
+            position: absolute;
+            top: 10%;
+            width: 100%;
+        }
     </style>
 
     </head>
     <body onload='init()'>
-        <nav class="navbar navbar-inverse">
+        <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="container-fluid">
               <div class="navbar-header">
                 <a class="navbar-brand" href="#">M<i>Plus</i> output viewer</a>
               </div>
               <ul class="nav navbar-nav">
                 <li>
-                    <button type="button" class="btn btn-success navbar-button"><label for="file-upload" class="custom-file-upload">Load input
-                    </label></button>
+                    <button type="button" class="btn btn-success navbar-button"><label for="file-upload" class="custom-file-upload">Upload .out</label></button>
                     <input id="file-upload" type="file"/>
                 </li>
                 <li><button type="button" class="btn btn-primary navbar-button" onclick="displayWholeOutput()" id="btn-whole-output" disabled>Whole output</button></li>
-                <li><button type="button" class="btn btn-primary navbar-button" onclick="displayModelResults()"id="btn-just-model-results" disabled>Just the model results</button></li>
+                <li><button type="button" class="btn btn-primary navbar-button" onclick="showModelResults()"id="btn-just-model-results" disabled>Just the model results</button></li>
+                <li><button type="button" class="btn btn-primary navbar-button" onclick="showStdModelResults()" id="btn-just-std-model-results" disabled>Just the standardized model results</button></li>
               </ul>
               <div class="navbar-header" style="float: right">
                   <div class='navbar-brand' id="output-title"></div>

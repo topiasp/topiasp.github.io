@@ -1,102 +1,42 @@
 
-const splitIntoChapters = (outputstring) => {
-
-    const RegExpChapter = /(^[A-Z][A-Z ]+[A-Z]$)/gm
-
-    let headers = extractOccurancesOfRegex({ string: outputstring, start: 0, chapters: [], regex: RegExpChapter })
-
-    // Filter non hits 
-    let regexByWithOn = / (BY|WITH|ON)$/m // These specify interactions of groups 
-    headers.occurances = headers.occurances.filter((h) => !regexByWithOn.test(h.result))
-
-    headers = addEnds(headers)
-
-    chapters = extractChapters(headers)
- 
-
-    return(chapters)
-}
 
 
+// Extracting table as cells
 
-const locationOfString = (string,substring) => {
-    var regexp=new RegExp("\\b"+substring+"\\b")
+const getModelResultsAsCells = (params) => {
     
-    const match = regexp.exec(string)
+    const chapters = params.chapters
+    const headerToFind = params.headerToFind
 
-    if (match===null) {
-        return({
-            start: -1,
-            end: -1
-        })
+    if (chapters === undefined | chapters === null) {
+        alert('No output loaded to get model results from!')
+    } 
+    // Model results- -----------------
+    // Groups
+    modelResults = chapters.occurances.filter((chapt) => chapt.header.result === headerToFind)[0]
+
+    if (modelResults === undefined) {
+        console.log('trowing no model results for string ', headerToFind)
+        throw "no '"+headerToFind+"' found"
     }
+    if (storage.numberOfGroups !== undefined & storage.numberOfGroups>1)  {
 
+        let  RegExpGroup =  /Group [A-Z_]+$/gm
 
-    return({
-        start: match.index,
-        end: match.index + substring.length
-        
-    })
-}
+        let groups = extractChapters({ string: modelResults.content.join('\n'), regex: RegExpGroup })
 
-const extractOccurancesOfRegex = (params) => {
+        grouptablerows = groups.occurances.map((group) => ExtractGroupSpecificRows(group))
+        cells = grouptablerows.map((arr) => arr.flat()).flat()  
 
-    const regex = params.regex
-    const lengthOfStringForFinalEnd = params.string.length * 1
-    let idx = 0
+    } else {
 
-    const occurances = []
+        // This function works as it similar to number of groups = 1
+        tablerows = ExtractGroupSpecificRows(modelResults)
 
-    while ((res = regex.exec(params.string)) !== null) {
-        occurances.push({ result: res[0], id: 'C'+idx, contentStart: res.index + res[0].length, start: res.index  })
-        idx++
+        cells = tablerows.map((arr) => arr.flat()).flat()  
     }
-
-    return { occurances: occurances,
-        string: params.string
-            } 
- 
-}
-
-
-const extractNumberOfGroups = (chapters) => {
-    var RegExpNumberOfGroups = /(Number of groups[ ]+[0-9]{1,2})/
-    var StringContainingNumberOfGroups =  chapters.string.match(RegExpNumberOfGroups)
-    return StringContainingNumberOfGroups ===  null ? undefined : StringContainingNumberOfGroups[0].replace(/[^0-9]/g,'') * 1
-}
-
-
-const extractChapters = (headersObj) => {
-
-    let headers =  headersObj.occurances
-    const string = headersObj.string
-
-    const arr = []
-    for (headerIdx in headers) {
-        header = headers[headerIdx]
-        arr.push({
-            header: header,
-            id: header.id,
-            content: string.substring(header.contentStart,header.end).split('\n')//.filter((p) => p.length>0)
-        })
-    }
-
-    headersObj.occurances = arr
-    return(headersObj)
-}
-
-const addEnds = (obj) => {
-
-
-    arr = obj.occurances
-    arr[arr.length-1].end = obj.string.length 
-
-    for (i = (arr.length-2); i >= 0;i--) {
-        arr[i].end = arr[(i+1)].start-1
-    }
-    obj.occurances = arr
-
-    return obj
+    return(cells)  
+    
 }
 
 
@@ -136,7 +76,7 @@ const ExtractGroupSpecificRows = (group) => {
     
     grouptableheaders = extractOccurancesOfRegex({ string: group.content.join('\n'), start: 0, chapters: [], regex: /(.+[A-Za-z]$)/gm })
     grouptableheaders = addEnds(grouptableheaders)
-    grouptables = extractChapters(grouptableheaders)
+    grouptables = extractChapterContent(grouptableheaders)
 
     tablerows = grouptables.occurances.map((occ) => OccurancesToTableRows(occ))
     // Add group as key to cells
@@ -148,6 +88,17 @@ const ExtractGroupSpecificRows = (group) => {
     
     return(tablerows)
 }
+
+
+
+// Extract specific things
+
+const extractNumberOfGroups = (chapters) => {
+    var RegExpNumberOfGroups = /(Number of groups[ ]+[0-9]{1,2})/
+    var StringContainingNumberOfGroups =  chapters.string.match(RegExpNumberOfGroups)
+    return StringContainingNumberOfGroups ===  null ? undefined : StringContainingNumberOfGroups[0].replace(/[^0-9]/g,'') * 1
+}
+
 
 const extractTitle = (chapters) => {
     let title = chapters.occurances[0].content.filter((c) => c.toLowerCase().indexOf('title:')>0)
