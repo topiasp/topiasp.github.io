@@ -69,8 +69,11 @@ const sortCells = (colidxs) => {
 const updateTitle = (titleAsString) => {
     
     if (titleAsString !== undefined) {
+
+        titleAsString = titleAsString.replace('TITLE: ','').replace('title: ','')
+
         const titleHolder = document.getElementById('output-title')
-        titleHolder.innerHTML = titleAsString
+        titleHolder.innerHTML = titleAsString.length > 60 ? titleAsString.substr(0,60)+'...' : titleAsString
     }
 }
 

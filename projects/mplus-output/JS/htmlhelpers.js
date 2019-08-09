@@ -21,12 +21,17 @@ const htmlElement = ({ tag, content, classesOfElement, attributes }) => {
 }
 
 
+const spacesForHtml = (string) => {
+
+    let replacement = '&nbsp';
+
+    return string.replace(/\s/g,replacement)
+   
+}
+
 const addParagraph = (content) => {
     
-    content = content.replace(/ /g,'&nbsp;')
-
-
-    return htmlElement({ tag: 'p',content: content })
+    return htmlElement({ tag: 'div',content: content, classesOfElement: ['result-paragraph'] })
 
 }
 
@@ -130,7 +135,7 @@ const collapsibleCheckBoxList = (chap) => {
     const chapt = htmlElement({ tag: 'div',classesOfElement: ['collapse','chapter'], attributes: [{key: 'id',value: chap.id}] })
     
 
-    const paragraphs = chap.content.map((par) => addParagraph(par))
+    const paragraphs = chap.content.map((par) => addParagraph(spacesForHtml(par)))
 
     // add header
 

@@ -1,5 +1,7 @@
 <html>
+    
     <head>
+            <meta charset="UTF-8">
         <script src='./JS/scripts.js' ></script>
         <script src='./JS/parseutils.js' ></script>
         <script src='./JS/modules/extractChapters.js'></script>
@@ -81,7 +83,7 @@
         }
         .chapter-content {
             border-left: 1px solid lightgray;
-            left: 30%;
+            left: 35%;
             
         }
 
@@ -90,6 +92,10 @@
             top: 10%;
             width: 100%;
         }
+        body {
+            font-family: "Courier","Lucida Console";
+            
+        }
     </style>
 
     </head>
@@ -97,7 +103,7 @@
         <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="container-fluid">
               <div class="navbar-header">
-                <a class="navbar-brand" href="#">M<i>Plus</i> output viewer</a>
+                <a class="navbar-brand" href="#">M<i>plus</i> output viewer</a>
               </div>
               <ul class="nav navbar-nav">
                 <li>
@@ -105,11 +111,11 @@
                     <input id="file-upload" type="file"/>
                 </li>
                 <li><button type="button" class="btn btn-primary navbar-button" onclick="displayWholeOutput()" id="btn-whole-output" disabled>Whole output</button></li>
-                <li><button type="button" class="btn btn-primary navbar-button" onclick="showModelResults()"id="btn-just-model-results" disabled>Just the model results</button></li>
-                <li><button type="button" class="btn btn-primary navbar-button" onclick="showStdModelResults()" id="btn-just-std-model-results" disabled>Just the standardized model results</button></li>
+                <li><button type="button" class="btn btn-primary navbar-button" onclick="showModelResults()"id="btn-just-model-results" disabled>Model results</button></li>
+                <li><button type="button" class="btn btn-primary navbar-button" onclick="showStdModelResults()" id="btn-just-std-model-results" disabled>Standardized model results</button></li>
               </ul>
               <div class="navbar-header" style="float: right">
-                  <div class='navbar-brand' id="output-title"></div>
+                  <div class="navbar-text" id="output-title"></div>
               </div>
             </div>
         </nav>        
