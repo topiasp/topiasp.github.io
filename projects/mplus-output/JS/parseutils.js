@@ -67,7 +67,7 @@ const ensureCellKeyCount = ({ cell, headercount }) => {
 var OccurancesToTableRows = (occurances) => {
 
     const getTableCellsFromRow = (rowString) => {
-        cells = rowString.split(/([A-Z_0-9.$]+)/).filter((cell) => /[A-Z0-9]/.test(cell)    )
+        cells = rowString.split(/([A-Z_\-0-9.$]+)/).filter((cell) => /[A-Z0-9]/.test(cell)    )
         return(cells)
     }
 
