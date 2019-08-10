@@ -73,7 +73,7 @@ const updateTitle = (titleAsString) => {
         titleAsString = titleAsString.replace('TITLE: ','').replace('title: ','')
 
         const titleHolder = document.getElementById('output-title')
-        titleHolder.innerHTML = titleAsString.length > 60 ? titleAsString.substr(0,60)+'...' : titleAsString
+        titleHolder.innerHTML = titleAsString.length > 20 ? titleAsString.substr(0,20)+'...' : titleAsString
     }
 }
 
@@ -92,6 +92,9 @@ const updateButtonDisability = () => {
 
     const modelStdResultsButton = document.getElementById('btn-just-std-model-results')
     modelStdResultsButton.disabled = storage.standardizedmodelresults.cells !== undefined ? false : true
+
+    const groupComparisonButton = document.getElementById('btn-group-comparison')
+    groupComparisonButton.disabled = storage.modelresults.cells !== undefined && storage.numberOfGroups > 1 ? false : true
 
 
 }
@@ -148,4 +151,16 @@ const handleFileLoad = (e) => {
 
     reader.readAsText(file,"ISO-881");	
 
+}
+
+
+const getUniqueFromArray = (arr) => {
+
+    f = (obj,elem) => {
+        obj[elem] = 1
+        return obj
+    }
+    const obj =   arr.reduce(f,{})
+
+    return Object.getOwnPropertyNames(obj)
 }

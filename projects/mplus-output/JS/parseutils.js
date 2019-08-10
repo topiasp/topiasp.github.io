@@ -121,6 +121,6 @@ const extractNumberOfGroups = (chapters) => {
 
 
 const extractTitle = (chapters) => {
-    let title = chapters.occurances[0].content.filter((c) => c.toLowerCase().indexOf('title:')>0)
+    let title = chapters.occurances[0].content.filter((c) => c.toLowerCase().indexOf('title:')>-1)
     return title === undefined ? undefined : title[0]
 }

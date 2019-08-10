@@ -6,6 +6,7 @@
         <script src='./JS/parseutils.js' ></script>
         <script src='./JS/modules/extractChapters.js'></script>
         <script src='./JS/modules/convertAndDownloadCSV.js'></script>
+        <script src='./JS/modules/loadFileIntoStorage.js'></script>
         <script src='./JS/utils.js'></script>
         <script src='./JS/htmlhelpers.js' ></script>
         <script src='./examples/dummy.js' ></script> 
@@ -96,6 +97,11 @@
             font-family: "Courier","Lucida Console";
             
         }
+        .btn-group {
+            width: 100%;
+            margin-bottom: 20px;
+            margin-top: 20px;
+        }
     </style>
 
     </head>
@@ -104,20 +110,23 @@
             <div class="container-fluid">
               <div class="navbar-header">
                 <a class="navbar-brand" href="#">M<i>plus</i> output viewer</a>
+                <div class="navbar-header" style="float: left">
+                    <div class="navbar-text" id="output-title"></div>
+                </div>
               </div>
               <ul class="nav navbar-nav">
                 <li>
                     <button type="button" class="btn btn-success navbar-button"><label for="file-upload" class="custom-file-upload">Upload .out</label></button>
                     <input id="file-upload" type="file"/>
                 </li>
-                <li><button type="button" class="btn btn-primary navbar-button" onclick="displayWholeOutput()" id="btn-whole-output" disabled>Whole output</button></li>
-                <li><button type="button" class="btn btn-primary navbar-button" onclick="showModelResults()"id="btn-just-model-results" disabled>Model results</button></li>
+                <li><button type="button" class="btn btn-primary navbar-button" onclick="displayWholeOutput()"  id="btn-whole-output" disabled>Whole output</button></li>
+                <li><button type="button" class="btn btn-primary navbar-button" onclick="showModelResults()"    id="btn-just-model-results" disabled>Model results</button></li>
                 <li><button type="button" class="btn btn-primary navbar-button" onclick="showStdModelResults()" id="btn-just-std-model-results" disabled>Standardized model results</button></li>
+                <li><button type="button" class="btn btn-primary navbar-button" onclick="showGroupComparison()" id="btn-group-comparison" disabled>Group comparison</button></li>
               </ul>
-              <div class="navbar-header" style="float: right">
-                  <div class="navbar-text" id="output-title"></div>
-              </div>
+              
             </div>
+            
         </nav>        
         
         <div class="container-fluid" id='content'>

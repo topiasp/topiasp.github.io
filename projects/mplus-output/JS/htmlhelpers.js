@@ -1,3 +1,4 @@
+
 // Helpers to create html elements
 
 
@@ -83,24 +84,34 @@ const selectList = (options) => {
 
 
 
-const checkBoxList = (options) => {
+const checkBoxList = ({ options, idForInputGroup }) => {
   
-
-    const form = htmlElement({ tag: 'form' })
+    const id =  idForInputGroup !== undefined ? idForInputGroup : ''
+    const form = htmlElement({ tag: 'form', attributes: [{  key:'id', value: id }] })
 
     const createCheckBox = (option) => {
-        const div = htmlElement({ tag: 'div', classesOfElement: ['checkbox']})
         
-        const input = htmlElement({ tag: 'input', attributes: [{ key: 'type', value: 'checkbox' }, { key: 'value', value: ''}] })
-        const label = htmlElement({ tag: 'label'  })
+        const input = htmlElement(
+            {
+                tag: 'input',
+                attributes: [
+                    { key: 'type', value: 'checkbox' },
+                    { key: 'value', value: option },
+                    { key: 'checked', value:'' },
+                    { key: 'id', value: 'select_'+option }
+                    ]
+            })
+
+      
+
+
+        const label = htmlElement({ tag: 'label', classesOfElement: ['checkbox-inline']  })
 
         label.appendChild(input)
         label.innerHTML += option
 
+        return label
 
-
-        div.appendChild(label)
-        return div
     }
 
     options.forEach((option) => form.appendChild(  createCheckBox(option)  ))

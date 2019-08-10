@@ -10,7 +10,8 @@ const initStorage = () => {
         },
         standardizedmodelresults: {
             cells: undefined
-        }
+        },
+        numberOfGroups: undefined
     }
     return storage    
 }
@@ -28,11 +29,11 @@ const init = () => {
   
     fileInput.addEventListener('change', handleFileLoad);
     
-    /*
+    
     loadFileIntoStorage(mplusoutput.raw)
     updateTitle(storage.title)
     updateButtonDisability()
-    */
+    
 }
 
 
@@ -106,89 +107,109 @@ const displayWholeOutput = () => {
 }
 
 
-// Storage update
+const showGroupComparison = () => {
 
 
-const loadFileIntoStorage = (fileAsString) => {
+    const groupComparisonContainer =  htmlElement({ tag:'div' })
 
-    storage = initStorage()
+    // header
+    const header = htmlElement({ tag:'h2', content: 'GROUP COMPARISON'})
+
+    // table
+    // Table
+
+    const headers = ['Column 1', 'Column 2', 'Variable' ].concat( storage.modelresults.groups )
+    // converts cell object to single array
+    const cellGroupsAsColumns = (cell) => cell[0].keys.concat(cell.map((cell) => cell.value))
+    const cellsToTable = [...storage.modelresults.cellsForGroupComparison]
+    const rows = cellsToTable.map(cellGroupsAsColumns)
+    const table = createTable([headers],rows)
+
+    table.id = 'groupComparisonTable'
+
+    // Download button
+
+    const downloadButton = htmlElement({ tag: 'button',content: 'Download table as CSV',classesOfElement: ['btn','btn-primary'],attributes: [{ key: 'style',value:'margin-bottom: 15px' }] })
+    downloadButton.addEventListener('click',() => {
+        convertAndDownloadCSV.downloadCSV({
+            headers: headers,
+            data: rows
+        })
+    })
+
+    // Selectors for variables
+    /*
+    const variableSelector = htmlElement({ tag: 'div', classesOfElement: ['btn-group'] })
     
+    storage.modelresults.variables.forEach((variable) => {
+        const btn = htmlElement(
+                {
+                    tag: 'button',
+                    classesOfElement: ['btn','btn-warning'],
+                    attributes: [{ key:'type', value:'button'}],
+                    content: variable
+                }
+            )
+        variableSelector.appendChild( btn  )
+    })
+    */
+
+    const nameForVariableSelectorForm = 'variableSelectors'
+    const variableSelector = checkBoxList({ options: storage.modelresults.variables, idForInputGroup: nameForVariableSelectorForm })
 
     
-    // Update to storage
-    try { 
-        const RegExpChapter = /(^[A-Z][A-Z 0-9]+[A-Z]$)/gm
+    // Join 'em
+    groupComparisonContainer.appendChild(header)
+    groupComparisonContainer.appendChild(downloadButton)
+    groupComparisonContainer.appendChild(variableSelector)
+    groupComparisonContainer.appendChild(table)
 
-        const chapters =  extractChapters({ string: fileAsString, regex: RegExpChapter, filteringRegex: / (BY|WITH|ON)$/m  })
-         
-        storage.chapters = chapters
-    } 
-    catch(err) {
-        console.log('Problem with extracting chapters: ', err.message)
-    }
-    // number of groups 
-    try {
-        storage.numberOfGroups = extractNumberOfGroups(chapters)
-    }
-    catch(err) {
-        console.log('problem with extracting number of groups ' + err.message)
-    }
+    // Create elements
+    displayElementsInContent(groupComparisonContainer)
 
-    // model results
-    try {
+    // Add event listeners after creating elements
 
-        const header = 'MODEL RESULTS'
-        const tableheaders = ['Column1','Column2','Column3','Estimate','S.E.','Est/S.E.','P-Value','Signif.']
-        const cells = getModelResultsAsCells({ chapters: storage.chapters, headerToFind: header,tableheaders: tableheaders })
+    const handleCheckboxChange = (e) => {
+        e.preventDefault()
 
-        storage.modelresults = {
-            cells: cells,
-            headers: tableheaders,
-            header: header
+        const variableSelectors =   document.getElementById(nameForVariableSelectorForm).children
+
+        const selectedVariables = []
+
+        for (selectorIndex=0; selectorIndex < variableSelectors.length; selectorIndex++) {
+            let selector = variableSelectors[selectorIndex].children[0]
+
+            if ( selector.checked ) {
+                selectedVariables.push( selector.value )
+            }
         }
-        // Try to add p-value
-        let pvalueindex = tableheaders.indexOf('P-Value') - 3
-        
-        if (pvalueindex>-1) {
-            storage.modelresults.cells = storage.modelresults.cells.map((cell) => addPvalueToCell({ cell: cell, pvalueindex: pvalueindex }))
-        }
-        // Sort
-        sortCells([1,2])
 
-    } 
-    catch(err) {
-        console.log('error in modelring results parsing: ' + err.message)
-        throw 'Error with extracting model results: ' + err.message 
+        document.getElementById('groupComparisonTable').remove()
+
+        const cellsToTable = [...storage.modelresults.cellsForGroupComparison]
+        let rows = cellsToTable.map(cellGroupsAsColumns)
+
+        rows = rows.filter((row) =>   selectedVariables.indexOf(row[2])>-1 )
+
+
+        const table = createTable([headers],rows)
+        table.id = 'groupComparisonTable'
+
+        displayElementsInContent(table,clearContents=false)
+    
     }
-    // standardized model results
-    try {
-        const header = 'STANDARDIZED MODEL RESULTS'
-        const tableheaders = ['Column1','Column2','Column3','Estimate','S.E.','Est/S.E.','P-Value','Variance','Signif.']
-        const cells = getModelResultsAsCells({ chapters: storage.chapters, headerToFind: header, tableheaders: tableheaders })
 
-        storage.standardizedmodelresults = {
-            cells: cells,
-            headers: tableheaders,
-            header: header
-        }
-        // Try to add p-value
+    var variableSelectorForm = document.getElementById(nameForVariableSelectorForm)
+    var variableSelectors    = variableSelectorForm.children
 
-        let pvalueindex = tableheaders.indexOf('P-Value') - 3
-        
-        if (pvalueindex>-1) {
-            storage.standardizedmodelresults.cells = storage.standardizedmodelresults.cells.map((cell) => addPvalueToCell({ cell: cell, pvalueindex: pvalueindex }))
-        }
-       
-
-    } 
-    catch(err) {
-        console.log('error in modelring results parsing: ' + err.message)
-        throw 'Error with extracting model results: ' + err.message 
+    for (selectorIndex=0; selectorIndex < variableSelectors.length; selectorIndex++) {
+        variableSelectors[selectorIndex].addEventListener('change',handleCheckboxChange)
     }
-    
-    
-    // Title
+   
     
 
-    storage.title = extractTitle(storage.chapters)
+    
 }
+
+
+

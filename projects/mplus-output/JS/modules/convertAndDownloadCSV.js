@@ -16,7 +16,12 @@ convertAndDownloadCSV.convertArrayOfCellsToCSV = (args) => {
     result += headers.join(delimiter) + '\n'
 
 
-    result += data.map((d) => cellToArray(d).join(delimiter)).join('\n')
+    result += data.map((cell) => {
+        if (!Array.isArray(cell)) {
+            return [...cell.keys].concat(cell.values).join(delimiter)
+        } 
+        return cell.join(delimiter)
+    }).join('\n')
     return result
 }
 
