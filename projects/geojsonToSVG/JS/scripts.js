@@ -2,10 +2,10 @@
 // constant to serve as a store for data
 const store = {}
 const PADDING  = 50
-const FEATUREURL =   'http://geo.stat.fi/geoserver/wfs?service=WFS&version=1.0.0&request=GetFeature&typeName=tilastointialueet:kunta1000k_2018&outputFormat=json'
+const FEATUREURL =   'https://geo.stat.fi/geoserver/wfs?service=WFS&version=1.0.0&request=GetFeature&typeName=tilastointialueet:kunta1000k_2018&outputFormat=json'
 
 const STAT = {
-    url: 'http://pxnet2.stat.fi/PXWeb/api/v1/fi/StatFin/tym/tyonv/kk/statfin_tyonv_pxt_1001.px',
+    url: 'https://pxnet2.stat.fi/PXWeb/api/v1/fi/StatFin/tym/tyonv/kk/statfin_tyonv_pxt_1001.px',
     query: {
         "query": [
           {
