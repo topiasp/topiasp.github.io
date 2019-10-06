@@ -1,0 +1,74 @@
+<html>
+<head>
+
+<script src='./JS/map.js'></script>
+<script src='./JS/stat.js'></script>
+<script src='./JS/card.js'></script>
+
+<script src='./JS/scripts.js'></script>
+
+
+
+
+<style>
+  body {
+    font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif	
+
+
+  }
+
+  #container {
+    margin: 10px
+  }
+  #svg-container {
+    height: 100%;
+    width: 50%;
+    float: left;
+  }
+  #content-container {
+    float: right;
+    width: 50%;
+    height: 100%;
+  }
+  polygon {
+    fill:steelblue;
+    stroke:white;
+    stroke-width:1;
+  }
+
+
+  .card-container {
+    border: 1px solid lightgrey;
+    border-radius: 5px;
+    text-align: center;
+    width: auto;
+    padding: 10;
+    margin: 25%;
+     /* Add shadows to create the "card" effect */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+  }
+
+  .card-header {
+    font-size: 200%;
+    color: darkgrey;
+  }
+  .card-number {
+    font-size: 250%;
+  }
+
+</style>
+</head>
+
+<body onload='init()'>
+<div id='container'>
+  <svg id='svg-container'></svg>
+
+  <div id='content-container'>
+
+  </div>
+
+</div>
+
+</body>
+</html>
