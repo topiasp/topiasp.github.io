@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.js": "/static/js/main.f94f4020.chunk.js",
-    "main.js.map": "/static/js/main.f94f4020.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.79cf4bbb.js",
-    "runtime-main.js.map": "/static/js/runtime-main.79cf4bbb.js.map",
-    "static/js/2.b699cf92.chunk.js": "/static/js/2.b699cf92.chunk.js",
-    "static/js/2.b699cf92.chunk.js.map": "/static/js/2.b699cf92.chunk.js.map",
-    "index.html": "/index.html",
-    "precache-manifest.039249191e4767f638e3083bba6b7e43.js": "/precache-manifest.039249191e4767f638e3083bba6b7e43.js",
-    "service-worker.js": "/service-worker.js"
+    "main.js": "/projects/pysakki/static/js/main.f94f4020.chunk.js",
+    "main.js.map": "/projects/pysakki/static/js/main.f94f4020.chunk.js.map",
+    "runtime-main.js": "/projects/pysakki/static/js/runtime-main.98a7076c.js",
+    "runtime-main.js.map": "/projects/pysakki/static/js/runtime-main.98a7076c.js.map",
+    "static/js/2.b699cf92.chunk.js": "/projects/pysakki/static/js/2.b699cf92.chunk.js",
+    "static/js/2.b699cf92.chunk.js.map": "/projects/pysakki/static/js/2.b699cf92.chunk.js.map",
+    "index.html": "/projects/pysakki/index.html",
+    "precache-manifest.d96f596f06fc7301e3f0f7e0ded81fae.js": "/projects/pysakki/precache-manifest.d96f596f06fc7301e3f0f7e0ded81fae.js",
+    "service-worker.js": "/projects/pysakki/service-worker.js"
   },
   "entrypoints": [
-    "static/js/runtime-main.79cf4bbb.js",
+    "static/js/runtime-main.98a7076c.js",
     "static/js/2.b699cf92.chunk.js",
     "static/js/main.f94f4020.chunk.js"
   ]
