@@ -124,6 +124,9 @@ const showGroupComparison = () => {
     const cellsToTable = [...storage.modelresults.cellsForGroupComparison]
     const rows = cellsToTable.map(cellGroupsAsColumns)
     const table = createTable([headers],rows)
+	
+	console.log(storage.modelresults.cellsForGroupComparison)
+	
 
     table.id = 'groupComparisonTable'
 
