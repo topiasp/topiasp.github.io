@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/projects/pysakki/precache-manifest.72bd94b2a93f53ef71391922dcace2e7.js"
+  "/projects/pysakki/precache-manifest.a5e2105422a36f49089fac68f5b07cdc.js"
 );
 
 self.addEventListener('message', (event) => {
